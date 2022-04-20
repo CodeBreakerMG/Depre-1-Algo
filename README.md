@@ -1,7 +1,7 @@
 # Depre-1-Algo
 Proyecto para la empresa OdiparpackSW (DP1). Aquí solo se tendrá desarrollo en JAVA
 
-# Set Up del proyecto
+# Setup del proyecto
 
 Clonar el proyecto desde GitHub (De preferencia con GitHub Destop)
 
