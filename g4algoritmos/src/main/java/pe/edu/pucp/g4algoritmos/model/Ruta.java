@@ -17,6 +17,7 @@ public class Ruta {
 
     private List<Entrega> listaEntregas = new ArrayList<>();
     private List<Tramo> listaTramos = new ArrayList<>();
+    private List<Oficina> listaOficinas = new ArrayList<>();
 
     private int tramoActual;  //Indice el cual indica el tramo en el que se encuentra. 
 

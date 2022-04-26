@@ -40,11 +40,16 @@ public class AStarModified {
 
             //Looping through adjacent VertexOficinas.
             for (Arista arista: current.getListaAristas()){
-                VertexOficina child = arista.getTarget();
+                
                 //Aqui verificar si el tramo/arista esta bloqueado
+                if (arista.getTramo().estaBloqueado())
+                    continue;
+
+                VertexOficina child = arista.getTarget();
+                
                 double cost = arista.getCosto(); //Este es el costo calculado por el tramo. 
                 double tempG = current.getG() + cost;
-                double tempF = tempG + heuristicEucledian(current, destination);
+                double tempF = tempG + calcularH(current, destination);
 
                 //if we haven't considered the child and f(x) is higher:
                 if(explored.contains(child) && tempF >= child.getF())
@@ -94,7 +99,7 @@ public class AStarModified {
                 -> Una vez que los camiones estén listos, se realizará el plan de transporte, la que involucra pasar por los tramos debidos.
                     Aquí es donde entraría el a*, para cada camion.
 
-                            -> Tenemos que agregar los bloqueos. 
+                            -> Tenemos que agregar los bloqueos. ✓
 
                 
                     

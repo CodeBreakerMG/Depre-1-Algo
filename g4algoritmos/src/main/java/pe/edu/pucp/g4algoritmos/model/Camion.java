@@ -80,6 +80,8 @@ public class Camion {
         this.estado = estado;
     }
 
-    
+    public int capacidad(){
+        return (int)this.tipo.getCapacidad();
+    }
 
 }

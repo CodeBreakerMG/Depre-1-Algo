@@ -1,5 +1,7 @@
 package pe.edu.pucp.g4algoritmos.model;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class Bloqueo {
@@ -40,6 +42,28 @@ public class Bloqueo {
     }
     public void setFechaHoraFin(Date fechaHoraFin) {
         this.fechaHoraFin = fechaHoraFin;
+    }
+
+    public int tryBloquear(){
+
+        //Si regresa 1: SUCCESS
+        if (AuxiliaryFunctions.compareDatesByMinutes(AuxiliaryFunctions.getNowTime(), fechaHoraInicio ) > 0){
+            this.tramo.bloquear();
+            return 1;
+        }
+        //SI regresa 0: Failure
+        return 0;
+    }
+
+    public int tryDesbloquear(){
+
+        //Si regresa 1: SUCCESS
+        if (AuxiliaryFunctions.compareDatesByMinutes(AuxiliaryFunctions.getNowTime(), fechaHoraFin ) > 0){
+            this.tramo.desbloquear();
+            return 1;
+        }
+        //SI regresa 0: Failure
+        return 0;
     }
 
 

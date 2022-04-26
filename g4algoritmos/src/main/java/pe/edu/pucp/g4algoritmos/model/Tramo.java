@@ -6,10 +6,16 @@ public class Tramo {
     private Oficina CiudadInicio; //Objeto Ciudad Inicio
     private Oficina CiudadFin;   //Objeto Ciudad Fin
     private double distancia;   //Distancia del recorrido de un camino a otro (SIRVE PARA EL CALCULO DEL COSTO)
-        
     private double pesoRegion; //VALOR ENTERO QUE INDICA DE QUE REGION A QUE REGION ESTAMOS TRASLADANDONOS: costa-costa, costa-sierra, costa-selva, sierra-selva
                             //Si viajamos de costa a sierra, un dia mas de viaje. Si viajamos de costa a selva, 2 dias mas de viaje.
     private double pesoTiempo; //Tiempo total de recorrido del tramo.	 
+    
+    private int estado; /*  0: Bloqueado
+                            1: Disponible 
+    
+    
+                        */ 
+
 
     public Tramo(Oficina ciudadInicio, Oficina ciudadFin, double distancia, double pesoRegion, double pesoTiempo) {
         CiudadInicio = ciudadInicio;
@@ -17,6 +23,7 @@ public class Tramo {
         this.distancia = distancia;
         this.pesoRegion = pesoRegion;
         this.pesoTiempo = pesoTiempo;
+        this.estado = 1; //activo, o disponible
     }
 
     //Constructor para con la carga de archivos.
@@ -95,7 +102,24 @@ public class Tramo {
         this.pesoTiempo = pesoTiempo;
     }
 
-    
-    
-    
+    public int getEstado() {
+        return estado;
+    }
+
+    public void setEstado(int estado) {
+        this.estado = estado;
+    }
+
+    public void bloquear(){
+        estado = 0;
+    }
+
+    public void desbloquear(){
+        estado = 1;
+    }
+
+    public boolean estaBloqueado(){
+        return (estado == 0);
+    }
+
 }
