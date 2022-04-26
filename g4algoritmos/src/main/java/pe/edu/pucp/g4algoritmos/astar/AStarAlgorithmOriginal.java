@@ -7,14 +7,14 @@ import java.util.HashSet;
 import java.util.PriorityQueue;
 import java.util.Set;
 
-public class AStarAlgorithm {
+public class AStarAlgorithmOriginal {
     
     private Node source; //Starting Vertex
     private Node destination; //Destination Vertex;
     private Set<Node> explored; //Set of explored nodes.
     private PriorityQueue<Node> queue; //A queue that enqueues according to values.
    
-    public AStarAlgorithm(Node source, Node destination) {
+    public AStarAlgorithmOriginal(Node source, Node destination) {
         this.source = source;
         this.destination = destination;
         this.explored = new HashSet<>();

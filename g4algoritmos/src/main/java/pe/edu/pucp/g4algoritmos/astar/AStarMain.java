@@ -41,7 +41,7 @@ public class AStarMain {
         
         n7.addNeighbor(new Edge(n6, 10));
 		
-        AStarAlgorithm search = new AStarAlgorithm(n1,n6);
+        AStarAlgorithmOriginal search = new AStarAlgorithmOriginal(n1,n6);
         search.run();
         search.printSolutionPath();
     }
