@@ -13,7 +13,7 @@ public class Mapa {
     public static final double limiteXSuperior = 0.0; //Coordenadas superior inferior X
     public static final double limiteYInferior = 0.0; //Coordenadas limite inferior Y
     public static final double limiteYSuperior = 0.0; //Coordenadas superior inferior Y
-    public static double velocidadCamiones = 60.0; //Velocidad Promedio camiones (KM/H)
+    public static double velocidadCamiones = 60.0; //Velocidad Promedio camiones (KM/H). Se debe de cambiar a 5 velocidades en el futuro.
 
     public static double duracionMantenimiento = 1.0; //Duración del mantenimiento en Horas
 

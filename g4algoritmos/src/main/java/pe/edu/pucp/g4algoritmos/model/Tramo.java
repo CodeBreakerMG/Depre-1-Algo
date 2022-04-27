@@ -12,8 +12,6 @@ public class Tramo {
     
     private int estado; /*  0: Bloqueado
                             1: Disponible 
-    
-    
                         */ 
 
 

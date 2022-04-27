@@ -9,7 +9,7 @@ public class Oficina {
     private char region;  //C: Costa, S: Sierra, E: Selva
     private double coordX; //coordX: (Latitud ACTUAL, coordenada x, ejem: -13.51802722)
     private double coordY; //(Longitud ACTUAL, coordenada y, ejem: 73.51802722)
-    private int estado; //Estado del camion. Código entero que significa algo
+    private int estado; //Estado de la Oficina
 
     
     public Oficina(long id, String codigo, String departamento, String provincia, char region, double coordX,
