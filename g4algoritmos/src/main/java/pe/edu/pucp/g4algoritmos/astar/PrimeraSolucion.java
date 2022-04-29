@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
-import javax.lang.model.util.ElementScanner6;
+
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
@@ -12,7 +12,7 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.algorithm.locate.SimplePointInAreaLocator;
-import org.omg.CORBA.PUBLIC_MEMBER;
+
 
 
 import java.util.ArrayList;
@@ -61,7 +61,7 @@ public class PrimeraSolucion {
         listaCamiones = seleccionarCamiones();
         listaZonas = generarZonasReparto();
         listaPedidosPorZona = asignarPedidosPorZona();
-        
+
         //areaMaxima = areaPoligono();
     }
 
@@ -229,6 +229,13 @@ public class PrimeraSolucion {
         return listaPedidosXZona;
     }
 
+    /*7. Asignar pedidos a Camiones*/
+    
+    public void asignarPedidosCamiones(){
+
+
+
+    }
     /*
     public static boolean isContained(Coordinate p,
                                   Geometry geom)
