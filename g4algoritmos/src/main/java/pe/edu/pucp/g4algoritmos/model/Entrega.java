@@ -2,6 +2,8 @@ package pe.edu.pucp.g4algoritmos.model;
 
 import java.util.Date;
 
+//Entrega es el equivalente de Pedido Parcial
+
 public class Entrega {
 
     private long id;    //Id del pedido

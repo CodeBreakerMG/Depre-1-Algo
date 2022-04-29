@@ -106,6 +106,55 @@ public class Mapa {
         return Math.sqrt(Math.pow((x2-x1),2) + Math.pow((y2-y1),2));
 
     }
+
+    public static int[] calcularTipoCamionesPorAlmacen(Oficina almacen){
+
+        
+        int[] counter = {0,0,0}; //0: A, 1: B, 
+        for (int i = 0; i < listaCamiones.size(); i++){
+            if (listaCamiones.get(i).getAlmacen().getCodigo() == almacen.getCodigo())
+            {
+                if (listaCamiones.get(i).getTipo().getCodigo() == 'A')
+                    counter[0]++; 
+                else if (listaCamiones.get(i).getTipo().getCodigo() == 'B')
+                    counter[1]++; 
+                else 
+                    counter[2]++; 
+            }
+        }
+
+        return counter;
+    }
+
+    public static List<Camion> extractListaCamionesPorAlmacen(Oficina almacen, char tipoCamion, int cantidad){
+        List<Camion> camiones = new ArrayList<>();
+            int cant = cantidad;
+            for (Camion camion : listaCamiones){
+                if (camion.getAlmacen().getCodigo() == almacen.getCodigo() && 
+                    camion.getTipo().getCodigo() == tipoCamion &&
+                    camion.getEstado() == 1){
+                    
+                    camiones.add(camion);
+                    camion.setEstado(2);
+                    cant--;
+                }
+                if (cant <= 0)
+                    break;
+            }
+        return camiones;
+    }
+
+    public static int enrutarCamiones(List<Camion> listCamiones){
+
+        int counter = 0;
+        for (Camion camion : listCamiones){
+            camion.setEstado(3);
+            counter++;
+        }
+        return counter;
+    }
+
+
 /*
     public static boolean bloquearTramo(Tramo tramo){
         //for (Tramo tramo : listaTramos)

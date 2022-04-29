@@ -9,16 +9,26 @@ public class Camion {
     private TipoCamion tipo;  //Tipo del camion: A, B o C. Devuelve el objeto camion
     private double coordX; //coordX: (Latitud ACTUAL, coordenada x, ejem: -13.51802722)
     private double coordY; //(Longitud ACTUAL, coordenada y, ejem: 73.51802722)
-    private int estado; //Estado del camion. Código entero que significa algo
+    private int estado; //Estado del camion. 
+                /*0: Inactivo
+                  1: Activo, en un almacén
+                  2: Ocupado, seleccionado para ruta
+                  3: Activo, en ruta
+                  4: en Mantenimiento, Oficina
+                  5: en Mantenimiento, Programado,
+                  6: Averiado
+
+                */
+
     private Oficina almacen; //Almacen en el cual se encuentra o partió inicialmente. 
     
     
-    public Camion(long id, TipoCamion tipo, double coordX, double coordY, int estado, Oficina almacen ) {
+    public Camion(long id, TipoCamion tipo, double coordX, double coordY,   Oficina almacen ) {
         this.id = id;
         this.tipo = tipo;
         this.coordX = coordX;
         this.coordY = coordY;
-        this.estado = estado;
+        this.estado = 1;
         this.almacen = almacen;
     }
 
@@ -74,11 +84,27 @@ public class Camion {
 
 
     public int getEstado() {
+    /*  0: Inactivo
+        1: Activo, en un almacén
+        2: Activo, en ruta
+        3: en Mantenimiento, Oficina
+        4: en Mantenimiento, Programado,
+        5: Averiado
+    */
         return estado;
     }
 
 
     public void setEstado(int estado) {
+
+    /*  0: Inactivo
+        1: Activo, en un almacén
+        2: Activo, en ruta
+        3: en Mantenimiento, Oficina
+        4: en Mantenimiento, Programado,
+        5: Averiado
+    */ 
+
         this.estado = estado;
     } 
 

@@ -89,7 +89,7 @@ public class AStarModified {
                     para que haga la menor cantidad de viajes posibles
                         -> necesitariamos otro algoritmo que realice esta cercania entre pedidos,
                                 - debe buscar entregar los pedidos en el menor tiempo posible
-                                - 1. agrupar los pedidos por zona //agrupar por tiempo o time windows. (9 zonas, ejemplo: costa norte, costa sur, costa centro, )
+                                - 1. agrupar los pedidos por zona //agrupar por tiempo o time windows. (9 zonas, ejemplo: costa norte, costa sur, costa centro, ):
                                         -> Ordenar los pedidos segun tiempo de entrega
                                         -> Ordenar los pedidos segun cercania al almacen 
                                 - 2. Maximizar la carga de cada uno de estos camiones // utilizar los mas chicos primero
