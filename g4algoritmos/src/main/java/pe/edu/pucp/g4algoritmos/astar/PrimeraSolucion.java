@@ -17,6 +17,7 @@ import org.locationtech.jts.algorithm.locate.SimplePointInAreaLocator;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -257,6 +258,14 @@ public class PrimeraSolucion {
         }
 
         return listRutas;
+    }
+
+    public void ordenarPedidos(){
+        
+        for(List<Pedido> p : listaPedidosPorZona){
+            Collections.sort(p, new DateComparator());
+        }
+        
     }
     /*
     public static boolean isContained(Coordinate p,
