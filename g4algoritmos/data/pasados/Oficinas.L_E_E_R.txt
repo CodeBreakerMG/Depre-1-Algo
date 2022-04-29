@@ -1,0 +1,10 @@
+La antigua estructura era de la siguiente manera
+IdRegion,IdCiudad,Latitud,Longitud,RegionNatural
+
+
+De acuerdo a la clase del 20220419
+Se incorpora la región natural a cada registro de oficina.
+
+
+La antigua estructura era de la siguiente manera
+IdRegion,IdCiudad,Latitud,Longitud

@@ -1,0 +1,16 @@
+Este juego de datos ha sido elaborado a partir de la información brindada por el Prof. Ricardo Bohl
+
+Se ha introducido el UBIGEO pues puede ayudarlos como código de Provincia
+
+UBIGEO,DEP,PROV,LATITUD,LONGITUD,REGION.NATURAL
+
+Este archivo es definitivo en su estructura.
+
+En el caso de REGION.NATURAL, ha sido asignado por mi persona, tomando en cuenta a nivel departamental.
+Es cierto que algunas provincias pertencen a una región natural distinta de la capital.
+Ese dato en concreto, de haber tiempo, será actualizado.
+Tener en cuenta que ello NO AFECTA su solución.
+
+De haber algún cambio en ese u otro dato (de manera excepcional), se les avisará para que lo tengan en cuenta.
+
+
