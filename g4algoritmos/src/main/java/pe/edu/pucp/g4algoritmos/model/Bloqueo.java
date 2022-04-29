@@ -10,6 +10,8 @@ public class Bloqueo {
     private Date fechaHoraInicio;
     private Date fechaHoraFin;
     
+
+
     //Para la carga a través de archivos
     public Bloqueo(String codOficinaInicio, String codOficinaFin, Date fechaHoraInicio, Date fechaHoraFin) {
 

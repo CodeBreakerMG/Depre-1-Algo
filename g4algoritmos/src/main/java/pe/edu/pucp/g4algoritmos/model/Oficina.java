@@ -1,5 +1,14 @@
 package pe.edu.pucp.g4algoritmos.model;
 
+/*
+ALMACENES PRINCIPALES:
+
+COSTA-NORTE: 130101,LA LIBERTAD,TRUJILLO,-8.11176389,-79.02868652,COSTA
+COSTA-CENTRO: 150101,LIMA,LIMA,-12.04591952,-77.03049615,COSTA
+COSTA-SUR: 040101,AREQUIPA,AREQUIPA,-16.39881421,-71.537019649,COSTA
+
+*/
+
 public class Oficina {
 
     private long id;    //Id en la base de datos
@@ -10,10 +19,11 @@ public class Oficina {
     private double coordX; //coordX: (Latitud ACTUAL, coordenada x, ejem: -13.51802722)
     private double coordY; //(Longitud ACTUAL, coordenada y, ejem: 73.51802722)
     private int estado; //Estado de la Oficina
+    private int esAlmacen; //0: No es almacen, 1: Es almacén
 
     
     public Oficina(long id, String codigo, String departamento, String provincia, char region, double coordX,
-            double coordY, int estado) {
+            double coordY, int esAlmacen) {
         this.id = id;
         this.codigo = codigo;
         this.departamento = departamento;
@@ -21,7 +31,9 @@ public class Oficina {
         this.region = region;
         this.coordX = coordX;
         this.coordY = coordY;
-        this.estado = estado;
+        this.estado = 1;
+        this.esAlmacen = esAlmacen;
+
     }
 
 
@@ -101,6 +113,16 @@ public class Oficina {
 
 
     public void setEstado(int estado) {
+        this.estado = estado;
+    }
+
+
+    public boolean EsAlmacen() {
+        return (esAlmacen == 1) ;
+    }
+
+
+    public void setEsAlmacen(int estado) {
         this.estado = estado;
     }
     

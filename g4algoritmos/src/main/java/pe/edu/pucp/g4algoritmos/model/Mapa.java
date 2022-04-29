@@ -22,6 +22,7 @@ public class Mapa {
     public Date fechaHoraFin; //DateTime de la fecha FIN de la simulacion
 
     public static List<Oficina> listaOficinas = new ArrayList<>();
+    public static List<Oficina> listaAlmacenes = new ArrayList<>(); 
     public static List<Tramo> listaTramos = new ArrayList<>();
     public static List<Camion> listaCamiones = new ArrayList<>();
     public static List<Bloqueo> listaBloqueos = new ArrayList<>();
@@ -51,9 +52,6 @@ public class Mapa {
         return listaOficinas;
     }
 
-    public void setListaOficinas(List<Oficina> listaOficinas) {
-        this.listaOficinas = listaOficinas;
-    }
 
     public List<Tramo> getListaTramos() {
         return listaTramos;

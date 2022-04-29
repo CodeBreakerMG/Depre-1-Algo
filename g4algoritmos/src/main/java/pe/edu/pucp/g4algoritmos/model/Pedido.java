@@ -9,7 +9,7 @@ public class Pedido {
     private int cantidadTotal; //Cantidad de Paquetes Total
     private int cantidadActual; //Cantidad de Paquetes Actual. Si llega a 0, se entrego.
     private Date fechaHoraPedido; // Fecha en la que se realizo el pedido
-    private Date fechaHoraLimite; //Fecha y hora limite en la que se entregará el pedido
+    private Date fechaHoraLimite; //Fecha y hora limite en la que se entregará el pedido...
     private Date fechaHoraCompletado; //Fecha y hora en la que se completo el pedido
     private Oficina oficina;    //Oficina de Destino
     

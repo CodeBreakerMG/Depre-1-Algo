@@ -4,20 +4,22 @@ package pe.edu.pucp.g4algoritmos.model;
 
 public class Camion {
 
-    private long id;    //Id del camion en la base de datos
+    private long id;    /*Id del camion en la base de datos*/
     private String codigo; //Código del camión
     private TipoCamion tipo;  //Tipo del camion: A, B o C. Devuelve el objeto camion
     private double coordX; //coordX: (Latitud ACTUAL, coordenada x, ejem: -13.51802722)
     private double coordY; //(Longitud ACTUAL, coordenada y, ejem: 73.51802722)
     private int estado; //Estado del camion. Código entero que significa algo
+    private Oficina almacen; //Almacen en el cual se encuentra o partió inicialmente. 
     
     
-    public Camion(long id, TipoCamion tipo, double coordX, double coordY, int estado) {
+    public Camion(long id, TipoCamion tipo, double coordX, double coordY, int estado, Oficina almacen ) {
         this.id = id;
         this.tipo = tipo;
         this.coordX = coordX;
         this.coordY = coordY;
         this.estado = estado;
+        this.almacen = almacen;
     }
 
 
@@ -78,7 +80,17 @@ public class Camion {
 
     public void setEstado(int estado) {
         this.estado = estado;
+    } 
+
+    public Oficina getAlmacen() {
+        return almacen;
     }
+
+
+    public void setAlmacen(Oficina almacen) {
+        this.almacen = almacen;
+    }
+
 
     public int capacidad(){
         return (int)this.tipo.getCapacidad();
