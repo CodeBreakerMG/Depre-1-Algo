@@ -8,7 +8,7 @@ import java.util.PriorityQueue;
 import java.util.Set;
 
 import pe.edu.pucp.g4algoritmos.model.Mapa;
-import pe.edu.pucp.g4algoritmos.model.Tramo;
+
 
 public class AStarModified {
 

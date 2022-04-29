@@ -64,6 +64,8 @@ public class PrimeraSolucion {
         listaCamiones = seleccionarCamiones();
         listaZonas = generarZonasReparto();
         listaPedidosPorZona = asignarPedidosPorZona();
+        ordenarPedidos();
+        planesDeTransporte = asignarPedidosCamiones();
 
         //areaMaxima = areaPoligono();
     }
@@ -238,7 +240,16 @@ public class PrimeraSolucion {
         return listaPedidosXZona;
     }
 
-    /*7. Asignar pedidos a Camiones*/
+  /*7. Ordenar Pedidos según prioridad*/
+    public void ordenarPedidos(){
+        
+        for(List<Pedido> p : listaPedidosPorZona){
+            Collections.sort(p, new DateComparator());
+        }
+        
+    }
+
+    /*8. Asignar pedidos a Camiones*/
     
     public List<Ruta> asignarPedidosCamiones(){
 
@@ -260,13 +271,6 @@ public class PrimeraSolucion {
         return listRutas;
     }
 
-    public void ordenarPedidos(){
-        
-        for(List<Pedido> p : listaPedidosPorZona){
-            Collections.sort(p, new DateComparator());
-        }
-        
-    }
     /*
     public static boolean isContained(Coordinate p,
                                   Geometry geom)
