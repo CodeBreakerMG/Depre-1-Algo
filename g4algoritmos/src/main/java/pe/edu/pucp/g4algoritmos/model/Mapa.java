@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import pe.edu.pucp.g4algoritmos.utilitarios.LoadData;
+
 public class Mapa {
 
     public static final double limiteXInferior = 0.0; //Coordenadas limite inferior X
@@ -59,7 +61,7 @@ public class Mapa {
 
     public static Oficina getOficinaByCodigo(String codigoOficina){
         for (Oficina oficina : listaOficinas)
-            if (oficina.getCodigo()  == codigoOficina)
+            if (oficina.getCodigo().equals(codigoOficina))
                 return oficina;
         
         return null;
@@ -68,7 +70,7 @@ public class Mapa {
 
     public static Camion getCamionByCodigo(String codigoCamion){
         for (Camion camion : listaCamiones)
-            if (camion.getCodigo()  == codigoCamion)
+            if (camion.getCodigo().equals(codigoCamion))
                 return camion;
         
         return null;
@@ -78,7 +80,7 @@ public class Mapa {
     public static Tramo getTramoByOficinas(String codigoOficinaInicio, String codigoOficinaFin){
         
         for (Tramo tramo : listaTramos)
-            if (tramo.getCiudadInicio().getCodigo() == codigoOficinaInicio && tramo.getCiudadFin().getCodigo() == codigoOficinaFin)
+            if (tramo.getCiudadInicio().getCodigo().equals(codigoOficinaInicio) && tramo.getCiudadFin().getCodigo().equals(codigoOficinaFin))
                 return tramo;
         
         return null;
@@ -89,7 +91,7 @@ public class Mapa {
         List<Tramo> tramos = new ArrayList<>();
 
         for (Tramo tramo : listaTramos)
-            if (tramo.getCiudadInicio().getCodigo() == codigoOficina)
+            if (tramo.getCiudadInicio().getCodigo().equals(codigoOficina))
                 tramos.add(tramo);
 
         return tramos;
@@ -112,7 +114,7 @@ public class Mapa {
         
         int[] counter = {0,0,0}; //0: A, 1: B, 
         for (int i = 0; i < listaCamiones.size(); i++){
-            if (listaCamiones.get(i).getAlmacen().getCodigo() == almacen.getCodigo())
+            if (listaCamiones.get(i).getAlmacen().getCodigo().equals(almacen.getCodigo()))
             {
                 if (listaCamiones.get(i).getTipo().getCodigo() == 'A')
                     counter[0]++; 
@@ -130,7 +132,7 @@ public class Mapa {
         List<Camion> camiones = new ArrayList<>();
             int cant = cantidad;
             for (Camion camion : listaCamiones){
-                if (camion.getAlmacen().getCodigo() == almacen.getCodigo() && 
+                if (camion.getAlmacen().getCodigo().equals(almacen.getCodigo()) && 
                     camion.getTipo().getCodigo() == tipoCamion &&
                     camion.getEstado() == 1){
                     
@@ -158,7 +160,7 @@ public class Mapa {
 /*
     public static boolean bloquearTramo(Tramo tramo){
         //for (Tramo tramo : listaTramos)
-       // if (tramo.getCiudadInicio().getCodigo() == codigoOficina)
+       // if (tramo.getCiudadInicio().getCodigo().equals(codigoOficina))
        //     tramos.add(tramo);
     }
     
@@ -195,5 +197,15 @@ public class Mapa {
             }
         }
         return counter;
+    }
+
+    public static void cargarAlmacenesYOficinas(String ruta) {
+        List<Oficina> lista_total = LoadData.leerOficinas(ruta);
+        
+        listaOficinas.addAll(lista_total);
+        listaOficinas.removeIf(x -> x.EsAlmacen());
+
+        listaAlmacenes.addAll(lista_total);
+        listaAlmacenes.removeIf(x -> !x.EsAlmacen());
     }
 }

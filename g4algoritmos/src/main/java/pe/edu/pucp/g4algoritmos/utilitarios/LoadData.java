@@ -1,9 +1,15 @@
 package pe.edu.pucp.g4algoritmos.utilitarios;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import pe.edu.pucp.g4algoritmos.model.Mapa;
 import pe.edu.pucp.g4algoritmos.model.Oficina;
+import pe.edu.pucp.g4algoritmos.model.Pedido;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -11,9 +17,13 @@ import javax.swing.JOptionPane;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.IOException; 
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat; 
 
 public class LoadData {
+
+    public static final long DAY = 24*3600*1000;
     
     /* leerOficinas(String ruta) retorna una lista de todas las oficinas
        que se encuentran en el archivo de oficinas de la ruta especificada */
@@ -105,4 +115,77 @@ public class LoadData {
         }
         return listaOficinas;
     }    
+
+    /* leerPedidos(String ruta) retorna una lista de todos los pedidos
+       que se encuentran en un archivo de ventas especificado por la ruta */
+    public static List<Pedido> leerPedidos(String ruta) {
+        // Verificación de haber cargado el archivo de oficinas previamente
+        if(Mapa.listaAlmacenes.size() == 0 && Mapa.listaOficinas.size() == 0){
+            System.out.println("Debe cargar los datos del archivo de oficinas antes de cargar los pedidos.");
+            JOptionPane.showMessageDialog(null,
+                "Debe cargar los datos del archivo de oficinas antes de cargar los pedidos.",
+                "Advertencia: Cargar oficinas primero",
+                JOptionPane.WARNING_MESSAGE);
+            return null;
+        }
+
+        List<Pedido> listaPedidos = new ArrayList<Pedido>();        
+        try {
+            // Lectura de año y mes del nombre del archivo (tipo ventas202203.txt)
+            Pattern pattern = Pattern.compile("[1-9][0-9][0-9][0-9][0-1][1-9]");
+            Matcher matcher = pattern.matcher(ruta);
+            String year_month = matcher.find() ? matcher.group(0) : "000000";
+            String year = year_month.substring(0, 4);
+            String month = year_month.substring(4, 6);
+            
+            // Lectura de líneas y agregación de oficinas a la lista
+            String line = "";
+            BufferedReader br = new BufferedReader(new FileReader(ruta));
+            
+            SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            int counter = 0;
+
+            while ((line = br.readLine()) != null) {  
+                String[] linea_pedido = String.join("-", line.split("[,( =>  )]")).split("-+");
+                
+                Date fecha_hora_pedido = new Date();
+                try{
+                    fecha_hora_pedido = sf.parse(year+"-"+month+"-"+linea_pedido[0]+" "+linea_pedido[1]);
+                }
+                catch(ParseException ex){
+                    System.out.println(ex.getMessage());
+                }
+
+                // Creación del objeto Pedido
+                Pedido pedido = new Pedido(
+                    year_month + String.format("%04d", ++counter),   // codigo será tipo yyyyMM01
+                    Integer.valueOf(linea_pedido[4]),                       // cantidad
+                    fecha_hora_pedido,                                      // fecha y hora de pedido
+                    new Date(),                                             // fecha límite (temporal)
+                    linea_pedido[3]                                         // código de oficina
+                    );
+
+                try {
+                    // Asignación de fecha límite de entrega según región
+                    switch (pedido.getOficina().getRegion()) { // Se asume que 1 día de entrega = 24 horas
+                        case 'C': pedido.setFechaHoraLimite(new Date(pedido.getFechaHoraPedido().getTime()+1*DAY)); break;
+                        case 'S': pedido.setFechaHoraLimite(new Date(pedido.getFechaHoraPedido().getTime()+2*DAY)); break;
+                        case 'E': pedido.setFechaHoraLimite(new Date(pedido.getFechaHoraPedido().getTime()+3*DAY)); break;
+                    }
+                    
+                    // Agregación del pedido en la lista de pedidos
+                    listaPedidos.add(pedido);
+                }
+                catch(NullPointerException ex){
+                    System.out.println("Oficina con código "+linea_pedido[3]+" no se encuentra en el Mapa.");
+                }
+            }
+            br.close();
+        }
+        catch (IOException ex) {  
+            ex.printStackTrace();  
+        }
+
+        return listaPedidos;
+    }
 }
