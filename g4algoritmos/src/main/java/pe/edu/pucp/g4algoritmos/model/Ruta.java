@@ -16,7 +16,8 @@ public class Ruta {
     private double coordY; //(Longitud ACTUAL, coordenada y, ejem: 73.51802722)
 
     private List<Entrega> listaEntregas = new ArrayList<>();
-    private List<Tramo> listaTramos = new ArrayList<>();
+    private List<Pedido> listaPedidos = new ArrayList<>();
+    private List<Tramo> listaTramos ;
     private List<Oficina> listaOficinas = new ArrayList<>();
 
     private int tramoActual;  //Indice el cual indica el tramo en el que se encuentra. 
@@ -25,7 +26,7 @@ public class Ruta {
     private double costoAcumulado;	//HORAS. //Costo de la ruta hasta la actualidad
 
     
-    private int estado;	//Planificada, En curso, anulada, cancelada, Completada
+    private int estado;	//1: Planificada, 2: En curso, anulada, cancelada, Completada
 
     private Date fechaHoraInicio; // fecha en la que comenzó el plan de transporte
     private Date fechaHoraCompletado; //ffecha en la que se culminó el plan de transporte
@@ -42,6 +43,19 @@ public class Ruta {
         this.tramoActual = 0;
         this.costoTotal = calcularCostoTotal();
         this.costoAcumulado = 0;
+    }
+
+    public Ruta(String codigo, Camion camion, Oficina almacen){
+        this.codigo = codigo;
+        this.camion = camion;
+        this.coordX = almacen.getCoordX();
+        this.coordY = almacen.getCoordY();
+        this.estado = 1;
+        this.camion.setEstado(2);
+        this.tramoActual = 0;
+        this.costoTotal = 0;
+        this.costoAcumulado = 0;
+        this.listaTramos = new ArrayList<>();
     }
 
     public double calcularCostoTotal(){
@@ -68,5 +82,56 @@ public class Ruta {
         return (tramoActual >= listaTramos.size());
     }
 
+    public List<Pedido> getListaPedidos() {
+        return listaPedidos;
+    }
+
+    public void setListaPedidos(List<Pedido> listaPedidos) {
+        this.listaPedidos = listaPedidos;
+    }
+
+    public int getEstado() {
+        return estado;
+    }
+
+    public void setEstado(int estado) {
+        this.estado = estado;
+    }
+
+    public Date getFechaHoraInicio() {
+        return fechaHoraInicio;
+    }
+
+    public void setFechaHoraInicio(Date fechaHoraInicio) {
+        this.fechaHoraInicio = fechaHoraInicio;
+    }
+
+    public Date getFechaHoraCompletado() {
+        return fechaHoraCompletado;
+    }
+
+    public void setFechaHoraCompletado(Date fechaHoraCompletado) {
+        this.fechaHoraCompletado = fechaHoraCompletado;
+    }
+
+    public List<Tramo> getListaTramos() {
+        return listaTramos;
+    }
+
+    public void setListaTramos(List<Tramo> listaTramos) {
+        this.listaTramos = listaTramos;
+    }
+
+    public List<Oficina> getListaOficinas() {
+        return listaOficinas;
+    }
+
+    public void setListaOficinas(List<Oficina> listaOficinas) {
+        this.listaOficinas = listaOficinas;
+    }
+
+
+
+    
 
 }

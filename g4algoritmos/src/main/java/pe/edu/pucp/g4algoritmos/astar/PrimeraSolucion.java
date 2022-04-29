@@ -11,6 +11,7 @@ import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.noding.FastNodingValidator;
 import org.locationtech.jts.algorithm.locate.SimplePointInAreaLocator;
 
 
@@ -28,6 +29,7 @@ import pe.edu.pucp.g4algoritmos.model.Ruta;
 public class PrimeraSolucion {
     
     public static List<List<Pedido>> listaPedidosPorZona = new ArrayList<>(); //9 zonas de reparto, por defecto.
+    public static List<List<Oficina>> listaOficinasXZona = new ArrayList<>(); 
                 //Maxima distancia entre zonas para generar una zona de reparto
                 //coordenadas centricas para cada una de estas zonas
     public static List<Geometry> listaZonas = new ArrayList<>();
@@ -215,15 +217,21 @@ public class PrimeraSolucion {
 
         List<List<Pedido>> listaPedidosXZona = new ArrayList<>(); 
         
+        //listaOficinasXZona
+
         for (Geometry zona : listaZonas ){
             List<Pedido> pedidosZona = new ArrayList<>();
+            List<Oficina> oficinasZona = new ArrayList<>();
             for (Pedido pedido : listaPedidos){
                 Coordinate coordPedido = new Coordinate(pedido.getOficina().getCoordX(), pedido.getOficina().getCoordY());    
                 if (SimplePointInAreaLocator.isContained(coordPedido, zona)){
                     pedidosZona.add(pedido);   
+                    if (oficinasZona.contains(pedido.getOficina()) == false )
+                        oficinasZona.add(pedido.getOficina());
                 }
             }    
             listaPedidosXZona.add(pedidosZona);
+            listaOficinasXZona.add(oficinasZona);
         }
 
         return listaPedidosXZona;
@@ -231,10 +239,24 @@ public class PrimeraSolucion {
 
     /*7. Asignar pedidos a Camiones*/
     
-    public void asignarPedidosCamiones(){
+    public List<Ruta> asignarPedidosCamiones(){
 
+        /*Luego, se debe implementar PEDIDOS PARCIALES*/
 
+        List <Ruta> listRutas = new ArrayList<>();
 
+        for (int i = 0; i < listaCamiones.size(); i++){
+            Ruta ruta = new Ruta(Integer.toString(i+1), listaCamiones.get(i), almacen);
+            ruta.setListaPedidos(listaPedidosPorZona.get(i));
+            listaOficinasXZona.get(i).add(0, almacen);
+            listaOficinasXZona.get(i).add(almacen);
+
+            ruta.setListaOficinas(listaOficinasXZona.get(i));
+
+            listRutas.add(ruta);
+        }
+
+        return listRutas;
     }
     /*
     public static boolean isContained(Coordinate p,
