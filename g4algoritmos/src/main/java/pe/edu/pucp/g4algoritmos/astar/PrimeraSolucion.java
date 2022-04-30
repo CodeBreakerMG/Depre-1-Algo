@@ -26,6 +26,7 @@ import pe.edu.pucp.g4algoritmos.model.Mapa;
 import pe.edu.pucp.g4algoritmos.model.Oficina;
 import pe.edu.pucp.g4algoritmos.model.Pedido;
 import pe.edu.pucp.g4algoritmos.model.Ruta;
+import pe.edu.pucp.g4algoritmos.model.Tramo;
 
 public class PrimeraSolucion {
     
@@ -98,12 +99,14 @@ public class PrimeraSolucion {
     }
 
 
-    /*3. Generar polígono para distribución*/ 
+    /*3. Generar AREA TOTAL DE REPARTO polígono para distribución */ 
     public static Polygon crearPoligono(){
+        //Para arreglar: debe crear un poligono considerando solamente puntos exteriores.
         Polygon polygon = factory.createPolygon(coordinates.toArray(new Coordinate[0]));
         return polygon;
     }
 
+    //Determinar CUANTAS ZONAS DE REPARTO VAMOS A UTILIZAR (Cuantos camiones y qué camiones vamos a utilizar).
     /*4. Determinar lista de camiones a utilizar*/
     public static List<Camion> seleccionarCamiones(){
         
@@ -242,7 +245,11 @@ public class PrimeraSolucion {
 
   /*7. Ordenar Pedidos según prioridad*/
     public void ordenarPedidos(){
-        
+        //Considerar pedidos y cercania
+
+        //1. Ordenamos Oficinas de pedidos por ceracnia o distancia.
+
+
         for(List<Pedido> p : listaPedidosPorZona){
             Collections.sort(p, new DateComparator());
         }
@@ -335,6 +342,31 @@ true if the point lies in or on the geometry
     
         return ret;
       }
+
+    public void enrutarCamionesAstar(){
+
+        GrafoAStar grafo = new GrafoAStar();
+        
+
+        //List<VertexOficina> vertexOficinas = new ArrayList<>();
+
+        for (Oficina oficina : listaOficinas) {
+            VertexOficina v = new VertexOficina(oficina);
+            //grafo.
+        }
+
+
+        for( Ruta ruta : planesDeTransporte) {
+            for(int i = 0; i < ruta.getListaOficinas().size() - 1; i++){
+                AStarModified search = new AStarModified(new VertexOficina(ruta.getListaOficinas().get(i)) , new VertexOficina(ruta.getListaOficinas().get(i+1)));
+                search.run();
+                List<Tramo> tramos = new ArrayList<>();
+                //tramos = search.printSolutionPath(); /*Se debería obtener la lista de tramos desde la primera ciudad a la segunda*/
+                ruta.addTramos(tramos);
+            }
+        }
+
+    }
     
  
     

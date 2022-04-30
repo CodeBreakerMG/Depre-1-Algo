@@ -130,7 +130,9 @@ public class Ruta {
         this.listaOficinas = listaOficinas;
     }
 
-
+    public void addTramos (List<Tramo> tramos){
+        this.listaTramos.addAll(tramos);
+    }
 
     
 

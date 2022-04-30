@@ -10,22 +10,44 @@ import pe.edu.pucp.g4algoritmos.model.Mapa;
 
 public class GrafoAStar {
   
-    public List<VertexOficina> listaOficinas = new ArrayList<>();
-    public List<Arista> listaTramos = new ArrayList<>();
+    private List<VertexOficina> listaOficinas;
+    private List<Arista> listaTramos ;
     
 
     public GrafoAStar(){
         
-        for (Oficina oficina : Mapa.listaOficinas){
-            VertexOficina vertice = new VertexOficina(oficina);
-            listaOficinas.add(vertice);
-        }
-        
+        listaOficinas = new ArrayList<>();
+        listaTramos = new ArrayList<>();
+    }
 
-        for (Tramo tramo : Mapa.listaTramos){
-            Arista arista = new Arista(tramo, getVertexByCodigoOficina(tramo.getCiudadFin().getCodigo()));
-            listaTramos.add(arista);
+    public GrafoAStar(int mode) {
+        //Modo 1: Obtener La lista de todas las oficinas en el mapa
+        if (mode == 1) {
+            for (Oficina oficina : Mapa.listaOficinas){
+                VertexOficina vertice = new VertexOficina(oficina);
+                listaOficinas.add(vertice);
+            }
+            
+    
+            for (Tramo tramo : Mapa.listaTramos){
+                Arista arista = new Arista(tramo, getVertexByCodigoOficina(tramo.getCiudadFin().getCodigo()));
+                listaTramos.add(arista);
+            }
+
         }
+
+        //Modo 2: Crear desde 0 y asignar una lista de oficinas luego.
+        else{
+            listaOficinas = new ArrayList<>();
+           listaTramos = new ArrayList<>();
+        }
+        //this.listaOficinas = listaOficinas;
+        
+    }
+
+    public GrafoAStar(List<VertexOficina> listaOficinas) {
+        this.listaOficinas = listaOficinas;
+        
     }
 
     public GrafoAStar(List<VertexOficina> listaOficinas, List<Arista> listaTramos) {
@@ -43,6 +65,25 @@ public class GrafoAStar {
         return null;
     }
 
+    public List<VertexOficina> getListaOficinas() {
+        return listaOficinas;
+    }
+
+    public void setListaOficinas(List<VertexOficina> listaOficinas) {
+        this.listaOficinas = listaOficinas;
+    }
+
+    public List<Arista> getListaTramos() {
+        return listaTramos;
+    }
+
+    public void setListaTramos(List<Arista> listaTramos) {
+        this.listaTramos = listaTramos;
+    }
+
+    public void addVertex(VertexOficina vertexOficina){
+        this.listaOficinas.add(vertexOficina);
+    }
     
     
 }
