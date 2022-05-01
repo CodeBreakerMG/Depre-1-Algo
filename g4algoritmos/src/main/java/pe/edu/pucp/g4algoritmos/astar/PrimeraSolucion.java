@@ -17,7 +17,9 @@ import org.locationtech.jts.algorithm.locate.SimplePointInAreaLocator;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -101,8 +103,30 @@ public class PrimeraSolucion {
 
     /*3. Generar AREA TOTAL DE REPARTO polígono para distribución */ 
     public static Polygon crearPoligono(){
-        //Para arreglar: debe crear un poligono considerando solamente puntos exteriores.
-        Polygon polygon = factory.createPolygon(coordinates.toArray(new Coordinate[0]));
+
+        // El polígono a crear será un rectángulo circunscrito a la
+        // figura formada por las coordenadas de los puntos de la zona
+        
+        double x_max = Double.NEGATIVE_INFINITY;
+        double x_min = Double.POSITIVE_INFINITY;
+        double y_max = Double.NEGATIVE_INFINITY;
+        double y_min = Double.POSITIVE_INFINITY;
+        
+        for(Coordinate c : coordinates) {
+            if(c.getX() > x_max) x_max = c.getX();
+            if(c.getX() < x_min) x_min = c.getX();
+            if(c.getY() > y_max) y_max = c.getY();
+            if(c.getY() < y_min) y_min = c.getY();
+        }
+        
+        Coordinate[] polygon_coordinates = new Coordinate[] {
+            new Coordinate(x_min, y_max),  //  1-----2  //
+            new Coordinate(x_max, y_max),  //  |     |  //
+            new Coordinate(x_max, y_min),  //  |     |  //
+            new Coordinate(x_min, y_min)   //  4-----3  //
+        };
+
+        Polygon polygon = factory.createPolygon(polygon_coordinates);
         return polygon;
     }
 
