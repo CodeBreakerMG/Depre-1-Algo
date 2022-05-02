@@ -28,7 +28,7 @@ public class Tramo {
     public Tramo(String codOficinaInicio, String codOficinaFin){
 
         CiudadInicio = Mapa.getOficinaByCodigo(codOficinaInicio);
-        CiudadInicio = Mapa.getOficinaByCodigo(codOficinaFin);
+        CiudadFin = Mapa.getOficinaByCodigo(codOficinaFin);
 
         distancia = calcularDistancia();
         pesoRegion = calcularPesoRegion();
