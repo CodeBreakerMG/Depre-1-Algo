@@ -2,6 +2,8 @@ package pe.edu.pucp.g4algoritmos.solucion1;
 import pe.edu.pucp.g4algoritmos.model.*;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
@@ -9,12 +11,20 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.noding.FastNodingValidator;
+import org.omg.CORBA.PUBLIC_MEMBER;
+
+import javafx.scene.control.Label;
+
+import org.javatuples.LabelValue;
+import org.javatuples.Triplet;
 import org.locationtech.jts.algorithm.locate.SimplePointInAreaLocator;
 
 public class PrimeraSolucion{
 
     public static List<List<Pedido>> listaPedidosPorZona = new ArrayList<>(); //9 zonas de reparto, por defecto.
     public static List<List<Oficina>> listaOficinasXZona = new ArrayList<>(); 
+    public static List<Long> tiempoDeSalidasZona = new ArrayList<>();
+    
                 //Maxima distancia entre zonas para generar una zona de reparto
                 //coordenadas centricas para cada una de estas zonas
     public static List<Geometry> listaZonas = new ArrayList<>();
@@ -226,25 +236,33 @@ public class PrimeraSolucion{
         return listaPedidosXZona;
     }
 
-    /*Ordenamiento de prioridades de pedidos según tiempo, distancia, etc*/
+    /*7. Ordenamiento de prioridades de pedidos según tiempo, distancia, etc*/
 
 
     public void simulatedAnnealing(){
 
+    /*
+        Función que determinará el orden de las oficinas en base a 
+            1. Tiempo de entrega pedidos
+            2. Distancia (recorrido más corto posible)
+    */ 
+
         for (int i = 0; i < listaZonas.size(); i++){
-/*
-            SimulatedAnnealing sa = new SimulatedAnnealing(listaOficinasXZona.get(index));
+            long tiempoSalida = tiempoMaximoRegistroPedidos(listaPedidosPorZona.get(i));
+            List<Triplet<String, Long, Integer>> listaTiempos = tiempoMaximoPedidos(listaPedidosPorZona.get(i), listaOficinasXZona.get(i));
+            listaOficinasXZona.get(i).sort(new OficinasComparator(listaTiempos, false));
+            SimulatedAnnealing sa = new SimulatedAnnealing(listaOficinasXZona.get(i), listaTiempos, tiempoSalida);
             sa.simulate();
-            System.out.println("Best Solution: "  + sa.getBest().getDistance());
-            System.out.println(sa.getBest());        
-*/
+            //System.out.println("Best Solution: "  + sa.getBest().getDistance());
+            //System.out.println(sa.getBest());        
+
         }
 
 
     }
 
 
-
+/*FUNCIONES AUXILIARES*/
     public static double areaPoligono()
     {
         // Initialize area
@@ -312,4 +330,44 @@ public class PrimeraSolucion{
 
         return listaTemp;
     }
+
+    public static List<Triplet<String, Long, Integer>> tiempoMaximoPedidos(List<Pedido> pedidos, List<Oficina> oficinas){
+        
+        List<Triplet<String, Long, Integer>> listaTiempos = new ArrayList<>(); //String: CodOficina, Long: tiempo promedio en milisegundos, integer: num Pedidos)
+        
+        
+        for (Oficina o : oficinas){
+            long tiempo = 9 * (long)10e13; //en milisegundos
+            int numeroPedidos = 0;
+            for (Pedido p : pedidos){
+                if (p.getOficina().getCodigo() == o.getCodigo()){
+                    numeroPedidos++;
+                    if (tiempo > p.getFechaHoraLimite().getTime())
+                        tiempo = p.getFechaHoraLimite().getTime();
+                }
+
+            }    
+            Triplet<String, Long, Integer> tiemposOficina = new Triplet<>(o.getCodigo(), tiempo, numeroPedidos);
+            listaTiempos.add(tiemposOficina);
+        }
+
+
+        listaTiempos.sort(new TiemposOficinaComparator());
+        //Collections.sort(oficinas, Comparator.comparing(item -> listaTiempos.indexOf(item)));
+
+        return listaTiempos;
+
+    }
+
+    public static long tiempoMaximoRegistroPedidos(List<Pedido> pedidos){
+            long tiempo = 0;
+            for (Pedido p :pedidos){
+                if (tiempo < p.getFechaHoraPedido().getTime()){
+                    tiempo = p.getFechaHoraPedido().getTime();
+                }
+            }
+
+            return tiempo;
+    }
+    
 }

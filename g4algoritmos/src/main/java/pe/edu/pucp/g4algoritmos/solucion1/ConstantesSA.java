@@ -19,5 +19,8 @@ public class ConstantesSA{
     */ 
     public static final double COOLING_RATE = 0.02; //Rate of decrease of temperature
 
+    /*CONSTANTES DEL PROBLEMA EN GENERAL*/ 
 
+    public static final double PROPORCION_COSTO_TIEMPO_PEDIDOS = 1; //Rate of decrease of temperature
+    public static final double MILI_HORAS = 3.6e-6; //Rate of decrease of temperature
 }

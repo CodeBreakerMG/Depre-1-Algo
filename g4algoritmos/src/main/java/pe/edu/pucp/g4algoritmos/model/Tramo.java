@@ -53,7 +53,7 @@ public class Tramo {
     }
 
     public double getCosto(){
-        return pesoTiempo;
+        return pesoTiempo; //En horas
     }
 
     public long getId() {
