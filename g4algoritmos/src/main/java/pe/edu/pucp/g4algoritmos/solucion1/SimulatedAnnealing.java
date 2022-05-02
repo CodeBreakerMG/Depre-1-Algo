@@ -88,9 +88,5 @@ public class SimulatedAnnealing {
         return bestState;
     }
 
-    public List<Oficina> getBestOficinas(){
-        
-        List
-    }
 
 }
