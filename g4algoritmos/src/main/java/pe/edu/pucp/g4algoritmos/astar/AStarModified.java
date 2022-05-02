@@ -8,6 +8,7 @@ import java.util.PriorityQueue;
 import java.util.Set;
 
 import pe.edu.pucp.g4algoritmos.model.Mapa;
+import pe.edu.pucp.g4algoritmos.model.Tramo;
 
 
 public class AStarModified {
@@ -136,6 +137,23 @@ public class AStarModified {
         System.out.print(path);
     }
 
+    public List<Tramo> getTramosRecorrer(){
+
+        /*
+        Funcion que devuelve los tramos a recorrer desde la Ciudad inicio hasta final. 
+        Debe correrse el Astar primer (astar.run())
+        */
+        List<VertexOficina> path = new ArrayList<>();
+        List<Tramo> tramos = new ArrayList<>();
+        for (VertexOficina VertexOficina = destination; VertexOficina != null; VertexOficina = VertexOficina.getParent()){
+            Mapa.getTramoByOficinas(VertexOficina.getOficina().getCodigo(), VertexOficina.getParent().getOficina().getCodigo());
+            path.add(VertexOficina);
+        }
+
+        Collections.reverse(tramos);
+        return tramos;
+    }
+    
 
 }
 

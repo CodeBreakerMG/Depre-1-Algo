@@ -23,7 +23,7 @@ public class Pedido {
 
 
     //Para carga con archivo txt
-    public Pedido(String codigo,  int cantidadTotal, Date fechaHoraPedido, Date fechaHoraLimite, String codOficina) {
+    public Pedido(String codigo,  int cantidadTotal, Date fechaHoraPedido, Date fechaHoraLimite, String codOficina, String codCliente) {
         this.codigo = codigo;
         this.cantidadTotal = cantidadTotal;
         this.fechaHoraPedido = fechaHoraPedido;

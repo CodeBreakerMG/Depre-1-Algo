@@ -114,6 +114,7 @@ public class Mapa {
 
     }
 
+
     public static int[] calcularTipoCamionesPorAlmacen(Oficina almacen){
 
         

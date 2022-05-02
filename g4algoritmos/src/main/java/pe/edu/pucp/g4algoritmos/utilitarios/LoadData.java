@@ -167,7 +167,8 @@ public class LoadData {
                     Integer.valueOf(linea_pedido[4]),                       // cantidad
                     fecha_hora_pedido,                                      // fecha y hora de pedido
                     new Date(),                                             // fecha límite (temporal)
-                    linea_pedido[3]                                         // código de oficina
+                    linea_pedido[3],                                         // código de oficina
+                    linea_pedido[5]                                         //código del cliente
                     );
 
                 try {
