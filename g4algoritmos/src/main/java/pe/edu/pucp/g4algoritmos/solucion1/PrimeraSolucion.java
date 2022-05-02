@@ -43,8 +43,11 @@ public class PrimeraSolucion{
         poligonPedidos = crearPoligono();
         listaCamiones = seleccionarCamiones();
         listaZonas = generarZonasReparto();
+
+        
+        listaPedidosPorZona = asignarPedidosPorZona();
+
         //Lo demas se hara con Simulated Annealing
-        //listaPedidosPorZona = asignarPedidosPorZona();
         //ordenarPedidos();
         //planesDeTransporte = asignarPedidosCamiones();
 
@@ -196,6 +199,51 @@ public class PrimeraSolucion{
         List<Geometry> listZonas = split(poligonPedidos);
         return listZonas;
     }
+
+  
+    /*6. Asignar pedidos por zona Zonas de Reparto*/ 
+    public List<List<Pedido>> asignarPedidosPorZona(){
+
+        List<List<Pedido>> listaPedidosXZona = new ArrayList<>(); 
+        
+        //listaOficinasXZona
+
+        for (Geometry zona : listaZonas ){
+            List<Pedido> pedidosZona = new ArrayList<>();
+            List<Oficina> oficinasZona = new ArrayList<>();
+            for (Pedido pedido : listaPedidos){
+                Coordinate coordPedido = new Coordinate(pedido.getOficina().getCoordX(), pedido.getOficina().getCoordY());    
+                if (SimplePointInAreaLocator.isContained(coordPedido, zona)){
+                    pedidosZona.add(pedido);   
+                    if (oficinasZona.contains(pedido.getOficina()) == false )
+                        oficinasZona.add(pedido.getOficina());
+                }
+            }    
+            listaPedidosXZona.add(pedidosZona);
+            listaOficinasXZona.add(oficinasZona);
+        }
+
+        return listaPedidosXZona;
+    }
+
+    /*Ordenamiento de prioridades de pedidos según tiempo, distancia, etc*/
+
+
+    public void simulatedAnnealing(){
+
+        for (int i = 0; i < listaZonas.size(); i++){
+/*
+            SimulatedAnnealing sa = new SimulatedAnnealing(listaOficinasXZona.get(index));
+            sa.simulate();
+            System.out.println("Best Solution: "  + sa.getBest().getDistance());
+            System.out.println(sa.getBest());        
+*/
+        }
+
+
+    }
+
+
 
     public static double areaPoligono()
     {

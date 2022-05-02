@@ -3,89 +3,158 @@ package pe.edu.pucp.g4algoritmos.solucion1;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
+ 
 import pe.edu.pucp.g4algoritmos.model.Oficina;
+import pe.edu.pucp.g4algoritmos.model.Tramo;
 
 public class SingleTour {
     
-    private List<Oficina> tour;
-    private int distance; //summ of the path
+    private List<Oficina> ciudadesPedido;
+    private List<Tramo> tramosARecorrer;
+    private double costo = 0;; //summ of the path
 
-    public SingleTour(){
-        tour = new ArrayList<>();
-        //for (int i = 0; i < Repository.getNumberOfCities(); ++i)
-        //    tour.add(null);
+    public SingleTour(RepositorySA repositorio){
+        ciudadesPedido = new ArrayList<>();
+        for (int i = 0; i < repositorio.getNumberOfOficinas(); ++i)
+          ciudadesPedido.add(null);
+        tramosARecorrer = getTramos();
+        costo = calcularCosto();
+
     }
 
     public SingleTour(List<Oficina> cities){
-        tour = new ArrayList<>();
+        ciudadesPedido = new ArrayList<>();
         for (Oficina Oficina : cities)
-            tour.add(Oficina);
+            ciudadesPedido.add(Oficina);
+        tramosARecorrer = getTramos();
+        costo = calcularCosto();
     }
 
-    public double getDistance(){
-        if (distance == 0) {
-            int tourDistance = 0;
+    /*
+    public double getCost(){
 
-            for (int OficinaIndex = 0; OficinaIndex < tour.size(); ++OficinaIndex){
-                Oficina fromOficina = tour.get(OficinaIndex);
+        AStarModified search;
+        //new AStarModified(new VertexOficina(ruta.getListaOficinas().get(i)) , new VertexOficina(ruta.getListaOficinas().get(i+1)));
+        //search.run();
+        //List<Tramo> tramos = new ArrayList<>();
+                //tramos = search.printSolutionPath(); Se debería obtener la lista de tramos desde la primera ciudad a la segunda
+        //ruta.addTramos(tramos);
+  
+        
+        if (cost == 0) {
+            int ciudadesPedidocost = 0;
+
+            for (int OficinaIndex = 0; OficinaIndex < ciudadesPedido.size(); ++OficinaIndex){
+                Oficina fromOficina = ciudadesPedido.get(OficinaIndex);
                 Oficina destinationOficina = null;
 
-                if(OficinaIndex + 1 < tour.size())
-                    destinationOficina = tour.get(OficinaIndex + 1);
+                if(OficinaIndex + 1 < ciudadesPedido.size())
+                    destinationOficina = ciudadesPedido.get(OficinaIndex + 1);
                 else
-                    destinationOficina = tour.get(0);
+                    destinationOficina = ciudadesPedido.get(0);
 
-                //tourDistance += fromOficina.distanceTo(destinationOficina);
+                ciudadesPedidocost += fromOficina.costTo(destinationOficina);
 
             }
-            distance = tourDistance;
+            cost = ciudadesPedidocost;
         }
-        return distance;
+        return cost;
+    }
+*/
+
+    private List<Tramo> getTramos() {
+        
+        
+        //new AStarModified(new VertexOficina(ruta.getListaOficinas().get(i)) , new VertexOficina(ruta.getListaOficinas().get(i+1)));
+        //search.run();
+        //List<Tramo> tramos = new ArrayList<>();
+                //tramos = search.printSolutionPath(); Se debería obtener la lista de tramos desde la primera ciudad a la segunda
+        //ruta.addTramos(tramos);
+        List<Tramo> tramos = new ArrayList<>();
+               
+
+        for (int OficinaIndex = 0; OficinaIndex < ciudadesPedido.size(); ++OficinaIndex){
+            Oficina fromOficina = ciudadesPedido.get(OficinaIndex);
+            Oficina destinationOficina = null;
+
+            if(OficinaIndex + 1 < ciudadesPedido.size())
+                destinationOficina = ciudadesPedido.get(OficinaIndex + 1);
+            else
+                destinationOficina = ciudadesPedido.get(0);
+
+            tramos.addAll(fromOficina.recorridoHasta(destinationOficina));
+
+        }
+            
+        
+        return tramos;
     }
 
+    private double calcularCosto(){
+        double cost = 0.0;
 
-    public void generateIndividual() {
-        /*Function to generate a random individual (random tour)*/
+        for (Tramo tramo : tramosARecorrer)
+            cost += tramo.getCosto();
+
+        return cost;
+    }
+
+    public void generateIndividual(RepositorySA repositorio) {
+        /*Function to generate a random individual (random ciudadesPedido)*/
         //This is how we generate the hamiltonian cycle
         
-        //for (int OficinaIndex=0; OficinaIndex<Repository.getNumberOfCities(); ++OficinaIndex)
-        //    setOficina(OficinaIndex, Repository.getOficina(OficinaIndex));
+        for (int OficinaIndex=0; OficinaIndex<repositorio.getNumberOfOficinas(); ++OficinaIndex)
+            setOficina(OficinaIndex, repositorio.getOficina(OficinaIndex));
 
         //The order is randomized
-        Collections.shuffle(tour);
+        Collections.shuffle(ciudadesPedido);
     }
 
+    public List<Oficina> getciudadesPedido() {
+        return ciudadesPedido;
+    }
+
+    public void setciudadesPedido(List<Oficina> ciudadesPedido) {
+        this.ciudadesPedido = ciudadesPedido;
+    }
+
+    
     public List<Oficina> getTour() {
-        return tour;
+        return ciudadesPedido;
     }
 
-    public void setTour(List<Oficina> tour) {
-        this.tour = tour;
+    public void setTour(List<Oficina> ciudadesPedido) {
+        this.ciudadesPedido = ciudadesPedido;
     }
 
 
-    public void setDistance(int distance) {
-        this.distance = distance;
+
+
+    public void setCost(int cost) {
+        this.costo = cost;
+    }
+
+    public double getCosto(){
+        return this.costo;
     }
 
 
     public void setOficina(int index, Oficina Oficina){
-        tour.set(index, Oficina);
+        ciudadesPedido.set(index, Oficina);
     }
 
     public Oficina getOficina(int index){
-        return tour.get(index);
+        return ciudadesPedido.get(index);
     }
 
     public int getTourSize(){
-        return tour.size();
+        return ciudadesPedido.size();
     }
 
     @Override
     public String toString() {
         String s = "";
-        for (Oficina Oficina : tour){
+        for (Oficina Oficina : ciudadesPedido){
             s += Oficina.toString() + " - ";
         }
 

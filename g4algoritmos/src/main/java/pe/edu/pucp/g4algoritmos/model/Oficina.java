@@ -1,5 +1,13 @@
 package pe.edu.pucp.g4algoritmos.model;
 
+import java.util.ArrayList;
+import java.util.List;
+import org.javatuples.LabelValue;
+
+
+import pe.edu.pucp.g4algoritmos.astar.AStarModified;
+import pe.edu.pucp.g4algoritmos.astar.VertexOficina;
+
 /*
 ALMACENES PRINCIPALES:
 
@@ -124,6 +132,26 @@ public class Oficina {
 
     public void setEsAlmacen(int estado) {
         this.estado = estado;
+    }
+
+    public List<Tramo> recorridoHasta(Oficina destino){
+        
+        //Devuelve los tramos a recorrer
+        //LabelValue<Double,List<Tramo>> listaYCosto = new LabelValue<Double,List<Tramo>>(label, value)
+        List<Tramo> tramos;
+        AStarModified Astar = new AStarModified(new VertexOficina(this) , new VertexOficina(destino));
+        Astar.run();
+        tramos = Astar.getTramosRecorrer();
+
+        /*
+        double costo = 0;
+
+        for (Tramo tramo : tramos)
+            costo += tramo.getCosto();
+
+        */
+        return tramos;
+        
     }
     
 

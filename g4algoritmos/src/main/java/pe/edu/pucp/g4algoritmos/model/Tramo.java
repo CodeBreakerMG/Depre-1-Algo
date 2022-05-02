@@ -52,6 +52,10 @@ public class Tramo {
 
     }
 
+    public double getCosto(){
+        return pesoTiempo;
+    }
+
     public long getId() {
         return id;
     }
