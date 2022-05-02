@@ -29,9 +29,9 @@ public class AStarMain {
                            System.getProperty("user.dir")+sep+"data"+sep+"inf226.ventas202204.txt",
                            System.getProperty("user.dir")+sep+"data"+sep+"inf226.ventas202205.txt");
         
-        //System.out.println("Cantidad de oficinas: " + (Mapa.listaOficinas.size() + Mapa.listaAlmacenes.size()));
-        //System.out.println("Cantidad de tramos: " + Mapa.listaTramos.size());
-        //System.out.println("Cantidad de pedidos:" + Mapa.listaPedidos.size());
+        //System.out.println(String.format("Cantidad de oficinas: %4d", Mapa.listaOficinas.size() + Mapa.listaAlmacenes.size()));
+        //System.out.println(String.format("Cantidad de tramos:   %4d", Mapa.listaTramos.size()));
+        //System.out.println(String.format("Cantidad de pedidos:  %4d", Mapa.listaPedidos.size()));
 
         Node n1 = new Node("A",0,0);
         Node n2 = new Node("B",10,20);
