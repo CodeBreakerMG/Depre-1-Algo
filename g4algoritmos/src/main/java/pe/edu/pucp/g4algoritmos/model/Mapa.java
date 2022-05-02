@@ -208,4 +208,17 @@ public class Mapa {
         listaAlmacenes.addAll(lista_total);
         listaAlmacenes.removeIf(x -> !x.EsAlmacen());
     }
+
+    public static void cargarTramos(String ruta) {
+        listaTramos.addAll(LoadData.leerTramos(ruta));
+    }
+
+    public static void cargarPedidos(String... rutas) {
+        for (String ruta : rutas) {
+            List<Pedido> lista_ped = LoadData.leerPedidos(ruta);
+            if(lista_ped != null) {
+                listaPedidos.addAll(lista_ped);
+            }
+        }
+    }
 }

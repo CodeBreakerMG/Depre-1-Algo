@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 import pe.edu.pucp.g4algoritmos.model.Mapa;
 import pe.edu.pucp.g4algoritmos.model.Oficina;
 import pe.edu.pucp.g4algoritmos.model.Pedido;
+import pe.edu.pucp.g4algoritmos.model.Tramo;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -121,9 +122,9 @@ public class LoadData {
     public static List<Pedido> leerPedidos(String ruta) {
         // Verificación de haber cargado el archivo de oficinas previamente
         if(Mapa.listaAlmacenes.size() == 0 && Mapa.listaOficinas.size() == 0){
-            System.out.println("Debe cargar los datos del archivo de oficinas antes de cargar los pedidos.");
+            System.out.println("Debe cargar los datos del archivo de oficinas al Mapa antes de cargar los pedidos.");
             JOptionPane.showMessageDialog(null,
-                "Debe cargar los datos del archivo de oficinas antes de cargar los pedidos.",
+                "Debe cargar los datos del archivo de oficinas al Mapa antes de cargar los pedidos.",
                 "Advertencia: Cargar oficinas primero",
                 JOptionPane.WARNING_MESSAGE);
             return null;
@@ -156,6 +157,10 @@ public class LoadData {
                     System.out.println(ex.getMessage());
                 }
 
+                // Si la oficina con el código provisto no existe, se omite la carga del pedido.
+                if(Mapa.getOficinaByCodigo(linea_pedido[3].trim()) == null)
+                    continue;
+
                 // Creación del objeto Pedido
                 Pedido pedido = new Pedido(
                     year_month + String.format("%04d", ++counter),   // codigo será tipo yyyyMM01
@@ -187,5 +192,41 @@ public class LoadData {
         }
 
         return listaPedidos;
+    }
+
+    /* leerTramos(String ruta) retorna una lista de todos los tramos
+       que se encuentran en el archivo de tramos especificado por la ruta */
+    public static List<Tramo> leerTramos(String ruta) {
+        // Verificación de haber cargado el archivo de oficinas previamente
+        if(Mapa.listaAlmacenes.size() == 0 && Mapa.listaOficinas.size() == 0){
+            System.out.println("Debe cargar los datos del archivo de oficinas al Mapa antes de cargar los tramos.");
+            JOptionPane.showMessageDialog(null,
+                "Debe cargar los datos del archivo de oficinas al Mapa antes de cargar los tramos.",
+                "Advertencia: Cargar oficinas primero",
+                JOptionPane.WARNING_MESSAGE);
+            return null;
+        }
+
+        // Lectura de líneas y agregación de oficinas a la lista
+        List<Tramo> listaTramos = new ArrayList<Tramo>();        
+        try {    
+            String line = "";
+            BufferedReader br = new BufferedReader(new FileReader(ruta));
+            
+            while ((line = br.readLine()) != null) {  
+                String[] linea_tramo = line.split("=>");
+                if(Mapa.getOficinaByCodigo(linea_tramo[0].trim()) != null
+                    && Mapa.getOficinaByCodigo(linea_tramo[1].trim()) != null) { 
+                    listaTramos.add(new Tramo(linea_tramo[0].trim(), linea_tramo[1].trim()));
+                }
+            }
+
+            br.close();
+        }
+        catch (IOException ex) {  
+            ex.printStackTrace();  
+        }
+
+        return listaTramos;
     }
 }
