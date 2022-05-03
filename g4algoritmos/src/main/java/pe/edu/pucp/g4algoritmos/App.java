@@ -1,6 +1,6 @@
 package pe.edu.pucp.g4algoritmos;
 
-import pe.edu.pucp.g4algoritmos.astar.AStarMain;
+import pe.edu.pucp.g4algoritmos.solucion1.*;
 import pe.edu.pucp.g4algoritmos.pso.PSOMain;
 
 /*
@@ -17,9 +17,11 @@ public class App
     public static void main( String[] args )
     {
         //Función que llama al A-STAR
-        AStarMain.Main();
+        PrimeraSolucion solucion = new PrimeraSolucion();
+
+        //Primero, cargar la data al maestro MAPA
 
         //Función que llama al PSO:
-        PSOMain.Main();
+        //PSOMain.Main();
     }
 }

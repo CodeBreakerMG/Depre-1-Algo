@@ -1,56 +1,59 @@
 package pe.edu.pucp.g4algoritmos.solucion1;
+
 import pe.edu.pucp.g4algoritmos.model.*;
+
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Polygon;
-import org.locationtech.jts.noding.FastNodingValidator;
-import org.omg.CORBA.PUBLIC_MEMBER;
 
-import javafx.scene.control.Label;
-
-import org.javatuples.LabelValue;
 import org.javatuples.Triplet;
 import org.locationtech.jts.algorithm.locate.SimplePointInAreaLocator;
 
 public class PrimeraSolucion{
 
-    public static List<List<Pedido>> listaPedidosPorZona = new ArrayList<>(); //9 zonas de reparto, por defecto.
-    public static List<List<Oficina>> listaOficinasXZona = new ArrayList<>(); 
+    /*Variables OUTPUT*/ 
+    public static List<List<Pedido>> listaPedidosPorZona = new ArrayList<>(); //Lista de Pedidos por Zona de reparto
+    public static List<List<Oficina>> listaOficinasXZona = new ArrayList<>(); //Lista de Oficinas por zona de reparto
     public static List<Long> tiempoDeSalidasZona = new ArrayList<>();
     
-                //Maxima distancia entre zonas para generar una zona de reparto
-                //coordenadas centricas para cada una de estas zonas
-    public static List<Geometry> listaZonas = new ArrayList<>();
-    
-    public static List<Pedido> listaPedidos = new ArrayList<>(); //Lista inicial de los pedidos
-    public static int cantidadZonasDeReparto = 9;                             //Numero de zonas, 9 por defecto  
-    public static List <Ruta> planesDeTransporte = new ArrayList<>();         //Lista de los planes de transporte
-    public static List<Oficina> listaOficinas = new ArrayList<>();
-    public static List<Camion> listaCamiones = new ArrayList<>();
-    public static double areaMaxima = 0.0;
-    public static Polygon poligonPedidos ;
-    public static GeometryFactory factory = new GeometryFactory();
-    //public static Geometry envelope = polygon.getEnvelope();
-    public static List<Coordinate> coordinates;
-    public static int paquetes;
-    public static Oficina almacen; //Almacen seleccionado
+    public static List<Geometry> listaZonas = new ArrayList<>(); //Lista de Zonas (Formato de Polígono)
 
-    public PrimeraSolucion(){
-        
-    }
+    public static List <Ruta> planesDeTransporte = new ArrayList<>(); //Lista de los planes de transporte o RUTAS por camion
+    
+    /*Variables INPUT*/ 
+    public static List<Pedido> listaPedidos = new ArrayList<>(); //Lista inicial de los pedidos
+    public static List<Oficina> listaOficinas = new ArrayList<>(); //Lista de oficinas que tienen al menos un pedido
+    public static List<Camion> listaCamiones = new ArrayList<>(); //Lista de camiones disponibles de un ALMACEN
+    
+    public static Oficina almacen; //Almacen seleccionado para esta lista de pedidos
+    public static int paquetes; //Cantidad total de paquetes A 
+
+    public static int cantidadZonasDeReparto = 9;                             //Numero de zonas, 9 por defecto  
+    public static Polygon poligonPedidos ; //Polígono que contiene todas las zonas, y a su vez las coordenadas de todos los pedidos
+    public static List<Coordinate> coordinates; //Coordenadas de todas las oficinas.
+    
+    /*Variables Auxiliares*/ 
+
+    public static GeometryFactory factory = new GeometryFactory(); //Variable auxiliar de Geometría. Para generar zonas de reparto
+    
+    public PrimeraSolucion(){}
 
     public void inicializar(){
         
+        /*I. Oficinas de todos los pedido*/
         listaOficinas = contabilizarOficinas();
+
+        /*II: Polígono o área de reparto total (solo incluye oficinas con al menos un pedido*/
         coordinates = generateCoordinatesOficina();
         poligonPedidos = crearPoligono();
+
+
+        
         listaCamiones = seleccionarCamiones();
         listaZonas = generarZonasReparto();
 
@@ -72,30 +75,46 @@ public class PrimeraSolucion{
                 listaOficinas.add(p.getOficina());
             }
         }
-
         return oficinas;
     }
 
     /*2. Determinar los puntos totales de cada oficina*/ 
     public static List<Coordinate> generateCoordinatesOficina(){
-
         List<Coordinate> coordinates = new ArrayList<>();
-                
         for (Oficina oficina : listaOficinas){
             Coordinate coordinate = new Coordinate(oficina.getCoordX(), oficina.getCoordY());
             coordinates.add(coordinate);
         }
-        //Generar polígono
-
-
         return coordinates;
     }
 
 
     /*3. Generar AREA TOTAL DE REPARTO polígono para distribución */ 
     public static Polygon crearPoligono(){
-        //Para arreglar: debe crear un poligono considerando solamente puntos exteriores.
-        Polygon polygon = factory.createPolygon(coordinates.toArray(new Coordinate[0]));
+
+        // El polígono a crear será un rectángulo circunscrito a la
+        // figura formada por las coordenadas de los puntos de la zona
+        
+        double x_max = Double.NEGATIVE_INFINITY;
+        double x_min = Double.POSITIVE_INFINITY;
+        double y_max = Double.NEGATIVE_INFINITY;
+        double y_min = Double.POSITIVE_INFINITY;
+        
+        for(Coordinate c : coordinates) {
+            if(c.getX() > x_max) x_max = c.getX();
+            if(c.getX() < x_min) x_min = c.getX();
+            if(c.getY() > y_max) y_max = c.getY();
+            if(c.getY() < y_min) y_min = c.getY();
+        }
+        
+        Coordinate[] polygon_coordinates = new Coordinate[] {
+            new Coordinate(x_min, y_max),  //  1-----2  //
+            new Coordinate(x_max, y_max),  //  |     |  //
+            new Coordinate(x_max, y_min),  //  |     |  //
+            new Coordinate(x_min, y_min)   //  4-----3  //
+        };
+
+        Polygon polygon = factory.createPolygon(polygon_coordinates);
         return polygon;
     }
 
@@ -315,7 +334,6 @@ public class PrimeraSolucion{
 
         int i;
         List<List<Pedido>> listaTemp = new ArrayList<>();
-
         for(Oficina o : listaOficinas){
             List<Pedido> listPed = new ArrayList<>();
             for(List<Pedido> ped: listaPedidosxZona){
@@ -327,7 +345,6 @@ public class PrimeraSolucion{
             }
             listaTemp.add(listPed);
         }
-
         return listaTemp;
     }
 

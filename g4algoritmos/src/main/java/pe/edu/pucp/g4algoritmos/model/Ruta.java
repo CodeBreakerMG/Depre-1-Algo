@@ -18,6 +18,7 @@ public class Ruta {
     private List<Entrega> listaEntregas = new ArrayList<>();
     private List<Pedido> listaPedidos = new ArrayList<>();
     private List<Tramo>  listaTramos;
+    private List<List<Tramo>>  listaTramosPorOficina;
     private List<Oficina> listaOficinas = new ArrayList<>();
 
     private int tramoActual;  //Indice el cual indica el tramo en el que se encuentra. 
@@ -132,6 +133,14 @@ public class Ruta {
 
     public void addTramos (List<Tramo> tramos){
         this.listaTramos.addAll(tramos);
+    }
+
+    public List<List<Tramo>> getListaTramosPorOficina() {
+        return listaTramosPorOficina;
+    }
+
+    public void setListaTramosPorOficina(List<List<Tramo>> listaTramosPorOficina) {
+        this.listaTramosPorOficina = listaTramosPorOficina;
     }
 
     

@@ -117,7 +117,6 @@ public class Mapa {
 
     public static int[] calcularTipoCamionesPorAlmacen(Oficina almacen){
 
-        
         int[] counter = {0,0,0}; //0: A, 1: B, 
         for (int i = 0; i < listaCamiones.size(); i++){
             if (listaCamiones.get(i).getAlmacen().getCodigo().equals(almacen.getCodigo()))
@@ -130,8 +129,19 @@ public class Mapa {
                     counter[2]++; 
             }
         }
-
         return counter;
+    }
+
+    public static List<Camion> getListaCamionesPorAlmacen(Oficina almacen, char tipoCamion){
+        List<Camion> camiones = new ArrayList<>();
+            for (Camion camion : listaCamiones){
+                if (camion.getAlmacen().getCodigo().equals(almacen.getCodigo()) && 
+                    camion.getTipo().getCodigo() == tipoCamion &&
+                    camion.getEstado() == 1){
+                    camiones.add(camion);
+                }
+            }
+        return camiones;
     }
 
     public static List<Camion> extractListaCamionesPorAlmacen(Oficina almacen, char tipoCamion, int cantidad){
