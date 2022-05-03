@@ -61,6 +61,10 @@ public class Mapa {
         return listaTramos;
     }
 
+    public static List<Pedido> getListaPedidos(){
+        return listaPedidos;
+    }
+
     public static Oficina getOficinaByCodigo(String codigoOficina){
         List<Oficina> listaTotalAlmacenesOficinas = new ArrayList<>(listaOficinas);
         listaTotalAlmacenesOficinas.addAll(listaAlmacenes);
@@ -183,6 +187,10 @@ public class Mapa {
 */
     public void setListaTramos(List<Tramo> listaTramos) {
         this.listaTramos = listaTramos;
+    }
+
+    public static void setListaCamiones(List<Camion> listaCamion){
+        listaCamiones = listaCamion;
     }
 
     public int ejecutarBloqueos(){

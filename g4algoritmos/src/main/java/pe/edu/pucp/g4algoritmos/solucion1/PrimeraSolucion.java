@@ -43,18 +43,23 @@ public class PrimeraSolucion{
     
     public PrimeraSolucion(){}
 
-    public void inicializar(){
+    public void inicializar(List<Pedido> listaPed, Oficina alm){
         
+        //Inputs de la PrimeraSolucion
+        this.listaPedidos = listaPed;
+        this.almacen = alm;
+
         /*I. Oficinas de todos los pedido*/
         listaOficinas = contabilizarOficinas();
-
+        System.out.println(String.format("Cantidad de oficinas:  %4d", listaOficinas.size()));
         /*II: Polígono o área de reparto total (solo incluye oficinas con al menos un pedido*/
         coordinates = generateCoordinatesOficina();
         poligonPedidos = crearPoligono();
 
 
         
-        listaCamiones = seleccionarCamiones();
+        listaCamiones = seleccionarCam();
+        System.out.println(String.format("Cantidad de camiones:  %4d", listaCamiones.size()));
         listaZonas = generarZonasReparto();
 
         
@@ -65,14 +70,16 @@ public class PrimeraSolucion{
         //planesDeTransporte = asignarPedidosCamiones();
 
         //areaMaxima = areaPoligono();
+        simulatedAnnealing();
+        
     }
 
     /*1. Determinar lista de oficinas de los pedidos*/ 
     public static List<Oficina> contabilizarOficinas(){
         List<Oficina> oficinas = new ArrayList<>();
         for (Pedido p : listaPedidos){
-            if(listaOficinas.contains(p.getOficina()) == false) {
-                listaOficinas.add(p.getOficina());
+            if(oficinas.contains(p.getOficina()) == false) {
+                oficinas.add(p.getOficina());
             }
         }
         return oficinas;
@@ -111,7 +118,8 @@ public class PrimeraSolucion{
             new Coordinate(x_min, y_max),  //  1-----2  //
             new Coordinate(x_max, y_max),  //  |     |  //
             new Coordinate(x_max, y_min),  //  |     |  //
-            new Coordinate(x_min, y_min)   //  4-----3  //
+            new Coordinate(x_min, y_min),  //  4-----3  //
+            new Coordinate(x_min, y_max)
         };
 
         Polygon polygon = factory.createPolygon(polygon_coordinates);
@@ -120,6 +128,29 @@ public class PrimeraSolucion{
 
     //Determinar CUANTAS ZONAS DE REPARTO VAMOS A UTILIZAR (Cuantos camiones y qué camiones vamos a utilizar).
     /*4. Determinar lista de camiones a utilizar*/
+    public static List<Camion> seleccionarCam(){
+
+        int [] countCamiones = Mapa.calcularTipoCamionesPorAlmacen(almacen);
+        List<Camion> camiones = new ArrayList<>();
+        int cantidadPaquetes = 0;
+
+        for (Pedido p : listaPedidos)
+            cantidadPaquetes += p.getCantidadTotal();
+        
+        int cantidadCamionesA = (int) Math.round(cantidadPaquetes / 90.0);
+
+        if(cantidadCamionesA < countCamiones[0]){
+            cantidadCamionesA = countCamiones[0] - cantidadCamionesA;
+        }
+        else{
+            cantidadCamionesA = countCamiones[0];
+        }
+
+        if (cantidadCamionesA > 0)
+            camiones.addAll(Mapa.extractListaCamionesPorAlmacen(almacen, 'A', cantidadCamionesA));
+
+        return camiones;
+    }
     public static List<Camion> seleccionarCamiones(){
         
         int [] countCamiones = Mapa.calcularTipoCamionesPorAlmacen(almacen);
