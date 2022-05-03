@@ -227,4 +227,13 @@ public class Mapa {
             }
         }
     }
+
+    public static void cargarBloqueos(String... rutas) {
+        for (String ruta : rutas) {
+            List<Bloqueo> lista_bloq = LoadData.leerBloqueos(ruta);
+            if(lista_bloq != null) {
+                listaBloqueos.addAll(lista_bloq);
+            }
+        }
+    }
 }

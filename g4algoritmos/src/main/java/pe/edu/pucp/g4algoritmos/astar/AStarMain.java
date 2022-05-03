@@ -21,18 +21,6 @@ public class AStarMain {
 
     public static void Main()
     {
-        final String sep = File.separator;
-
-        Mapa.cargarAlmacenesYOficinas(System.getProperty("user.dir")+sep+"data"+sep+"inf226.oficinas.txt");
-        Mapa.cargarTramos(System.getProperty("user.dir")+sep+"data"+sep+"inf226.tramos.v.2.0.txt");
-        Mapa.cargarPedidos(System.getProperty("user.dir")+sep+"data"+sep+"inf226.ventas202203.txt",
-                           System.getProperty("user.dir")+sep+"data"+sep+"inf226.ventas202204.txt",
-                           System.getProperty("user.dir")+sep+"data"+sep+"inf226.ventas202205.txt");
-        
-        //System.out.println(String.format("Cantidad de oficinas: %4d", Mapa.listaOficinas.size() + Mapa.listaAlmacenes.size()));
-        //System.out.println(String.format("Cantidad de tramos:   %4d", Mapa.listaTramos.size()));
-        //System.out.println(String.format("Cantidad de pedidos:  %4d", Mapa.listaPedidos.size()));
-
         Node n1 = new Node("A",0,0);
         Node n2 = new Node("B",10,20);
         Node n3 = new Node("C",20,40);
