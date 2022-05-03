@@ -4,6 +4,7 @@ import pe.edu.pucp.g4algoritmos.model.*;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
@@ -250,17 +251,45 @@ public class PrimeraSolucion{
         return camiones;
     }
 
+
+
     /*5. Generar Zonas de Reparto*/ 
 
     public List<Geometry> generarZonasReparto(){
+    
+        double MAX_DESV_STD = 2.0;
+        double desv_sta = 10.0;
+
+        List<Geometry> listZonas = split(poligonPedidos);
+        List<Integer> listCantidadOficinas = new ArrayList<Integer>(0);
         
+        while (desv_sta > 2.0){
+
+        }
+        
+
         int numeroZonas = listaCamiones.size();
         numeroZonas = 4;
-        List<Geometry> listZonas = split(poligonPedidos);
+        
         return listZonas;
     }
 
-  
+    /*
+    public HashMap<Geometry,Integer> getCostoZonas(List<Geometry> listZonas){
+
+        
+        for (Geometry zona : listaZonas ){
+            Coordinate coordPedido = new Coordinate(pedido.getOficina().getCoordX(), pedido.getOficina().getCoordY());    
+            if (SimplePointInAreaLocator.isContained(coordPedido, zona)){
+                pedidosZona.add(pedido);   
+                if (oficinasZona.contains(pedido.getOficina()) == false )
+                    oficinasZona.add(pedido.getOficina());
+            }
+        }
+        
+    }
+    */
+
     /*6. Asignar pedidos por zona Zonas de Reparto*/ 
     public List<List<Pedido>> asignarPedidosPorZona(){
 
