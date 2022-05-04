@@ -36,9 +36,13 @@ public class SimulatedAnnealing {
             nextState = generateNeighborState(actualState);
 
             //**SI NO CUMPLE CON LOS TIEMPOS LIMITES, NO SE ACEPTA
-            if (nextState.cumpleConEntregas(repository) == false)
+            
+            /*
+            if (nextState.cumpleConEntregas(repository) == false){
+                temp *= (1 - ConstantesSA.COOLING_RATE);
                 continue;
-
+            }
+            */
             double currentEnergy = actualState.getCosto();
             double neighborEnergy = nextState.getCosto();
 

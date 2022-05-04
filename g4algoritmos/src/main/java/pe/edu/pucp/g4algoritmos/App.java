@@ -37,7 +37,11 @@ public class App
 
         //Primero, cargar la data al maestro MAPA
         final String sep = File.separator;
-        Oficina alm = new Oficina(200, "150101", "Lima", "Lima", 'C',-12.04591952,-77.03049615, 1);
+        Mapa.cargarAlmacenesYOficinas(System.getProperty("user.dir")+sep+"data"+sep+"inf226.oficinas.txt");
+       //Mapa.cargarAlmacenesYOficinas(System.getProperty("user.dir")+sep+"data"+sep+"Nueva_Data"+sep+"inf226.oficinasv2.txt");
+
+        Oficina alm = Mapa.getOficinaByCodigo("150101");
+        //Oficina alm = Mapa.getOficinaByCodigo("130101");
         TipoCamion tip = new TipoCamion(1, 'A', 90);
         Camion camion1 = new Camion(1, "A001", tip, 0.0, 0.0, alm);
         Camion camion2 = new Camion(2, "A002", tip, 0.0, 0.0, alm);
@@ -68,20 +72,30 @@ public class App
         listCamiones.add(camion17);listCamiones.add(camion18);listCamiones.add(camion19);listCamiones.add(camion20);
 
         Mapa.setListaCamiones(listCamiones);
-        Mapa.cargarAlmacenesYOficinas(System.getProperty("user.dir")+sep+"data"+sep+"inf226.oficinas.txt");
-        Mapa.cargarTramos(System.getProperty("user.dir")+sep+"data"+sep+"inf226.tramos.v.2.0.txt");
-        Mapa.cargarPedidos(System.getProperty("user.dir")+sep+"data"+sep+"inf226.ventas202203.txt",
-                           System.getProperty("user.dir")+sep+"data"+sep+"inf226.ventas202204.txt",
-                           System.getProperty("user.dir")+sep+"data"+sep+"inf226.ventas202205.txt");
         
+        Mapa.cargarTramos(System.getProperty("user.dir")+sep+"data"+sep+"inf226.tramos.v.2.0.txt");
+        Mapa.cargarPedidos(System.getProperty("user.dir")+sep+"data"+sep+"inf226.ventas202202.txt");
+        
+
+        /*
+        //Pruebas archivos ERICK
+
+        Mapa.setListaCamiones(listCamiones);
+        
+        Mapa.cargarTramos(System.getProperty("user.dir")+sep+"data"+sep+"Nueva_Data"+sep+"inf226.tramos.v.1.0.txt");
+        Mapa.cargarPedidos(System.getProperty("user.dir")+sep+"data"+sep+"Nueva_Data"+sep+"inf226.ventas202203.txt");
+
+        */
+        
+        
+
+        Mapa.setTramosToOficinas();
+        Mapa.setTramosToAlmacenes();
+
         System.out.println(String.format("Cantidad de oficinas: %4d", Mapa.listaOficinas.size() + Mapa.listaAlmacenes.size()));
         System.out.println(String.format("Cantidad de tramos:   %4d", Mapa.listaTramos.size()));
         System.out.println(String.format("Cantidad de pedidos:  %4d", Mapa.listaPedidos.size()));
         System.out.println(String.format("Cantidad de camiones:  %4d", Mapa.listaCamiones.size()));
-
-
-        Mapa.setTramosToOficinas();
-        Mapa.setTramosToAlmacenes();
 
         solucion.inicializar(Mapa.getListaPedidos(), alm);
 
