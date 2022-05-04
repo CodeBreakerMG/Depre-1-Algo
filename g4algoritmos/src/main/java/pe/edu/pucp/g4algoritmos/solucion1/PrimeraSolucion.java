@@ -1,15 +1,20 @@
 package pe.edu.pucp.g4algoritmos.solucion1;
 
 import pe.edu.pucp.g4algoritmos.model.*;
+import pe.edu.pucp.g4algoritmos.utilitarios.Stats;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 
 import org.javatuples.Triplet;
@@ -257,21 +262,63 @@ public class PrimeraSolucion{
 
     public List<Geometry> generarZonasReparto(){
     
-        double MAX_DESV_STD = 2.0;
-        double desv_sta = 10.0;
+        final double MAX_DESV_STD = 2.0;
+        GeometryFactory gf = new GeometryFactory();
 
-        List<Geometry> listZonas = split(poligonPedidos);
-        List<Integer> listCantidadOficinas = new ArrayList<Integer>(0);
-        
-        while (desv_sta > 2.0){
-
+        // Creación de HashMap con zonas y cantidad de oficinas = 0
+        List<Polygon> listZonas = splitRectangle(poligonPedidos);
+        HashMap<Polygon, Integer> mapaZonasCantOficinas = new HashMap<>();
+        for(Polygon zona : listZonas){
+            mapaZonasCantOficinas.put(zona, 0);
         }
-        
 
-        int numeroZonas = listaCamiones.size();
-        numeroZonas = 4;
-        
-        return listZonas;
+        // Determinación de cantidad de oficinas        
+        for(Oficina ofic : listaOficinas){
+            for(Polygon zona : mapaZonasCantOficinas.keySet()){
+                Point oficPoint = gf.createPoint(new Coordinate(ofic.getCoordX(), ofic.getCoordY()));
+                if(zona.contains(oficPoint)){
+                    mapaZonasCantOficinas.put(zona, mapaZonasCantOficinas.get(zona)+1);
+                    break;
+                }
+            }
+        }
+
+
+        // Se tiene un HashMap de zonas con su cantidad de oficinas respectivas.        
+        // Itera hasta tener una desviación estándar menor o igual a MAX_DESV_STD
+        while (Stats.desvest(mapaZonasCantOficinas.values()) > MAX_DESV_STD){
+            // Hallar zona con mayor cantidad de oficinas a las cuales llegar
+            Polygon zonaMaxCantOficinas = Collections.max(mapaZonasCantOficinas.entrySet(), HashMap.Entry.comparingByValue()).getKey();
+            
+            // Dividir la oficina con mayor cantidad de oficinas
+            List<Polygon> nuevaDivision = splitRectangle(zonaMaxCantOficinas);
+            
+            // Creación de HashMap con subzonas y cantidad de oficinas = 0
+            HashMap<Polygon, Integer> nuevaDivCantOficMap = new HashMap<>();
+            for(Polygon zona : nuevaDivision){
+                nuevaDivCantOficMap.put(zona, 0);
+            }
+            // Determinación de la cantidad de oficinas en cada subzona
+            for(Oficina ofic : listaOficinas){
+                for(Polygon zona : nuevaDivCantOficMap.keySet()){
+                    Point oficPoint = gf.createPoint(new Coordinate(ofic.getCoordX(), ofic.getCoordY()));
+                    if(zona.contains(oficPoint)){
+                        nuevaDivCantOficMap.put(zona, nuevaDivCantOficMap.get(zona)+1);
+                        break;
+                    }
+                }
+            }
+
+            // Quitar zona e insertar subzonas con sus respectivas cantidades
+            mapaZonasCantOficinas.remove(zonaMaxCantOficinas);
+            mapaZonasCantOficinas.putAll(nuevaDivCantOficMap);
+        }
+        // Generación de lista de zonas de reparto
+        List<Geometry> listaSubZonas = new ArrayList<>();
+        for(Polygon p : mapaZonasCantOficinas.keySet()){
+            listaSubZonas.add(p.getEnvelope());
+        }
+        return listaSubZonas;
     }
 
     /*
@@ -388,6 +435,61 @@ public class PrimeraSolucion{
         ret.add(ur);
     
         return ret;
+    }
+
+    public List<Polygon> splitRectangle(Polygon p){
+        if(!p.isRectangle()) return null;
+
+        double x_max = Double.NEGATIVE_INFINITY;
+        double x_min = Double.POSITIVE_INFINITY;
+        double y_max = Double.NEGATIVE_INFINITY;
+        double y_min = Double.POSITIVE_INFINITY;
+        
+        for(Coordinate c : p.getCoordinates()) {
+            if(c.getX() > x_max) x_max = c.getX();
+            if(c.getX() < x_min) x_min = c.getX();
+            if(c.getY() > y_max) y_max = c.getY();
+            if(c.getY() < y_min) y_min = c.getY();
+        }
+
+        double x_med = (x_max + x_min) / 2;
+        double y_med = (y_max + y_min) / 2;
+
+        // Creación de coordenadas de los puntos //
+        // 1---2---3 //
+        // |   |   | //
+        // 4---5---6 //
+        // |   |   | //
+        // 7---8---9 //
+        Coordinate c1 = new Coordinate(x_min, y_max);
+        Coordinate c2 = new Coordinate(x_med, y_max);
+        Coordinate c3 = new Coordinate(x_max, y_max);
+        Coordinate c4 = new Coordinate(x_min, y_med);
+        Coordinate c5 = new Coordinate(x_med, y_med);
+        Coordinate c6 = new Coordinate(x_max, y_med);
+        Coordinate c7 = new Coordinate(x_min, y_min);
+        Coordinate c8 = new Coordinate(x_med, y_min);
+        Coordinate c9 = new Coordinate(x_max, y_min);
+
+        // Creación de subzona 1
+        Coordinate[] p1_coordinates = new Coordinate[] {c1,c2,c5,c4,c1};
+        Polygon p1 = factory.createPolygon(p1_coordinates);
+
+        // Creación de subzona 2
+        Coordinate[] p2_coordinates = new Coordinate[] {c2,c3,c6,c5,c2};
+        Polygon p2 = factory.createPolygon(p2_coordinates);
+
+        // Creación de subzona 3
+        Coordinate[] p3_coordinates = new Coordinate[] {c5,c6,c9,c8,c5};
+        Polygon p3 = factory.createPolygon(p3_coordinates);
+
+        // Creación de subzona 4
+        Coordinate[] p4_coordinates = new Coordinate[] {c4,c5,c8,c7,c4};
+        Polygon p4 = factory.createPolygon(p4_coordinates);
+
+        // Retorno de lista de subzonas
+        List<Polygon> listaSubZonas = Arrays.asList(p1,p2,p3,p4);
+        return listaSubZonas;        
     }
 
     public static List<List<Pedido>> asignarPedidosAOficina(List<List<Pedido>> listaPedidosxZona, List<Oficina> listaOficinas){
