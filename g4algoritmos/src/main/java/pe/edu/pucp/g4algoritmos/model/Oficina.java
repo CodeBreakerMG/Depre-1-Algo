@@ -261,7 +261,7 @@ public class Oficina {
 
     @Override
     public String toString() {
-        return "C: " + provincia  + "->";
+        return "C: " + provincia  + "-> ";
     }
 
     
