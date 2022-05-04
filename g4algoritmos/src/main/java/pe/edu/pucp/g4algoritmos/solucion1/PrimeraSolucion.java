@@ -46,6 +46,8 @@ public class PrimeraSolucion{
 
     public void inicializar(List<Pedido> listaPed, Oficina alm){
         
+        Mapa.inicializarGrafoAstar();
+
         //Inputs de la PrimeraSolucion
         this.listaPedidos = listaPed;
         this.almacen = alm;
@@ -263,6 +265,7 @@ public class PrimeraSolucion{
         List<Geometry> listZonas = split(poligonPedidos);
         List<Integer> listCantidadOficinas = new ArrayList<Integer>(0);
         
+        /*
         while (desv_sta > 2.0){
 
         }
@@ -270,7 +273,7 @@ public class PrimeraSolucion{
 
         int numeroZonas = listaCamiones.size();
         numeroZonas = 4;
-        
+        */
         return listZonas;
     }
 

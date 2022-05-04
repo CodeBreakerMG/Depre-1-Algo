@@ -8,6 +8,7 @@ import java.util.PriorityQueue;
 import java.util.Set;
 
 import pe.edu.pucp.g4algoritmos.model.Mapa;
+import pe.edu.pucp.g4algoritmos.model.Oficina;
 import pe.edu.pucp.g4algoritmos.model.Tramo;
 
 
@@ -17,34 +18,46 @@ public class AStarModified {
     private VertexOficina destination; //Destination Vertex;
     private Set<VertexOficina> explored; //Set of explored VertexOficinas.
     private PriorityQueue<VertexOficina> queue; //A queue that enqueues according to values.
-    private GrafoAStar grafo = new GrafoAStar();
+    private GrafoAStar grafoAStar  ;
    
     public AStarModified(VertexOficina source, VertexOficina destination) {
+        grafoAStar = new GrafoAStar(1);
         this.source = source;
         this.destination = destination;
         this.explored = new HashSet<>();
         this.queue = new PriorityQueue<>(new VertexComparator()); //Necessary when using java priority queues, needs to compare with somethin
     }
 
-    public void run() {
+    public AStarModified(Oficina oficinaInicio, Oficina oficinaDestino, GrafoAStar gAstar) {
+        this.grafoAStar = gAstar;
+        gAstar.resetCosts();
+        this.source = grafoAStar.getVertexByCodigoOficina(oficinaInicio.getCodigo());
+        this.destination = grafoAStar.getVertexByCodigoOficina(oficinaDestino.getCodigo());
+        this.explored = new HashSet<>();
+        this.queue = new PriorityQueue<>(new VertexComparator()); //Necessary when using java priority queues, needs to compare with somethin
         
+    }
+
+    public void run() {
+        int counter = 0;
         queue.add(source);
         while(!queue.isEmpty()) {
-
+            counter++;
             //We always get the VertexOficina with the lowest f(x) value possile
             VertexOficina current = queue.poll(); 
             explored.add(current);
 
             //We have found the destination VertexOficina
-            if (current == destination)
+            if (current.getOficina().getCodigo() == destination.getOficina().getCodigo())
                 break;
+
 
             //Looping through adjacent VertexOficinas.
             for (Arista arista: current.getListaAristas()){
                 
                 //Aqui verificar si el tramo/arista esta bloqueado
-                if (arista.getTramo().estaBloqueado())
-                    continue;
+                //if (arista.getTramo().estaBloqueado())
+                 //   continue;
 
                 VertexOficina child = arista.getTarget();
                 
@@ -60,10 +73,16 @@ public class AStarModified {
                 else if(!queue.contains(child) || tempF < child.getF()) {
                     
                     // Tracking the shortest path (predecessor)
+                    try{
                     child.setParent(current);
                     child.setG(tempG);
                     child.setF(tempF);
 
+                    }
+                    catch(Exception ex){
+                        System.out.println(counter);
+                        System.out.println(ex.getMessage());
+                    }
                     //If the child has already been inserted, it must be updated
                     if (queue.contains(child))
                         queue.remove(child);
@@ -71,6 +90,8 @@ public class AStarModified {
                 }
             }
         }
+        System.out.println(explored.size());
+        System.out.println("Counter: " + counter);
     }
 
     private double calcularH(VertexOficina current, VertexOficina destination){
@@ -146,7 +167,8 @@ public class AStarModified {
         List<VertexOficina> path = new ArrayList<>();
         List<Tramo> tramos = new ArrayList<>();
         for (VertexOficina VertexOficina = destination; VertexOficina != null; VertexOficina = VertexOficina.getParent()){
-            Mapa.getTramoByOficinas(VertexOficina.getOficina().getCodigo(), VertexOficina.getParent().getOficina().getCodigo());
+            if (VertexOficina.getParent() != null)
+                tramos.add(Mapa.getTramoByOficinas(VertexOficina.getOficina().getCodigo(), VertexOficina.getParent().getOficina().getCodigo()));
             path.add(VertexOficina);
         }
 

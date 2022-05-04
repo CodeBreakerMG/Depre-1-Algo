@@ -130,8 +130,8 @@ public class SingleTour {
         /*Function to generate a random individual (random ciudadesPedido)*/
         //This is how we generate the hamiltonian cycle
         
-        for (int OficinaIndex=0; OficinaIndex<repositorio.getNumberOfOficinas(); ++OficinaIndex)
-            setOficina(OficinaIndex, repositorio.getOficina(OficinaIndex));
+        for (int index = 0; index < repositorio.getNumberOfOficinas(); ++index)
+            setOficina(index, repositorio.getOficina(index));
 
         //The order is randomized
         Collections.shuffle(ciudadesPedido);
