@@ -29,6 +29,8 @@ public class App
     public static void main( String[] args )
     {
 
+       // AStarMain.Main();
+
 
         //Función que llama a la primera solucion
         PrimeraSolucion solucion = new PrimeraSolucion();
@@ -76,6 +78,10 @@ public class App
         System.out.println(String.format("Cantidad de tramos:   %4d", Mapa.listaTramos.size()));
         System.out.println(String.format("Cantidad de pedidos:  %4d", Mapa.listaPedidos.size()));
         System.out.println(String.format("Cantidad de camiones:  %4d", Mapa.listaCamiones.size()));
+
+
+        Mapa.setTramosToOficinas();
+        Mapa.setTramosToAlmacenes();
 
         solucion.inicializar(Mapa.getListaPedidos(), alm);
 

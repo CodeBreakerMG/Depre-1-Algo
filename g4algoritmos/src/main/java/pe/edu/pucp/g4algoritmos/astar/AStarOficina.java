@@ -11,31 +11,19 @@ import pe.edu.pucp.g4algoritmos.model.Mapa;
 import pe.edu.pucp.g4algoritmos.model.Oficina;
 import pe.edu.pucp.g4algoritmos.model.Tramo;
 
-
-public class AStarModified {
-
-    private VertexOficina source; //Starting Vertex
-    private VertexOficina destination; //Destination Vertex;
-    private Set<VertexOficina> explored; //Set of explored VertexOficinas.
-    private PriorityQueue<VertexOficina> queue; //A queue that enqueues according to values.
-    private GrafoAStar grafoAStar  ;
-   
-    public AStarModified(VertexOficina source, VertexOficina destination) {
-        grafoAStar = new GrafoAStar(1);
+public class AStarOficina {
+    
+    private Oficina source; //Starting Vertex
+    private Oficina destination; //Destination Vertex;
+    private Set<Oficina> explored; //Set of explored VertexOficinas.
+    private PriorityQueue<Oficina> queue; //A queue that enqueues according to values.
+    
+    public AStarOficina(Oficina source, Oficina destination){
+        Mapa.resetAstar();
         this.source = source;
         this.destination = destination;
         this.explored = new HashSet<>();
-        this.queue = new PriorityQueue<>(new VertexComparator()); //Necessary when using java priority queues, needs to compare with somethin
-    }
-
-    public AStarModified(Oficina oficinaInicio, Oficina oficinaDestino, GrafoAStar gAstar) {
-        this.grafoAStar = gAstar;
-        gAstar.resetCosts();
-        this.source = grafoAStar.getVertexByCodigoOficina(oficinaInicio.getCodigo());
-        this.destination = grafoAStar.getVertexByCodigoOficina(oficinaDestino.getCodigo());
-        this.explored = new HashSet<>();
-        this.queue = new PriorityQueue<>(new VertexComparator()); //Necessary when using java priority queues, needs to compare with somethin
-        
+        this.queue = new PriorityQueue<>(new OficinaComparator()); //Necessary when using java priority queues, needs to compare with somethin
     }
 
     public void run() {
@@ -44,45 +32,44 @@ public class AStarModified {
         while(!queue.isEmpty()) {
             counter++;
             //We always get the VertexOficina with the lowest f(x) value possile
-            VertexOficina current = queue.poll(); 
+            Oficina current = queue.poll(); 
             explored.add(current);
 
             //We have found the destination VertexOficina
-            if (current.getOficina().getCodigo() == destination.getOficina().getCodigo())
+            if (current == destination)
                 break;
-
-
-            //Looping through adjacent VertexOficinas.
-            for (Arista arista: current.getListaAristas()){
+            
+            for(Tramo tramo: current.getListaTramos()){
                 
                 //Aqui verificar si el tramo/arista esta bloqueado
                 //if (arista.getTramo().estaBloqueado())
-                 //   continue;
+                //   continue;
 
-                VertexOficina child = arista.getTarget();
+                if (explored.contains(tramo.getCiudadFin()) )
+                    continue;
+
+                Oficina child = tramo.getCiudadFin(); //CiudadFIN = target
                 
-                double cost = arista.getCosto(); //Este es el costo calculado por el tramo. 
+                double cost = tramo.getCosto(); //Este es el costo calculado por el tramo. 
                 double tempG = current.getG() + cost;
                 double tempF = tempG + calcularH(current, destination);
 
                 //if we haven't considered the child and f(x) is higher:
                 if(explored.contains(child) && tempF >= child.getF())
                     continue;
-                
+            
                 //Else, if we have not visited the child OR the f(x) score is lower
-                else if(!queue.contains(child) || tempF < child.getF()) {
+                else if(!queue.contains(child) || tempF < child.getF())  {
                     
                     // Tracking the shortest path (predecessor)
-                    try{
-                    child.setParent(current);
-                    child.setG(tempG);
-                    child.setF(tempF);
+              
+                        child.setParent(current);
+                        child.setG(tempG);
+                        child.setF(tempF);
 
-                    }
-                    catch(Exception ex){
-                        System.out.println(counter);
-                        System.out.println(ex.getMessage());
-                    }
+             
+             
+   
                     //If the child has already been inserted, it must be updated
                     if (queue.contains(child))
                         queue.remove(child);
@@ -90,11 +77,10 @@ public class AStarModified {
                 }
             }
         }
-        //System.out.println(explored.size());
-        //System.out.println("Counter: " + counter);
+
     }
 
-    private double calcularH(VertexOficina current, VertexOficina destination){
+    private double calcularH(Oficina current, Oficina destination){
         
         double costo = heuristicEucledian(current, destination);
         costo = (costo / Mapa.velocidadCamiones) ;
@@ -131,8 +117,9 @@ public class AStarModified {
 
     }
 
+
     //Heuristica Euclidiana
-    private double heuristicEucledian(VertexOficina current, VertexOficina destination) {
+    private double heuristicEucledian(Oficina current, Oficina destination) {
         //Approximated distance between 2 VertexOficinas.
         //Euclidean Method.
         /*
@@ -143,15 +130,15 @@ public class AStarModified {
 
         */
 
-        double costo = Mapa.calcularDistancia(current.getOficina(), destination.getOficina());
+        double costo = Mapa.calcularDistancia(current, destination);
 
         return costo;
     } 
 
     public void printSolutionPath(){
-        List<VertexOficina> path = new ArrayList<>();
-        for (VertexOficina VertexOficina = destination; VertexOficina != null; VertexOficina = VertexOficina.getParent()){
-            path.add(VertexOficina);
+        List<Oficina> path = new ArrayList<>();
+        for (Oficina oficina = destination; oficina != null; oficina = oficina.getParent()){
+            path.add(oficina);
         }
 
         Collections.reverse(path);
@@ -164,23 +151,31 @@ public class AStarModified {
         Funcion que devuelve los tramos a recorrer desde la Ciudad inicio hasta final. 
         Debe correrse el Astar primer (astar.run())
         */
-        List<VertexOficina> path = new ArrayList<>();
+        
         List<Tramo> tramos = new ArrayList<>();
-        for (VertexOficina VertexOficina = destination; VertexOficina != null; VertexOficina = VertexOficina.getParent()){
-            path.add(VertexOficina);
+
+        List<Oficina> path = new ArrayList<>();
+        for (Oficina oficina = destination; oficina != null; oficina = oficina.getParent()){
+            System.out.println(oficina);
+            if (oficina.getParent() == null)
+                System.out.println("ES ULTIMO WAAA" + oficina.toString());
+            path.add(oficina);
         }
 
         Collections.reverse(path);
 
         for (int i = 0; i < path.size()-1; i++){
-            tramos.add(Mapa.getTramoByOficinas(path.get(i).getOficina().getCodigo(), path.get(i+1).getOficina().getCodigo()));
+            tramos.add(Mapa.getTramoByOficinas(path.get(i).getCodigo(), path.get(i+1).getCodigo()));
         }
 
-        tramos.add(Mapa.getTramoByOficinas(path.get(path.size()-1).getOficina().getCodigo(), path.get(0).getOficina().getCodigo()));
+        tramos.add(Mapa.getTramoByOficinas(path.get(path.size()-1).getCodigo(), path.get(0).getCodigo()));
         
+        for (Oficina oficina : path)
+            oficina.resetAstar();
+
         return tramos;
     }
     
 
-}
 
+}
