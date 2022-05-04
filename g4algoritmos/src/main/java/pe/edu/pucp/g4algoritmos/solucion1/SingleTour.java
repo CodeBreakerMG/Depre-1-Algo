@@ -118,8 +118,13 @@ public class SingleTour {
 
     public boolean cumpleConEntregas(RepositorySA repository){
         
+        double tiempoMaxOficina;
+        double tiempoLlegafaOficina;
         for (int i = 0; i < this.getTourSize(); i++){
-            if (repository.getTiempoMaximoOficina(this.getOficina(i)) < tiemposLlegadaOficinas.get(i))
+            tiempoMaxOficina = repository.getTiempoMaximoOficina(this.getOficina(i));
+            tiempoLlegafaOficina = tiemposLlegadaOficinas.get(i);
+            //if (repository.getTiempoMaximoOficina(this.getOficina(i)) < tiemposLlegadaOficinas.get(i))
+            if (tiempoMaxOficina < tiempoLlegafaOficina);
             return false;
         }
         return true;

@@ -237,7 +237,7 @@ public class Oficina {
 
         List<Tramo> tramos;
         Tramo tramo = Mapa.getTramoByOficinas(this.getCodigo(), destino.getCodigo()) ;
-        if ( tramo != null){
+        if ( tramo != null && tramo.estaBloqueado() == false){
             tramos = new ArrayList<>();
             tramos.add(tramo);
             return tramos;

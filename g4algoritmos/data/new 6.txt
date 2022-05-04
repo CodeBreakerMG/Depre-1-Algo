@@ -1,0 +1,13 @@
+
+
+//Eligiendo camiones. Creo que no lo estamos haciendo
+//No tenemos un timer.
+//No estamos ejecutando bloqueos, pero ya se tiene las funciones y utilizacion implementadas (Están en mapa y se verifica en el astar)
+//No se está mostrando el plan de rutas, no se están asignando completamente tampoco
+//No estamos utilizando pedidos parciales (Clase Entrega). 
+//Velocidades por regiones, solamente se está considerando una. (En el objeto MAPA se encuentra esta velocidad) (Para exp num no importa)
+//No estamos considerando multiples almacenes. (Para exp num pareciera que no importa)
+//No estamos considerando ningun tipo de mantenimiento ni averías.  (Para exp num no importa)
+//Considerar que la Solucion (Primera solucion) busca realizar rutas o planes de transporte que pueden ser mandaados cada hora. 
+	-> La carga de pedidos no debe ser mucha (maximo 50 pedidos, por ejemplo), +50, ejecutarlo 2 o 3 veces
+	-> Crear una superclase para esta ejecucion. 

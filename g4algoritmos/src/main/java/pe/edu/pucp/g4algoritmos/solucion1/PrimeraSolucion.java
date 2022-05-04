@@ -264,8 +264,16 @@ public class PrimeraSolucion{
 
     public List<Geometry> generarZonasReparto(){
     
-        final double MAX_DESV_STD = 2.0;
+        final double MAX_DESV_STD = 5.0;
         GeometryFactory gf = new GeometryFactory();
+
+        if (listaOficinas.size() < 5){
+            List<Geometry> listaSubZonas = new ArrayList<>();
+
+            listaSubZonas.add(poligonPedidos);
+            return listaSubZonas;
+            
+        }
 
         // Creación de HashMap con zonas y cantidad de oficinas = 0
         List<Polygon> listZonas = splitRectangle(poligonPedidos);
@@ -349,6 +357,7 @@ public class PrimeraSolucion{
         for (Geometry zona : listaZonas ){
             List<Pedido> pedidosZona = new ArrayList<>();
             List<Oficina> oficinasZona = new ArrayList<>();
+            oficinasZona.add(almacen);
             for (Pedido pedido : listaPedidos){
                 Coordinate coordPedido = new Coordinate(pedido.getOficina().getCoordX(), pedido.getOficina().getCoordY());    
                 if (SimplePointInAreaLocator.isContained(coordPedido, zona)){
