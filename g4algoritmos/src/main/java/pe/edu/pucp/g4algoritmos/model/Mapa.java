@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import pe.edu.pucp.g4algoritmos.astar.GrafoAStar;
 import pe.edu.pucp.g4algoritmos.utilitarios.LoadData;
 
 public class Mapa {
@@ -33,6 +34,8 @@ public class Mapa {
     public static List<Pedido> listaPedidos = new ArrayList<>();
     public static List<Entrega> listEntregas = new ArrayList<>();
     public static List<Ruta> listRutas = new ArrayList<>();
+
+    public static GrafoAStar grafoAStar = new GrafoAStar(1);
 
 
     public Mapa (){
@@ -176,6 +179,9 @@ public class Mapa {
         return counter;
     }
 
+    public static void inicializarGrafoAstar(){
+        grafoAStar = new GrafoAStar(1);
+    }
 
 /*
     public static boolean bloquearTramo(Tramo tramo){
@@ -253,5 +259,23 @@ public class Mapa {
                 listaBloqueos.addAll(lista_bloq);
             }
         }
+    }
+
+    public static int tramosSinOficinaInicial(){
+        int counter = 0;
+        for (Tramo tramo : listaTramos){
+            if (tramo.getCiudadInicio() == null )
+                counter ++;
+        }
+        return counter;
+    }
+
+    public static int tramosSinOficinaDestino(){
+        int counter = 0;
+        for (Tramo tramo : listaTramos){
+            if (tramo.getCiudadFin() == null )
+                counter ++;
+        }
+        return counter;
     }
 }

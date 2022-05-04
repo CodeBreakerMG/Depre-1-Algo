@@ -28,21 +28,13 @@ public class VertexOficina {
 
     public VertexOficina(Oficina oficina) {
         this.oficina = oficina;
-        this.listaAristas  = new ArrayList<>();
+        this.listaAristas = new ArrayList<>();
     }
 
 
     public List<Arista> obtenerAristas(GrafoAStar grafoAStar){
 
-        List<Arista> auxListaAristas = new ArrayList<>();
-        List<Tramo> listaTramos = Mapa.getTramosByOficinaInicio(this.oficina.getCodigo());
-
-        for (int i = 0; i < listaTramos.size(); i++){
-            //Se obtiene la arista con la lista de tramos y el nodo final.
-            Arista arista = new Arista(listaTramos.get(i), grafoAStar.getVertexByCodigoOficina(oficina.getCodigo()));
-            auxListaAristas.add(arista);
-        }
-
+        List<Arista> auxListaAristas = grafoAStar.getListaAristasPorVertexOficina(this.oficina.getCodigo());
         return auxListaAristas;
         
     }
@@ -93,6 +85,13 @@ public class VertexOficina {
 
     public void setParent(VertexOficina parent) {
         this.parent = parent;
+    }
+
+    public void reset(){
+        g = 0.0;
+        f = 0.0;
+        h = 0.0;
+        this.parent = null;
     }
 
     @Override

@@ -138,8 +138,18 @@ public class Oficina {
         
         //Devuelve los tramos a recorrer
         //LabelValue<Double,List<Tramo>> listaYCosto = new LabelValue<Double,List<Tramo>>(label, value)
+
+        
+
         List<Tramo> tramos;
-        AStarModified Astar = new AStarModified(new VertexOficina(this) , new VertexOficina(destino));
+        Tramo tramo = Mapa.getTramoByOficinas(this.getCodigo(), destino.getCodigo()) ;
+        if ( tramo != null){
+            tramos = new ArrayList<>();
+            tramos.add(tramo);
+            return tramos;
+        }
+
+        AStarModified Astar = new AStarModified(this, destino, Mapa.grafoAStar);
         Astar.run();
         tramos = Astar.getTramosRecorrer();
 
