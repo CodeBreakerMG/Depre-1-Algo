@@ -340,7 +340,7 @@ public class PrimeraSolucion{
 
         }
 
-
+        System.out.println("El simulated annealing terminó");
     }
 
 
