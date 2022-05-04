@@ -54,6 +54,21 @@ public class Mapa {
         Date fechaHoraActual = AuxiliaryFunctions.getNowTime();
     }
 
+    public static void setTramosToOficinas(){
+        for (Oficina oficina: listaOficinas){
+            oficina.setListaTramos(Mapa.getTramosByOficinaInicio(oficina.getCodigo()));
+
+            //listaAlmacenes
+        }
+    }
+
+    public static void setTramosToAlmacenes(){
+        for (Oficina oficina: listaAlmacenes){
+            oficina.setListaTramos(Mapa.getTramosByOficinaInicio(oficina.getCodigo()));
+
+            //listaAlmacenes
+        }
+    }
 
     public List<Oficina> getListaOficinas() {
         return listaOficinas;
@@ -181,6 +196,14 @@ public class Mapa {
 
     public static void inicializarGrafoAstar(){
         grafoAStar = new GrafoAStar(1);
+    }
+
+    public static void resetAstar(){
+        for (Oficina oficina : listaOficinas){
+            oficina.resetAstar();
+        }for (Oficina oficina : listaAlmacenes){
+            oficina.resetAstar();
+        }
     }
 
 /*

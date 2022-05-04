@@ -6,6 +6,7 @@ import org.javatuples.LabelValue;
 
 
 import pe.edu.pucp.g4algoritmos.astar.AStarModified;
+import pe.edu.pucp.g4algoritmos.astar.AStarOficina;
 import pe.edu.pucp.g4algoritmos.astar.VertexOficina;
 
 /*
@@ -29,6 +30,19 @@ public class Oficina {
     private int estado; //Estado de la Oficina
     private int esAlmacen; //0: No es almacen, 1: Es almacén
 
+    /*PARAMETROS A**/
+    private List<Tramo> listaTramos; //Aristas desde aqui hasta alla.
+
+    private double g; //Cost from start to here
+    private double h; //Cost from here to target, heuristically calculated
+    private double f;
+    //track de adjacency list (neighbors)
+
+    //it Tracks the previous node in the shortest path
+    private Oficina parent;
+ 
+
+
     
     public Oficina(long id, String codigo, String departamento, String provincia, char region, double coordX,
             double coordY, int esAlmacen) {
@@ -42,7 +56,23 @@ public class Oficina {
         this.estado = 1;
         this.esAlmacen = esAlmacen;
 
+        //Parametros A*
+        g = 0;
+        f = 0;
+        h = 0;
+        parent = null;
     }
+
+
+    public List<Tramo> obtenerTramos(){
+        List<Tramo> auxListaAristas = Mapa.getTramosByOficinaInicio(this.getCodigo());
+        return auxListaAristas;
+    }
+
+    public void calculateTramos(){
+        this.listaTramos = Mapa.getTramosByOficinaInicio(this.getCodigo());
+    }
+
 
 
     public long getId() {
@@ -134,6 +164,70 @@ public class Oficina {
         this.estado = estado;
     }
 
+    public void resetAstar(){
+        g = 0;
+        f = 0;
+        h = 0;
+        parent = null;
+    }
+
+    
+
+    public int getEsAlmacen() {
+        return esAlmacen;
+    }
+
+
+    public List<Tramo> getListaTramos() {
+        return listaTramos;
+    }
+
+
+    public void setListaTramos(List<Tramo> listaTramos) {
+        this.listaTramos = listaTramos;
+    }
+
+
+    public double getG() {
+        return g;
+    }
+
+
+    public void setG(double g) {
+        this.g = g;
+    }
+
+
+    public double getH() {
+        return h;
+    }
+
+
+    public void setH(double h) {
+        this.h = h;
+    }
+
+
+    public double getF() {
+        return f;
+    }
+
+
+    public void setF(double f) {
+        this.f = f;
+    }
+
+
+    public Oficina getParent() {
+        return parent;
+    }
+
+
+    public void setParent(Oficina parent) {
+        this.parent = parent;
+    }
+
+
     public List<Tramo> recorridoHasta(Oficina destino){
         
         //Devuelve los tramos a recorrer
@@ -149,7 +243,7 @@ public class Oficina {
             return tramos;
         }
 
-        AStarModified Astar = new AStarModified(this, destino, Mapa.grafoAStar);
+        AStarOficina Astar = new AStarOficina(this, destino);
         Astar.run();
         tramos = Astar.getTramosRecorrer();
 
@@ -164,6 +258,11 @@ public class Oficina {
         
     }
     
+
+    @Override
+    public String toString() {
+        return "C: " + provincia  + "->";
+    }
 
     
 }
