@@ -27,6 +27,8 @@ public class AStarOficina {
     }
 
     public void run() {
+        //System.out.print("Ciudad Inicio: " + source.toString());
+        //System.out.print("Ciudad Fin: " + destination.toString());
         int counter = 0;
         queue.add(source);
         while(!queue.isEmpty()) {
@@ -156,19 +158,21 @@ public class AStarOficina {
 
         List<Oficina> path = new ArrayList<>();
         for (Oficina oficina = destination; oficina != null; oficina = oficina.getParent()){
-            System.out.println(oficina);
+            
             if (oficina.getParent() == null)
-                System.out.println("ES ULTIMO WAAA" + oficina.toString());
+                //System.out.println("ES ULTIMO WAAA" + oficina.toString());
             path.add(oficina);
         }
 
         Collections.reverse(path);
 
+
         for (int i = 0; i < path.size()-1; i++){
+            //System.out.print(path.get(i));
             tramos.add(Mapa.getTramoByOficinas(path.get(i).getCodigo(), path.get(i+1).getCodigo()));
         }
+        //System.out.print(path.get(path.size() - 1));
 
-        tramos.add(Mapa.getTramoByOficinas(path.get(path.size()-1).getCodigo(), path.get(0).getCodigo()));
         
         for (Oficina oficina : path)
             oficina.resetAstar();
