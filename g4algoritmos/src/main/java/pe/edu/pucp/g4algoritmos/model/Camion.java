@@ -23,8 +23,9 @@ public class Camion {
     private Oficina almacen; //Almacen en el cual se encuentra o partió inicialmente. 
     
     
-    public Camion(long id, TipoCamion tipo, double coordX, double coordY,   Oficina almacen ) {
+    public Camion(long id,String codigo, TipoCamion tipo, double coordX, double coordY,   Oficina almacen ) {
         this.id = id;
+        this.codigo = codigo;
         this.tipo = tipo;
         this.coordX = coordX;
         this.coordY = coordY;

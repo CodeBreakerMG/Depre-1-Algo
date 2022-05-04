@@ -1,47 +1,68 @@
 package pe.edu.pucp.g4algoritmos.solucion1;
+
 import pe.edu.pucp.g4algoritmos.model.*;
+
 import java.util.List;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Polygon;
-import org.locationtech.jts.noding.FastNodingValidator;
+
+import org.javatuples.Triplet;
 import org.locationtech.jts.algorithm.locate.SimplePointInAreaLocator;
 
 public class PrimeraSolucion{
 
-    public static List<List<Pedido>> listaPedidosPorZona = new ArrayList<>(); //9 zonas de reparto, por defecto.
-    public static List<List<Oficina>> listaOficinasXZona = new ArrayList<>(); 
-                //Maxima distancia entre zonas para generar una zona de reparto
-                //coordenadas centricas para cada una de estas zonas
-    public static List<Geometry> listaZonas = new ArrayList<>();
+    /*Variables OUTPUT*/ 
+    public static List<List<Pedido>> listaPedidosPorZona = new ArrayList<>(); //Lista de Pedidos por Zona de reparto
+    public static List<List<Oficina>> listaOficinasXZona = new ArrayList<>(); //Lista de Oficinas por zona de reparto
+    public static List<Long> tiempoDeSalidasZona = new ArrayList<>();
     
+    public static List<Geometry> listaZonas = new ArrayList<>(); //Lista de Zonas (Formato de Polígono)
+
+    public static List <Ruta> planesDeTransporte = new ArrayList<>(); //Lista de los planes de transporte o RUTAS por camion
+    
+    /*Variables INPUT*/ 
     public static List<Pedido> listaPedidos = new ArrayList<>(); //Lista inicial de los pedidos
+    public static List<Oficina> listaOficinas = new ArrayList<>(); //Lista de oficinas que tienen al menos un pedido
+    public static List<Camion> listaCamiones = new ArrayList<>(); //Lista de camiones disponibles de un ALMACEN
+    
+    public static Oficina almacen; //Almacen seleccionado para esta lista de pedidos
+    public static int paquetes; //Cantidad total de paquetes A 
+
     public static int cantidadZonasDeReparto = 9;                             //Numero de zonas, 9 por defecto  
-    public static List <Ruta> planesDeTransporte = new ArrayList<>();         //Lista de los planes de transporte
-    public static List<Oficina> listaOficinas = new ArrayList<>();
-    public static List<Camion> listaCamiones = new ArrayList<>();
-    public static double areaMaxima = 0.0;
-    public static Polygon poligonPedidos ;
-    public static GeometryFactory factory = new GeometryFactory();
-    //public static Geometry envelope = polygon.getEnvelope();
-    public static List<Coordinate> coordinates;
-    public static int paquetes;
-    public static Oficina almacen; //Almacen seleccionado
+    public static Polygon poligonPedidos ; //Polígono que contiene todas las zonas, y a su vez las coordenadas de todos los pedidos
+    public static List<Coordinate> coordinates; //Coordenadas de todas las oficinas.
+    
+    /*Variables Auxiliares*/ 
 
-    public PrimeraSolucion(){
-        
-    }
+    public static GeometryFactory factory = new GeometryFactory(); //Variable auxiliar de Geometría. Para generar zonas de reparto
+    
+    public PrimeraSolucion(){}
 
-    public void inicializar(){
+    public void inicializar(List<Pedido> listaPed, Oficina alm){
         
+        Mapa.inicializarGrafoAstar();
+
+        //Inputs de la PrimeraSolucion
+        this.listaPedidos = listaPed;
+        this.almacen = alm;
+
+        /*I. Oficinas de todos los pedido*/
         listaOficinas = contabilizarOficinas();
+        System.out.println(String.format("Cantidad de oficinas:  %4d", listaOficinas.size()));
+        /*II: Polígono o área de reparto total (solo incluye oficinas con al menos un pedido*/
         coordinates = generateCoordinatesOficina();
         poligonPedidos = crearPoligono();
-        listaCamiones = seleccionarCamiones();
+
+
+        
+        listaCamiones = seleccionarCam();
+        System.out.println(String.format("Cantidad de camiones:  %4d", listaCamiones.size()));
         listaZonas = generarZonasReparto();
 
         
@@ -52,45 +73,87 @@ public class PrimeraSolucion{
         //planesDeTransporte = asignarPedidosCamiones();
 
         //areaMaxima = areaPoligono();
+        simulatedAnnealing();
+        
     }
 
     /*1. Determinar lista de oficinas de los pedidos*/ 
     public static List<Oficina> contabilizarOficinas(){
         List<Oficina> oficinas = new ArrayList<>();
         for (Pedido p : listaPedidos){
-            if(listaOficinas.contains(p.getOficina()) == false) {
-                listaOficinas.add(p.getOficina());
+            if(oficinas.contains(p.getOficina()) == false) {
+                oficinas.add(p.getOficina());
             }
         }
-
         return oficinas;
     }
 
     /*2. Determinar los puntos totales de cada oficina*/ 
     public static List<Coordinate> generateCoordinatesOficina(){
-
         List<Coordinate> coordinates = new ArrayList<>();
-                
         for (Oficina oficina : listaOficinas){
             Coordinate coordinate = new Coordinate(oficina.getCoordX(), oficina.getCoordY());
             coordinates.add(coordinate);
         }
-        //Generar polígono
-
-
         return coordinates;
     }
 
 
     /*3. Generar AREA TOTAL DE REPARTO polígono para distribución */ 
     public static Polygon crearPoligono(){
-        //Para arreglar: debe crear un poligono considerando solamente puntos exteriores.
-        Polygon polygon = factory.createPolygon(coordinates.toArray(new Coordinate[0]));
+
+        // El polígono a crear será un rectángulo circunscrito a la
+        // figura formada por las coordenadas de los puntos de la zona
+        
+        double x_max = Double.NEGATIVE_INFINITY;
+        double x_min = Double.POSITIVE_INFINITY;
+        double y_max = Double.NEGATIVE_INFINITY;
+        double y_min = Double.POSITIVE_INFINITY;
+        
+        for(Coordinate c : coordinates) {
+            if(c.getX() > x_max) x_max = c.getX();
+            if(c.getX() < x_min) x_min = c.getX();
+            if(c.getY() > y_max) y_max = c.getY();
+            if(c.getY() < y_min) y_min = c.getY();
+        }
+        
+        Coordinate[] polygon_coordinates = new Coordinate[] {
+            new Coordinate(x_min, y_max),  //  1-----2  //
+            new Coordinate(x_max, y_max),  //  |     |  //
+            new Coordinate(x_max, y_min),  //  |     |  //
+            new Coordinate(x_min, y_min),  //  4-----3  //
+            new Coordinate(x_min, y_max)
+        };
+
+        Polygon polygon = factory.createPolygon(polygon_coordinates);
         return polygon;
     }
 
     //Determinar CUANTAS ZONAS DE REPARTO VAMOS A UTILIZAR (Cuantos camiones y qué camiones vamos a utilizar).
     /*4. Determinar lista de camiones a utilizar*/
+    public static List<Camion> seleccionarCam(){
+
+        int [] countCamiones = Mapa.calcularTipoCamionesPorAlmacen(almacen);
+        List<Camion> camiones = new ArrayList<>();
+        int cantidadPaquetes = 0;
+
+        for (Pedido p : listaPedidos)
+            cantidadPaquetes += p.getCantidadTotal();
+        
+        int cantidadCamionesA = (int) Math.round(cantidadPaquetes / 90.0);
+
+        if(cantidadCamionesA < countCamiones[0]){
+            cantidadCamionesA = countCamiones[0] - cantidadCamionesA;
+        }
+        else{
+            cantidadCamionesA = countCamiones[0];
+        }
+
+        if (cantidadCamionesA > 0)
+            camiones.addAll(Mapa.extractListaCamionesPorAlmacen(almacen, 'A', cantidadCamionesA));
+
+        return camiones;
+    }
     public static List<Camion> seleccionarCamiones(){
         
         int [] countCamiones = Mapa.calcularTipoCamionesPorAlmacen(almacen);
@@ -190,17 +253,46 @@ public class PrimeraSolucion{
         return camiones;
     }
 
+
+
     /*5. Generar Zonas de Reparto*/ 
 
     public List<Geometry> generarZonasReparto(){
+    
+        double MAX_DESV_STD = 2.0;
+        double desv_sta = 10.0;
+
+        List<Geometry> listZonas = split(poligonPedidos);
+        List<Integer> listCantidadOficinas = new ArrayList<Integer>(0);
         
+        /*
+        while (desv_sta > 2.0){
+
+        }
+        
+
         int numeroZonas = listaCamiones.size();
         numeroZonas = 4;
-        List<Geometry> listZonas = split(poligonPedidos);
+        */
         return listZonas;
     }
 
-  
+    /*
+    public HashMap<Geometry,Integer> getCostoZonas(List<Geometry> listZonas){
+
+        
+        for (Geometry zona : listaZonas ){
+            Coordinate coordPedido = new Coordinate(pedido.getOficina().getCoordX(), pedido.getOficina().getCoordY());    
+            if (SimplePointInAreaLocator.isContained(coordPedido, zona)){
+                pedidosZona.add(pedido);   
+                if (oficinasZona.contains(pedido.getOficina()) == false )
+                    oficinasZona.add(pedido.getOficina());
+            }
+        }
+        
+    }
+    */
+
     /*6. Asignar pedidos por zona Zonas de Reparto*/ 
     public List<List<Pedido>> asignarPedidosPorZona(){
 
@@ -226,25 +318,33 @@ public class PrimeraSolucion{
         return listaPedidosXZona;
     }
 
-    /*Ordenamiento de prioridades de pedidos según tiempo, distancia, etc*/
+    /*7. Ordenamiento de prioridades de pedidos según tiempo, distancia, etc*/
 
 
     public void simulatedAnnealing(){
 
+    /*
+        Función que determinará el orden de las oficinas en base a 
+            1. Tiempo de entrega pedidos
+            2. Distancia (recorrido más corto posible)
+    */ 
+
         for (int i = 0; i < listaZonas.size(); i++){
-/*
-            SimulatedAnnealing sa = new SimulatedAnnealing(listaOficinasXZona.get(index));
+            long tiempoSalida = tiempoMaximoRegistroPedidos(listaPedidosPorZona.get(i));
+            List<Triplet<String, Long, Integer>> listaTiempos = tiempoMaximoPedidos(listaPedidosPorZona.get(i), listaOficinasXZona.get(i));
+            listaOficinasXZona.get(i).sort(new OficinasComparator(listaTiempos, false));
+            SimulatedAnnealing sa = new SimulatedAnnealing(listaOficinasXZona.get(i), listaTiempos, tiempoSalida);
             sa.simulate();
-            System.out.println("Best Solution: "  + sa.getBest().getDistance());
-            System.out.println(sa.getBest());        
-*/
+            //System.out.println("Best Solution: "  + sa.getBest().getDistance());
+            //System.out.println(sa.getBest());        
+
         }
 
-
+        System.out.println("El simulated annealing terminó");
     }
 
 
-
+/*FUNCIONES AUXILIARES*/
     public static double areaPoligono()
     {
         // Initialize area
@@ -297,7 +397,6 @@ public class PrimeraSolucion{
 
         int i;
         List<List<Pedido>> listaTemp = new ArrayList<>();
-
         for(Oficina o : listaOficinas){
             List<Pedido> listPed = new ArrayList<>();
             for(List<Pedido> ped: listaPedidosxZona){
@@ -309,7 +408,46 @@ public class PrimeraSolucion{
             }
             listaTemp.add(listPed);
         }
-
         return listaTemp;
     }
+
+    public static List<Triplet<String, Long, Integer>> tiempoMaximoPedidos(List<Pedido> pedidos, List<Oficina> oficinas){
+        
+        List<Triplet<String, Long, Integer>> listaTiempos = new ArrayList<>(); //String: CodOficina, Long: tiempo promedio en milisegundos, integer: num Pedidos)
+        
+        
+        for (Oficina o : oficinas){
+            long tiempo = 9 * (long)10e13; //en milisegundos
+            int numeroPedidos = 0;
+            for (Pedido p : pedidos){
+                if (p.getOficina().getCodigo() == o.getCodigo()){
+                    numeroPedidos++;
+                    if (tiempo > p.getFechaHoraLimite().getTime())
+                        tiempo = p.getFechaHoraLimite().getTime();
+                }
+
+            }    
+            Triplet<String, Long, Integer> tiemposOficina = new Triplet<>(o.getCodigo(), tiempo, numeroPedidos);
+            listaTiempos.add(tiemposOficina);
+        }
+
+
+        listaTiempos.sort(new TiemposOficinaComparator());
+        //Collections.sort(oficinas, Comparator.comparing(item -> listaTiempos.indexOf(item)));
+
+        return listaTiempos;
+
+    }
+
+    public static long tiempoMaximoRegistroPedidos(List<Pedido> pedidos){
+            long tiempo = 0;
+            for (Pedido p :pedidos){
+                if (tiempo < p.getFechaHoraPedido().getTime()){
+                    tiempo = p.getFechaHoraPedido().getTime();
+                }
+            }
+
+            return tiempo;
+    }
+    
 }

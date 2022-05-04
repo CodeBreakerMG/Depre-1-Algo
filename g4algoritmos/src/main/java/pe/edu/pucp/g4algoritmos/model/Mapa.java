@@ -6,7 +6,10 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+import pe.edu.pucp.g4algoritmos.astar.GrafoAStar;
 import pe.edu.pucp.g4algoritmos.utilitarios.LoadData;
 
 public class Mapa {
@@ -32,6 +35,8 @@ public class Mapa {
     public static List<Entrega> listEntregas = new ArrayList<>();
     public static List<Ruta> listRutas = new ArrayList<>();
 
+    public static GrafoAStar grafoAStar = new GrafoAStar(1);
+
 
     public Mapa (){
 
@@ -49,6 +54,21 @@ public class Mapa {
         Date fechaHoraActual = AuxiliaryFunctions.getNowTime();
     }
 
+    public static void setTramosToOficinas(){
+        for (Oficina oficina: listaOficinas){
+            oficina.setListaTramos(Mapa.getTramosByOficinaInicio(oficina.getCodigo()));
+
+            //listaAlmacenes
+        }
+    }
+
+    public static void setTramosToAlmacenes(){
+        for (Oficina oficina: listaAlmacenes){
+            oficina.setListaTramos(Mapa.getTramosByOficinaInicio(oficina.getCodigo()));
+
+            //listaAlmacenes
+        }
+    }
 
     public List<Oficina> getListaOficinas() {
         return listaOficinas;
@@ -59,8 +79,15 @@ public class Mapa {
         return listaTramos;
     }
 
+    public static List<Pedido> getListaPedidos(){
+        return listaPedidos;
+    }
+
     public static Oficina getOficinaByCodigo(String codigoOficina){
-        for (Oficina oficina : listaOficinas)
+        List<Oficina> listaTotalAlmacenesOficinas = new ArrayList<>(listaOficinas);
+        listaTotalAlmacenesOficinas.addAll(listaAlmacenes);
+        
+        for (Oficina oficina : listaTotalAlmacenesOficinas)
             if (oficina.getCodigo().equals(codigoOficina))
                 return oficina;
         
@@ -112,7 +139,6 @@ public class Mapa {
 
     public static int[] calcularTipoCamionesPorAlmacen(Oficina almacen){
 
-        
         int[] counter = {0,0,0}; //0: A, 1: B, 
         for (int i = 0; i < listaCamiones.size(); i++){
             if (listaCamiones.get(i).getAlmacen().getCodigo().equals(almacen.getCodigo()))
@@ -125,8 +151,19 @@ public class Mapa {
                     counter[2]++; 
             }
         }
-
         return counter;
+    }
+
+    public static List<Camion> getListaCamionesPorAlmacen(Oficina almacen, char tipoCamion){
+        List<Camion> camiones = new ArrayList<>();
+            for (Camion camion : listaCamiones){
+                if (camion.getAlmacen().getCodigo().equals(almacen.getCodigo()) && 
+                    camion.getTipo().getCodigo() == tipoCamion &&
+                    camion.getEstado() == 1){
+                    camiones.add(camion);
+                }
+            }
+        return camiones;
     }
 
     public static List<Camion> extractListaCamionesPorAlmacen(Oficina almacen, char tipoCamion, int cantidad){
@@ -157,6 +194,17 @@ public class Mapa {
         return counter;
     }
 
+    public static void inicializarGrafoAstar(){
+        grafoAStar = new GrafoAStar(1);
+    }
+
+    public static void resetAstar(){
+        for (Oficina oficina : listaOficinas){
+            oficina.resetAstar();
+        }for (Oficina oficina : listaAlmacenes){
+            oficina.resetAstar();
+        }
+    }
 
 /*
     public static boolean bloquearTramo(Tramo tramo){
@@ -168,6 +216,10 @@ public class Mapa {
 */
     public void setListaTramos(List<Tramo> listaTramos) {
         this.listaTramos = listaTramos;
+    }
+
+    public static void setListaCamiones(List<Camion> listaCamion){
+        listaCamiones = listaCamion;
     }
 
     public int ejecutarBloqueos(){
@@ -208,5 +260,45 @@ public class Mapa {
 
         listaAlmacenes.addAll(lista_total);
         listaAlmacenes.removeIf(x -> !x.EsAlmacen());
+    }
+
+    public static void cargarTramos(String ruta) {
+        listaTramos.addAll(LoadData.leerTramos(ruta));
+    }
+
+    public static void cargarPedidos(String... rutas) {
+        for (String ruta : rutas) {
+            List<Pedido> lista_ped = LoadData.leerPedidos(ruta);
+            if(lista_ped != null) {
+                listaPedidos.addAll(lista_ped);
+            }
+        }
+    }
+
+    public static void cargarBloqueos(String... rutas) {
+        for (String ruta : rutas) {
+            List<Bloqueo> lista_bloq = LoadData.leerBloqueos(ruta);
+            if(lista_bloq != null) {
+                listaBloqueos.addAll(lista_bloq);
+            }
+        }
+    }
+
+    public static int tramosSinOficinaInicial(){
+        int counter = 0;
+        for (Tramo tramo : listaTramos){
+            if (tramo.getCiudadInicio() == null )
+                counter ++;
+        }
+        return counter;
+    }
+
+    public static int tramosSinOficinaDestino(){
+        int counter = 0;
+        for (Tramo tramo : listaTramos){
+            if (tramo.getCiudadFin() == null )
+                counter ++;
+        }
+        return counter;
     }
 }

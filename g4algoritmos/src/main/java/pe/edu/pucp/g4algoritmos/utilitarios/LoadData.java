@@ -7,9 +7,11 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import pe.edu.pucp.g4algoritmos.model.Bloqueo;
 import pe.edu.pucp.g4algoritmos.model.Mapa;
 import pe.edu.pucp.g4algoritmos.model.Oficina;
 import pe.edu.pucp.g4algoritmos.model.Pedido;
+import pe.edu.pucp.g4algoritmos.model.Tramo;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -19,7 +21,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat; 
+import java.text.SimpleDateFormat;
+import java.time.Year; 
 
 public class LoadData {
 
@@ -121,9 +124,9 @@ public class LoadData {
     public static List<Pedido> leerPedidos(String ruta) {
         // Verificación de haber cargado el archivo de oficinas previamente
         if(Mapa.listaAlmacenes.size() == 0 && Mapa.listaOficinas.size() == 0){
-            System.out.println("Debe cargar los datos del archivo de oficinas antes de cargar los pedidos.");
+            System.out.println("Debe cargar los datos del archivo de oficinas al Mapa antes de cargar los pedidos.");
             JOptionPane.showMessageDialog(null,
-                "Debe cargar los datos del archivo de oficinas antes de cargar los pedidos.",
+                "Debe cargar los datos del archivo de oficinas al Mapa antes de cargar los pedidos.",
                 "Advertencia: Cargar oficinas primero",
                 JOptionPane.WARNING_MESSAGE);
             return null;
@@ -138,7 +141,7 @@ public class LoadData {
             String year = year_month.substring(0, 4);
             String month = year_month.substring(4, 6);
             
-            // Lectura de líneas y agregación de oficinas a la lista
+            // Lectura de líneas y agregación de pedidos a la lista
             String line = "";
             BufferedReader br = new BufferedReader(new FileReader(ruta));
             
@@ -155,6 +158,10 @@ public class LoadData {
                 catch(ParseException ex){
                     System.out.println(ex.getMessage());
                 }
+
+                // Si la oficina con el código provisto no existe, se omite la carga del pedido.
+                if(Mapa.getOficinaByCodigo(linea_pedido[3].trim()) == null)
+                    continue;
 
                 // Creación del objeto Pedido
                 Pedido pedido = new Pedido(
@@ -188,5 +195,100 @@ public class LoadData {
         }
 
         return listaPedidos;
+    }
+
+    /* leerTramos(String ruta) retorna una lista de todos los tramos
+       que se encuentran en el archivo de tramos especificado por la ruta */
+    public static List<Tramo> leerTramos(String ruta) {
+        // Verificación de haber cargado el archivo de oficinas previamente
+        if(Mapa.listaAlmacenes.size() == 0 && Mapa.listaOficinas.size() == 0){
+            System.out.println("Debe cargar los datos del archivo de oficinas al Mapa antes de cargar los tramos.");
+            JOptionPane.showMessageDialog(null,
+                "Debe cargar los datos del archivo de oficinas al Mapa antes de cargar los tramos.",
+                "Advertencia: Cargar oficinas primero",
+                JOptionPane.WARNING_MESSAGE);
+            return null;
+        }
+
+        // Lectura de líneas y agregación de tramos a la lista
+        List<Tramo> listaTramos = new ArrayList<Tramo>();        
+        try {    
+            String line = "";
+            BufferedReader br = new BufferedReader(new FileReader(ruta));
+            
+            while ((line = br.readLine()) != null) {  
+                String[] linea_tramo = line.split("=>");
+                if(Mapa.getOficinaByCodigo(linea_tramo[0].trim()) != null
+                    && Mapa.getOficinaByCodigo(linea_tramo[1].trim()) != null) { 
+                    listaTramos.add(new Tramo(linea_tramo[0].trim(), linea_tramo[1].trim()));
+                }
+            }
+
+            br.close();
+        }
+        catch (IOException ex) {  
+            ex.printStackTrace();  
+        }
+
+        return listaTramos;
+    }
+
+    public static List<Bloqueo> leerBloqueos(String ruta) {
+        // Verificación de haber cargado el archivo de tramos previamente
+        if(Mapa.listaTramos.size() == 0){
+            System.out.println("Debe cargar los datos del archivo de tramos al Mapa antes de cargar los bloqueos.");
+            JOptionPane.showMessageDialog(null,
+                "Debe cargar los datos del archivo de tramos al Mapa antes de cargar los bloqueos.",
+                "Advertencia: Cargar tramos primero",
+                JOptionPane.WARNING_MESSAGE);
+            return null;
+        }
+
+        // Lectura de líneas y agregación de bloqueos a la lista
+        List<Bloqueo> listaBloqueos = new ArrayList<Bloqueo>();        
+        try {    
+            String line = "";
+            BufferedReader br = new BufferedReader(new FileReader(ruta));
+            SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            
+            while ((line = br.readLine()) != null) {  
+
+                String[] linea_bloqueo = line.split("( +=> +)|,|;|==");
+
+                String cod_oficina_inicio = linea_bloqueo[0];
+                String cod_oficina_fin    = linea_bloqueo[1];
+
+                Tramo tramo = Mapa.getTramoByOficinas(cod_oficina_inicio, cod_oficina_fin);
+                if(tramo == null) continue;
+
+                String mes_inicio = linea_bloqueo[2].substring(0, 2);
+                String dia_inicio = linea_bloqueo[2].substring(2, 4);
+                String mes_fin    = linea_bloqueo[4].substring(0, 2);
+                String dia_fin    = linea_bloqueo[4].substring(2, 4);
+                                
+                int anio_inicio = Year.now().getValue();
+                int anio_fin = Integer.valueOf(mes_inicio) > Integer.valueOf(mes_fin) ? (anio_inicio + 1) : anio_inicio;
+                
+                String hora_inicio = linea_bloqueo[3];
+                String hora_fin = linea_bloqueo[5];
+
+                try{
+                    Date fecha_hora_inicio = sf.parse(String.valueOf(anio_inicio)+"-"+mes_inicio+"-"+dia_inicio+" "+hora_inicio);
+                    Date fecha_hora_fin    = sf.parse(String.valueOf(anio_fin)+"-"+mes_fin+"-"+dia_fin+" "+hora_fin);
+                    
+                    listaBloqueos.add(new Bloqueo(cod_oficina_inicio, cod_oficina_fin, fecha_hora_inicio, fecha_hora_fin));
+                }
+                catch(ParseException ex){
+                    System.out.println(ex.getMessage());
+                }                
+            }
+
+            br.close();
+        }
+        catch (IOException ex) {  
+            ex.printStackTrace();  
+        }
+
+        return listaBloqueos;
     }
 }

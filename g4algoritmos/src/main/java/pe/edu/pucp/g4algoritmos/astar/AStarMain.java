@@ -1,5 +1,9 @@
 package pe.edu.pucp.g4algoritmos.astar;
 
+import java.io.File;
+
+import pe.edu.pucp.g4algoritmos.model.Mapa;
+
 /*
 
 DEPRE-1-ALGORITMOS

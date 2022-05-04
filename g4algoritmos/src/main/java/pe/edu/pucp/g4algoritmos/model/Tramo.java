@@ -28,11 +28,12 @@ public class Tramo {
     public Tramo(String codOficinaInicio, String codOficinaFin){
 
         CiudadInicio = Mapa.getOficinaByCodigo(codOficinaInicio);
-        CiudadInicio = Mapa.getOficinaByCodigo(codOficinaFin);
+        CiudadFin = Mapa.getOficinaByCodigo(codOficinaFin);
 
         distancia = calcularDistancia();
         pesoRegion = calcularPesoRegion();
         pesoTiempo = (distancia/ Mapa.velocidadCamiones) + pesoRegion;
+        this.estado = 1;
 
     }
 
@@ -53,7 +54,7 @@ public class Tramo {
     }
 
     public double getCosto(){
-        return pesoTiempo;
+        return pesoTiempo; //En horas
     }
 
     public long getId() {

@@ -22,26 +22,35 @@ public class GrafoAStar {
 
     public GrafoAStar(int mode) {
         //Modo 1: Obtener La lista de todas las oficinas en el mapa
+
+        listaOficinas = new ArrayList<>();
+        listaTramos = new ArrayList<>();
+
+
         if (mode == 1) {
             for (Oficina oficina : Mapa.listaOficinas){
                 VertexOficina vertice = new VertexOficina(oficina);
                 listaOficinas.add(vertice);
             }
             
+            for(Oficina almacen : Mapa.listaAlmacenes){
+                VertexOficina vertice = new VertexOficina(almacen);
+                listaOficinas.add(vertice);
+            }
     
             for (Tramo tramo : Mapa.listaTramos){
+
                 Arista arista = new Arista(tramo, getVertexByCodigoOficina(tramo.getCiudadFin().getCodigo()));
-                listaTramos.add(arista);
+                if (arista != null)
+                    listaTramos.add(arista);
+            }
+
+            for (VertexOficina v : listaOficinas){
+                v.setListaAristas(this.getListaAristasPorVertexOficina(v.getOficina().getCodigo()));
             }
 
         }
-
-        //Modo 2: Crear desde 0 y asignar una lista de oficinas luego.
-        else{
-            listaOficinas = new ArrayList<>();
-           listaTramos = new ArrayList<>();
-        }
-        //this.listaOficinas = listaOficinas;
+ 
         
     }
 
@@ -65,6 +74,19 @@ public class GrafoAStar {
         return null;
     }
 
+    public List<Arista> getListaAristasPorVertexOficina(String codOficina){
+
+        List<Arista> listaAristas = new ArrayList<>();      
+
+        for (int i = 0; i < this.listaTramos.size(); i++){
+            //Se obtiene la arista con la lista de tramos y el nodo final.
+            if (this.listaTramos.get(i).getTramo().getCiudadInicio().getCodigo() == codOficina)
+                listaAristas.add(listaTramos.get(i));
+        }
+
+        return listaAristas;
+    }
+
     public List<VertexOficina> getListaOficinas() {
         return listaOficinas;
     }
@@ -83,6 +105,13 @@ public class GrafoAStar {
 
     public void addVertex(VertexOficina vertexOficina){
         this.listaOficinas.add(vertexOficina);
+    }
+
+    public void resetCosts() {
+
+        for (VertexOficina v : listaOficinas){
+            v.reset();
+        }
     }
     
     
