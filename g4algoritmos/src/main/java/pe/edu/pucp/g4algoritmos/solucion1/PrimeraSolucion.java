@@ -78,7 +78,7 @@ public class PrimeraSolucion{
         //planesDeTransporte = asignarPedidosCamiones();
 
         //areaMaxima = areaPoligono();
-        simulatedAnnealing();
+        //simulatedAnnealing();
         
     }
 
@@ -144,18 +144,55 @@ public class PrimeraSolucion{
 
         for (Pedido p : listaPedidos)
             cantidadPaquetes += p.getCantidadTotal();
+
+        System.out.println((int) 0.988);
+
+        cantidadPaquetes = 500;
         
-        int cantidadCamionesA = (int) Math.round(cantidadPaquetes / 90.0);
+        int cantidadCamionesA = (int) (cantidadPaquetes / 90);
+        int cantPaquetesSobraA = cantidadPaquetes % 90;
+        int cantPaquetesSobraB = 0;
+        int cantidadCamionesB = 0;
+        int cantidadCamionesC = 0;
+        
 
-        if(cantidadCamionesA < countCamiones[0]){
-            cantidadCamionesA = countCamiones[0] - cantidadCamionesA;
-        }
-        else{
+        if(cantidadCamionesA > countCamiones[0]){
+            cantPaquetesSobraA = cantPaquetesSobraA + (cantidadCamionesA - countCamiones[0])*90;
             cantidadCamionesA = countCamiones[0];
+            cantidadCamionesB = (int) (cantPaquetesSobraA / 45);
+            cantPaquetesSobraB = cantPaquetesSobraA % 45;
+            cantPaquetesSobraA = 0;
+            if(cantidadCamionesB > countCamiones[1]){
+                cantPaquetesSobraB = cantPaquetesSobraB + (cantidadCamionesB - countCamiones[1])*45;
+                cantidadCamionesB = countCamiones[1];
+                cantidadCamionesC = (int) (cantPaquetesSobraB / 30);
+                cantPaquetesSobraB = 0;
+                if(cantidadCamionesC > countCamiones[2]){
+                    cantidadCamionesC = countCamiones[2];
+                }
+                
+            }
+            
         }
 
-        if (cantidadCamionesA > 0)
-            camiones.addAll(Mapa.extractListaCamionesPorAlmacen(almacen, 'A', cantidadCamionesA));
+        if(cantPaquetesSobraA > 0){
+
+            if(cantPaquetesSobraA > 45) cantidadCamionesA++;
+            if(cantPaquetesSobraA > 30 && cantPaquetesSobraA < 45) cantidadCamionesB++;
+            if(cantPaquetesSobraA < 30) cantidadCamionesC++;
+        }
+
+        if(cantPaquetesSobraB > 0){
+            if(cantPaquetesSobraB > 30 && cantPaquetesSobraB < 45) cantidadCamionesB++;
+            if(cantPaquetesSobraB < 30) cantidadCamionesC++;
+        }
+
+        
+        camiones.addAll(Mapa.extractListaCamionesPorAlmacen(almacen, 'A', cantidadCamionesA));
+        if (cantidadCamionesB > 0)
+            camiones.addAll(Mapa.extractListaCamionesPorAlmacen(almacen, 'B', cantidadCamionesB));
+        if (cantidadCamionesC > 0)
+            camiones.addAll(Mapa.extractListaCamionesPorAlmacen(almacen, 'C', cantidadCamionesC));
 
         return camiones;
     }
