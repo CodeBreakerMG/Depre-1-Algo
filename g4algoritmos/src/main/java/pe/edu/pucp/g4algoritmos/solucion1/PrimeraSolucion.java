@@ -72,13 +72,16 @@ public class PrimeraSolucion{
 
         
         listaPedidosPorZona = asignarPedidosPorZona();
-
+        /*for (int i = 0; i < listaZonas.size(); i++){
+            System.out.println("ZONA " + (i+1));       
+            System.out.println(listaPedidosPorZona.get(i));
+        }*/
         //Lo demas se hara con Simulated Annealing
         //ordenarPedidos();
         //planesDeTransporte = asignarPedidosCamiones();
 
         //areaMaxima = areaPoligono();
-        //simulatedAnnealing();
+        simulatedAnnealing();
         
     }
 
@@ -145,7 +148,7 @@ public class PrimeraSolucion{
         for (Pedido p : listaPedidos)
             cantidadPaquetes += p.getCantidadTotal();
 
-        System.out.println((int) 0.988);
+        //System.out.println((int) 0.988);
 
         cantidadPaquetes = 500;
         
@@ -423,7 +426,9 @@ public class PrimeraSolucion{
 
         for (int i = 0; i < listaZonas.size(); i++){
             long tiempoSalida = tiempoMaximoRegistroPedidos(listaPedidosPorZona.get(i));
+            System.out.println("TiempoSalida: " + tiempoSalida);
             List<Triplet<String, Long, Integer>> listaTiempos = tiempoMaximoPedidos(listaPedidosPorZona.get(i), listaOficinasXZona.get(i));
+            System.out.println("Lista tiempos: " + listaTiempos);
             listaOficinasXZona.get(i).sort(new OficinasComparator(listaTiempos, false));
             SimulatedAnnealing sa = new SimulatedAnnealing(listaOficinasXZona.get(i), listaTiempos, tiempoSalida);
             sa.simulate();
@@ -565,16 +570,17 @@ public class PrimeraSolucion{
         
         for (Oficina o : oficinas){
             long tiempo = 9 * (long)10e13; //en milisegundos
-            int numeroPedidos = 0;
+            //long tiempo = 0; //en milisegundos
+            int cantidadPaq = 0;
             for (Pedido p : pedidos){
                 if (p.getOficina().getCodigo() == o.getCodigo()){
-                    numeroPedidos++;
+                    cantidadPaq += p.getCantidadTotal();
                     if (tiempo > p.getFechaHoraLimite().getTime())
                         tiempo = p.getFechaHoraLimite().getTime();
                 }
 
             }    
-            Triplet<String, Long, Integer> tiemposOficina = new Triplet<>(o.getCodigo(), tiempo, numeroPedidos);
+            Triplet<String, Long, Integer> tiemposOficina = new Triplet<>(o.getCodigo(), tiempo, cantidadPaq);
             listaTiempos.add(tiemposOficina);
         }
 
