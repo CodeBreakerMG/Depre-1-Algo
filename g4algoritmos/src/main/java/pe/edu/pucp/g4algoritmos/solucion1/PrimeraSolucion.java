@@ -403,7 +403,7 @@ public class PrimeraSolucion{
             List<Oficina> oficinasZona = new ArrayList<>();
             
             //SE AGREGA ALMACEN al inicio de la lista
-            oficinasZona.add(almacen);
+            //oficinasZona.add(almacen);
             
             for (Pedido pedido : listaPedidos){
                 Coordinate coordPedido = new Coordinate(pedido.getOficina().getCoordX(), pedido.getOficina().getCoordY());    
@@ -446,9 +446,25 @@ public class PrimeraSolucion{
                 Integer: Cantidad de Paquetes a la oficina 
             */ 
             System.out.println("Lista tiempos: " + listaTiempos);
+            System.out.println("");
 
+            System.out.println("Lista oficinasxZona antes: ");
+            for(int z=0; z<listaOficinasXZona.get(i).size();z++){
+                System.out.print(listaOficinasXZona.get(i).get(z).getCodigo() + " ");
+            }
+            System.out.println("");
             listaOficinasXZona.get(i).sort(new OficinasComparator(listaTiempos, false));
-            
+            System.out.println("Lista oficinasxZona despues: ");
+            for(int x=0; x<listaOficinasXZona.get(i).size();x++){
+                System.out.print(listaOficinasXZona.get(i).get(x).getCodigo() + " ");
+            }
+            System.out.println("");
+            listaOficinasXZona.get(i).add(0, almacen);
+            System.out.println("Lista oficinasxZona despues de agregar almacen: ");
+            for(int z=0; z<listaOficinasXZona.get(i).size();z++){
+                System.out.print(listaOficinasXZona.get(i).get(z).getCodigo() + " ");
+            }
+            System.out.println("");
             SimulatedAnnealing sa = new SimulatedAnnealing(listaOficinasXZona.get(i), listaTiempos, tiempoSalida);
             sa.simulate();
             listaOficinasResultado = sa.getBestListaOficina();
