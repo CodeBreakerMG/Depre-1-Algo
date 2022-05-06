@@ -126,14 +126,22 @@ public class Mapa {
 
     public static double calcularDistancia(Oficina CiudadInicio, Oficina CiudadFin) {
         
-        double x1 = CiudadInicio.getCoordX();
-        double y1 = CiudadInicio.getCoordY();
-        double x2 = CiudadFin.getCoordX();
-        double y2 = CiudadFin.getCoordY();
+        final double RADIO = 6378.0; // Radio de la tierra en km
+        
+        double lat1 = CiudadInicio.getCoordY() * Math.PI / 180;
+        double lon1 = CiudadInicio.getCoordX() * Math.PI / 180;
+        double lat2 = CiudadFin.getCoordY() * Math.PI / 180;
+        double lon2 = CiudadFin.getCoordX() * Math.PI / 180;
 
-        //return Math.sqrt(x2-))
-        return Math.sqrt(Math.pow((x2-x1),2) + Math.pow((y2-y1),2));
+        double dif_lat = lat2 - lat1;
+        double dif_lon = lon2 - lon1;
 
+        double a = Math.pow(Math.sin(dif_lat/2), 2) +
+                    Math.cos(lat1) * Math.cos(lat2) * Math.pow(Math.sin(dif_lon/2), 2);
+
+        double distancia = 2 * RADIO * Math.asin(Math.sqrt(a));
+        
+        return distancia;
     }
 
 
