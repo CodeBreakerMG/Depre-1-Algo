@@ -1,4 +1,4 @@
-ackage pe.edu.pucp.g4algoritmos.solucion2;
+package pe.edu.pucp.g4algoritmos.solucion2;
 
 import java.util.ArrayList;
 import java.util.Collections;

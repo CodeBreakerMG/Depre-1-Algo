@@ -49,6 +49,4 @@ public class RepositoryPSO {
         this.almacenes = almacenes;
     }
 
-
-    
 }

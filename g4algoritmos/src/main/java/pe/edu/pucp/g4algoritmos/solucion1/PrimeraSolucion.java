@@ -150,7 +150,7 @@ public class PrimeraSolucion{
 
         //System.out.println((int) 0.988);
 
-        cantidadPaquetes = 500;
+        cantidadPaquetes = 500; //CAMBIAR, DEBE PASARSE EL PARÁMETRO
         
         int cantidadCamionesA = (int) (cantidadPaquetes / 90);
         int cantPaquetesSobraA = cantidadPaquetes % 90;
@@ -397,9 +397,13 @@ public class PrimeraSolucion{
         for (Geometry zona : listaZonas ){
             List<Pedido> pedidosZona = new ArrayList<>();
             List<Oficina> oficinasZona = new ArrayList<>();
+            
+            //SE AGREGA ALMACEN al inicio de la lista
             oficinasZona.add(almacen);
+            
             for (Pedido pedido : listaPedidos){
                 Coordinate coordPedido = new Coordinate(pedido.getOficina().getCoordX(), pedido.getOficina().getCoordY());    
+                //CERSIORARSE DE QUE SOLAMENTE SE AÑADA UNA OFICINA A UNA ZONA, LAS ZONAS NO  DEBEN COMPARTIR OFICINAS
                 if (SimplePointInAreaLocator.isContained(coordPedido, zona)){
                     pedidosZona.add(pedido);   
                     if (oficinasZona.contains(pedido.getOficina()) == false )
@@ -427,9 +431,18 @@ public class PrimeraSolucion{
         for (int i = 0; i < listaZonas.size(); i++){
             long tiempoSalida = tiempoMaximoRegistroPedidos(listaPedidosPorZona.get(i));
             System.out.println("TiempoSalida: " + tiempoSalida);
+
+            
             List<Triplet<String, Long, Integer>> listaTiempos = tiempoMaximoPedidos(listaPedidosPorZona.get(i), listaOficinasXZona.get(i));
+            /*
+                String: Código del Pedido
+                Long: Fecha y hora de llegada máxima a la oficina, en milisegundos desde 1/1/1970
+                Integer: Cantidad de Paquetes a la oficina 
+            */ 
             System.out.println("Lista tiempos: " + listaTiempos);
+
             listaOficinasXZona.get(i).sort(new OficinasComparator(listaTiempos, false));
+            
             SimulatedAnnealing sa = new SimulatedAnnealing(listaOficinasXZona.get(i), listaTiempos, tiempoSalida);
             sa.simulate();
             //System.out.println("Best Solution: "  + sa.getBest().getDistance());

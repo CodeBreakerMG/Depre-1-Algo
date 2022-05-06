@@ -1,10 +1,12 @@
 package pe.edu.pucp.g4algoritmos.solucion1;
  
+import java.util.ArrayList;
 import java.util.List;
 
 import org.javatuples.Triplet;
 
 import pe.edu.pucp.g4algoritmos.model.Oficina;
+import pe.edu.pucp.g4algoritmos.model.Tramo;
 
 public class SimulatedAnnealing {
 
@@ -60,8 +62,15 @@ public class SimulatedAnnealing {
 		
 		SingleTour newState = new SingleTour(actualState.getTour(), actualState.getTiemposLlegadaOficinas(), actualState.getTramosARecorrerPorOficina(), actualState.getCosto(), repository);
 		
-		int randomIndex1 = (int) (Math.random()*newState.getTourSize());
+        /*Cerseorarse que no sea almacen*/
+
+        int randomIndex1 = (int) (Math.random()*newState.getTourSize());
 		int randomIndex2 = (int) (Math.random()*newState.getTourSize());
+		
+        while (newState.getciudadesPedido().get(randomIndex1).EsAlmacen() == true || newState.getciudadesPedido().get(randomIndex2).EsAlmacen() == true ) {
+            randomIndex1 = (int) (Math.random()*newState.getTourSize());
+		    randomIndex2 = (int) (Math.random()*newState.getTourSize());
+        }
 		
 		Oficina city1 = newState.getOficina(randomIndex1);
 		Oficina city2 = newState.getOficina(randomIndex2);
@@ -92,5 +101,24 @@ public class SimulatedAnnealing {
         return bestState;
     }
 
+    public List<Oficina> getBestListaOficina(){
+        return bestState.getciudadesPedido();
+    }
 
+    public  List<List<Tramo>> getBestTramosXOficina(){
+        return bestState.getTramosARecorrerPorOficina();
+    }
+
+    public List<Tramo> getBestListaTramos(){
+        List<Tramo> bestlista = new ArrayList<>();
+
+        for (List<Tramo> tramos : bestState.getTramosARecorrerPorOficina() )
+            bestlista.addAll(tramos);
+
+        return bestlista;
+    }
+
+    public Double getBestCosto(){
+        return bestState.getCosto();
+    }
 }
