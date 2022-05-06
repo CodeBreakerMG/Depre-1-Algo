@@ -20,6 +20,13 @@ public class Mapa {
     public static final double limiteYSuperior = 0.0; //Coordenadas superior inferior Y
     public static double velocidadCamiones = 60.0; //Velocidad Promedio camiones (KM/H). Se debe de cambiar a 5 velocidades en el futuro.
 
+    public static double velocidadCostaCosta   = 70.0; // Velocidad en km/h de costa a costa
+    public static double velocidadCostaSierra  = 50.0; // Velocidad en km/h de costa a sierra
+    public static double velocidadSierraSierra = 60.0; // Velocidad en km/h de sierra a sierra
+    public static double velocidadSierraSelva  = 55.0; // Velocidad en km/h de sierra a selva
+    public static double velocidadSelvaSelva   = 65.0; // Velocidad en km/h de selva a selva
+    public static double velocidadCostaSelva   = 60.0; // Velocidad en km/h de costa a selva (not expected)
+
     public static double duracionMantenimiento = 1.0; //Duración del mantenimiento en Horas
 
     public Date fechaHoraComienzo;//DateTime de la fecha de comienzo de la simulacion
@@ -126,14 +133,22 @@ public class Mapa {
 
     public static double calcularDistancia(Oficina CiudadInicio, Oficina CiudadFin) {
         
-        double x1 = CiudadInicio.getCoordX();
-        double y1 = CiudadInicio.getCoordY();
-        double x2 = CiudadFin.getCoordX();
-        double y2 = CiudadFin.getCoordY();
+        final double RADIO = 6378.0; // Radio de la tierra en km
+        
+        double lat1 = CiudadInicio.getCoordY() * Math.PI / 180;
+        double lon1 = CiudadInicio.getCoordX() * Math.PI / 180;
+        double lat2 = CiudadFin.getCoordY() * Math.PI / 180;
+        double lon2 = CiudadFin.getCoordX() * Math.PI / 180;
 
-        //return Math.sqrt(x2-))
-        return Math.sqrt(Math.pow((x2-x1),2) + Math.pow((y2-y1),2));
+        double dif_lat = lat2 - lat1;
+        double dif_lon = lon2 - lon1;
 
+        double a = Math.pow(Math.sin(dif_lat/2), 2) +
+                    Math.cos(lat1) * Math.cos(lat2) * Math.pow(Math.sin(dif_lon/2), 2);
+
+        double distancia = 2 * RADIO * Math.asin(Math.sqrt(a));
+        
+        return distancia;
     }
 
 
@@ -300,5 +315,38 @@ public class Mapa {
                 counter ++;
         }
         return counter;
+    }
+    
+    public static double getVelocidadByRegiones(char reg1, char reg2){
+        if(reg1 == 'C' && reg2 == 'C')
+            return velocidadCostaCosta;
+        if((reg1 == 'C' && reg2 == 'S') || (reg1 == 'S' && reg2 == 'C'))
+            return velocidadCostaSierra;
+        if(reg1 == 'S' && reg2 == 'S')
+            return velocidadSierraSierra;
+        if((reg1 == 'S' && reg2 == 'E') || (reg1 == 'E' && reg2 == 'S'))
+            return velocidadSierraSelva;
+        if(reg1 == 'E' && reg2 == 'E')
+            return velocidadSelvaSelva;
+        if((reg1 == 'C' && reg2 == 'E') || (reg1 == 'E' && reg2 == 'C'))
+            return velocidadCostaSelva;
+        return 60.0;
+    }
+
+    public static double getVelocidadByOficinas(Oficina current, Oficina destination){
+        char regionInicio = current.getRegion();
+        char regionFin = destination.getRegion();
+
+        return getVelocidadByRegiones(regionInicio, regionFin);        
+    }
+
+    public static double getVelocidadByCodOficinas(String codOficinaInicio, String codOficinaFin){
+        Oficina oficinaInicio = getOficinaByCodigo(codOficinaInicio);
+        Oficina oficinaFin = getOficinaByCodigo(codOficinaFin);
+        
+        if(oficinaInicio != null && oficinaFin != null)
+            return getVelocidadByOficinas(oficinaInicio, oficinaFin);
+        
+        return 60.0;
     }
 }

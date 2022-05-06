@@ -32,7 +32,7 @@ public class Tramo {
 
         distancia = calcularDistancia();
         pesoRegion = calcularPesoRegion();
-        pesoTiempo = (distancia/ Mapa.velocidadCamiones) + pesoRegion;
+        pesoTiempo = (distancia/ Mapa.getVelocidadByOficinas(CiudadInicio, CiudadFin)) + pesoRegion;
         this.estado = 1;
 
     }
