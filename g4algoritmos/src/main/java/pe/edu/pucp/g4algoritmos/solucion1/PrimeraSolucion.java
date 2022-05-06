@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 
 import org.locationtech.jts.geom.Coordinate;
@@ -434,11 +435,16 @@ public class PrimeraSolucion{
 
         for (int i = 0; i < listaZonas.size(); i++){
             long tiempoSalida = tiempoMaximoRegistroPedidos(listaPedidosPorZona.get(i));
-            System.out.println("");
-            System.out.println("Zona " + (i+1));
-            System.out.println("TiempoSalida: " + tiempoSalida);
-
             
+            Date fechita = fechaHoraMaximaSalida(listaPedidosPorZona.get(i)) ;
+
+
+            System.out.println("");
+            System.out.println("Zona: " + (i+1));
+            System.out.println("N° de Pedidos: " + listaPedidosPorZona.get(i).size());
+            System.out.println("Hora de Salida: " + fechita);
+
+            if(listaPedidosPorZona.get(i).size()>0){
             List<Triplet<String, Long, Integer>> listaTiempos = tiempoMaximoPedidos(listaPedidosPorZona.get(i), listaOficinasXZona.get(i));
             /*
                 String: Código del Pedido
@@ -459,7 +465,8 @@ public class PrimeraSolucion{
             System.out.println("");
             System.out.println("Mejor costo solucion: " + sa.getBestCosto());
             //System.out.println("Best Solution: "  + sa.getBest().getDistance());
-            //System.out.println(sa.getBest());        
+            //System.out.println(sa.getBest()); 
+            }      
 
         }
 
@@ -628,5 +635,17 @@ public class PrimeraSolucion{
 
             return tiempo;
     }
+    public static Date fechaHoraMaximaSalida(List<Pedido> pedidos){
+        long tiempo = 0;
+        for (Pedido p :pedidos){
+            if (tiempo < p.getFechaHoraPedido().getTime()){
+                tiempo = p.getFechaHoraPedido().getTime();
+                Date fecha = p.getFechaHoraPedido();
+            }
+        }
+
+        return fecha;
+}
+
     
 }
