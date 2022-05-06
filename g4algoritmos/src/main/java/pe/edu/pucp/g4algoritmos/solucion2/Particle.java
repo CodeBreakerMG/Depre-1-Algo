@@ -1,4 +1,4 @@
-package pe.edu.pucp.g4algoritmos.solucion2;
+ackage pe.edu.pucp.g4algoritmos.solucion2;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,13 +17,16 @@ public class Particle {
 
     public Particle(List<Oficina> listOficinas, List<Double> velocity) {
 
-        this.currentPosition = new ArrayList<>();
+        this.currentPosition = new ArrayList<>(listOficinas.size());
         
-        this.velocity = new double[ConstantesPSO.NUM_DIMENSIONS];
-        this.bestPosition = new double[ConstantesPSO.NUM_DIMENSIONS];
+        this.velocity = new ArrayList<>(listOficinas.size());
+        this.bestPosition = new ArrayList<>(listOficinas.size());
 
-        System.arraycopy(velocity, 0, this.velocity, 0, velocity.length);
-        System.arraycopy(position, 0, this.position, 0, position.length);
+        System.arraycopy(velocity, 0, this.velocity, 0, velocity.size());
+
+        
+        System.arraycopy(currentPosition, 0, this.currentPosition, 0, velocity.size());
+        
     
     }
 
