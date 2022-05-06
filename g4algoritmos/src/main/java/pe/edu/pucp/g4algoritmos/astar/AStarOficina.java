@@ -85,7 +85,7 @@ public class AStarOficina {
     private double calcularH(Oficina current, Oficina destination){
         
         double costo = heuristicEucledian(current, destination);
-        costo = (costo / Mapa.velocidadCamiones) ;
+        costo = (costo / Mapa.getVelocidadByOficinas(current, destination));
         return costo;
 
         //El costo del tramo sería: peso tiempo + destinos de los pedidos

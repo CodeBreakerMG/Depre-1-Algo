@@ -25,8 +25,8 @@ public class Oficina {
     private String departamento; //Nombre Departamento (ejem:  AREQUIPA)
     private String provincia; //Nombre Provincia (ejem: CAMANA)
     private char region;  //C: Costa, S: Sierra, E: Selva
-    private double coordX; //coordX: (Latitud ACTUAL, coordenada x, ejem: -13.51802722)
-    private double coordY; //(Longitud ACTUAL, coordenada y, ejem: 73.51802722)
+    private double coordX; //(Longitud ACTUAL en grados, coordenada x, ejem: 73.51802722)
+    private double coordY; //(Latitud  ACTUAL en grados, coordenada y, ejem:-13.51802722)
     private int estado; //Estado de la Oficina
     private int esAlmacen; //0: No es almacen, 1: Es almacén
 
