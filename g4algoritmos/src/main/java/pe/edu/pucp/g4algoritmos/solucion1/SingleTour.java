@@ -46,7 +46,7 @@ public class SingleTour {
         for (int OficinaIndex = 0; OficinaIndex < ciudadesPedido.size(); ++OficinaIndex){
             Oficina fromOficina = ciudadesPedido.get(OficinaIndex);
             Oficina destinationOficina = null;
-            System.out.println(tiempoTotal);
+            //System.out.println(tiempoTotal);
             if(OficinaIndex + 1 < ciudadesPedido.size())
                 destinationOficina = ciudadesPedido.get(OficinaIndex + 1);
             else
