@@ -42,6 +42,9 @@ public class PrimeraSolucion{
     public static int cantidadZonasDeReparto = 9;                             //Numero de zonas, 9 por defecto  
     public static Polygon poligonPedidos ; //Polígono que contiene todas las zonas, y a su vez las coordenadas de todos los pedidos
     public static List<Coordinate> coordinates; //Coordenadas de todas las oficinas.
+
+    /*Variables resultados*/
+    public static List<Oficina> listaOficinasResultado = new ArrayList<>();
     
     /*Variables Auxiliares*/ 
 
@@ -53,13 +56,14 @@ public class PrimeraSolucion{
         
         Mapa.inicializarGrafoAstar();
 
+        System.out.println("");
         //Inputs de la PrimeraSolucion
         this.listaPedidos = listaPed;
         this.almacen = alm;
 
         /*I. Oficinas de todos los pedido*/
         listaOficinas = contabilizarOficinas();
-        System.out.println(String.format("Cantidad de oficinas:  %4d", listaOficinas.size()));
+        System.out.println(String.format("Cantidad de oficinas a recorrer:  %4d", listaOficinas.size()));
         /*II: Polígono o área de reparto total (solo incluye oficinas con al menos un pedido*/
         coordinates = generateCoordinatesOficina();
         poligonPedidos = crearPoligono();
@@ -67,7 +71,7 @@ public class PrimeraSolucion{
 
         
         listaCamiones = seleccionarCam();
-        System.out.println(String.format("Cantidad de camiones:  %4d", listaCamiones.size()));
+        System.out.println(String.format("Cantidad de camiones a utilizar:  %4d", listaCamiones.size()));
         listaZonas = generarZonasReparto();
 
         
@@ -430,6 +434,8 @@ public class PrimeraSolucion{
 
         for (int i = 0; i < listaZonas.size(); i++){
             long tiempoSalida = tiempoMaximoRegistroPedidos(listaPedidosPorZona.get(i));
+            System.out.println("");
+            System.out.println("Zona " + (i+1));
             System.out.println("TiempoSalida: " + tiempoSalida);
 
             
@@ -445,6 +451,13 @@ public class PrimeraSolucion{
             
             SimulatedAnnealing sa = new SimulatedAnnealing(listaOficinasXZona.get(i), listaTiempos, tiempoSalida);
             sa.simulate();
+            listaOficinasResultado = sa.getBestListaOficina();
+            System.out.println("Lista oficinas: ");
+            for(int w=0; w<listaOficinasResultado.size();w++){
+                System.out.print(listaOficinasResultado.get(w).getCodigo() + " ");
+            }
+            System.out.println("");
+            System.out.println("Mejor costo solucion: " + sa.getBestCosto());
             //System.out.println("Best Solution: "  + sa.getBest().getDistance());
             //System.out.println(sa.getBest());        
 
