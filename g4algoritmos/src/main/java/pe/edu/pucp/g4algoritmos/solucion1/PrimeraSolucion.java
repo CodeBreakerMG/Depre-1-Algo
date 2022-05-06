@@ -72,7 +72,10 @@ public class PrimeraSolucion{
 
         
         listaPedidosPorZona = asignarPedidosPorZona();
-
+        /*for (int i = 0; i < listaZonas.size(); i++){
+            System.out.println("ZONA " + (i+1));       
+            System.out.println(listaPedidosPorZona.get(i));
+        }*/
         //Lo demas se hara con Simulated Annealing
         //ordenarPedidos();
         //planesDeTransporte = asignarPedidosCamiones();
@@ -144,18 +147,55 @@ public class PrimeraSolucion{
 
         for (Pedido p : listaPedidos)
             cantidadPaquetes += p.getCantidadTotal();
+
+        //System.out.println((int) 0.988);
+
+        cantidadPaquetes = 500;
         
-        int cantidadCamionesA = (int) Math.round(cantidadPaquetes / 90.0);
+        int cantidadCamionesA = (int) (cantidadPaquetes / 90);
+        int cantPaquetesSobraA = cantidadPaquetes % 90;
+        int cantPaquetesSobraB = 0;
+        int cantidadCamionesB = 0;
+        int cantidadCamionesC = 0;
+        
 
-        if(cantidadCamionesA < countCamiones[0]){
-            cantidadCamionesA = countCamiones[0] - cantidadCamionesA;
-        }
-        else{
+        if(cantidadCamionesA > countCamiones[0]){
+            cantPaquetesSobraA = cantPaquetesSobraA + (cantidadCamionesA - countCamiones[0])*90;
             cantidadCamionesA = countCamiones[0];
+            cantidadCamionesB = (int) (cantPaquetesSobraA / 45);
+            cantPaquetesSobraB = cantPaquetesSobraA % 45;
+            cantPaquetesSobraA = 0;
+            if(cantidadCamionesB > countCamiones[1]){
+                cantPaquetesSobraB = cantPaquetesSobraB + (cantidadCamionesB - countCamiones[1])*45;
+                cantidadCamionesB = countCamiones[1];
+                cantidadCamionesC = (int) (cantPaquetesSobraB / 30);
+                cantPaquetesSobraB = 0;
+                if(cantidadCamionesC > countCamiones[2]){
+                    cantidadCamionesC = countCamiones[2];
+                }
+                
+            }
+            
         }
 
-        if (cantidadCamionesA > 0)
-            camiones.addAll(Mapa.extractListaCamionesPorAlmacen(almacen, 'A', cantidadCamionesA));
+        if(cantPaquetesSobraA > 0){
+
+            if(cantPaquetesSobraA > 45) cantidadCamionesA++;
+            if(cantPaquetesSobraA > 30 && cantPaquetesSobraA < 45) cantidadCamionesB++;
+            if(cantPaquetesSobraA < 30) cantidadCamionesC++;
+        }
+
+        if(cantPaquetesSobraB > 0){
+            if(cantPaquetesSobraB > 30 && cantPaquetesSobraB < 45) cantidadCamionesB++;
+            if(cantPaquetesSobraB < 30) cantidadCamionesC++;
+        }
+
+        
+        camiones.addAll(Mapa.extractListaCamionesPorAlmacen(almacen, 'A', cantidadCamionesA));
+        if (cantidadCamionesB > 0)
+            camiones.addAll(Mapa.extractListaCamionesPorAlmacen(almacen, 'B', cantidadCamionesB));
+        if (cantidadCamionesC > 0)
+            camiones.addAll(Mapa.extractListaCamionesPorAlmacen(almacen, 'C', cantidadCamionesC));
 
         return camiones;
     }
@@ -386,7 +426,9 @@ public class PrimeraSolucion{
 
         for (int i = 0; i < listaZonas.size(); i++){
             long tiempoSalida = tiempoMaximoRegistroPedidos(listaPedidosPorZona.get(i));
+            System.out.println("TiempoSalida: " + tiempoSalida);
             List<Triplet<String, Long, Integer>> listaTiempos = tiempoMaximoPedidos(listaPedidosPorZona.get(i), listaOficinasXZona.get(i));
+            System.out.println("Lista tiempos: " + listaTiempos);
             listaOficinasXZona.get(i).sort(new OficinasComparator(listaTiempos, false));
             SimulatedAnnealing sa = new SimulatedAnnealing(listaOficinasXZona.get(i), listaTiempos, tiempoSalida);
             sa.simulate();
@@ -528,16 +570,17 @@ public class PrimeraSolucion{
         
         for (Oficina o : oficinas){
             long tiempo = 9 * (long)10e13; //en milisegundos
-            int numeroPedidos = 0;
+            //long tiempo = 0; //en milisegundos
+            int cantidadPaq = 0;
             for (Pedido p : pedidos){
                 if (p.getOficina().getCodigo() == o.getCodigo()){
-                    numeroPedidos++;
+                    cantidadPaq += p.getCantidadTotal();
                     if (tiempo > p.getFechaHoraLimite().getTime())
                         tiempo = p.getFechaHoraLimite().getTime();
                 }
 
             }    
-            Triplet<String, Long, Integer> tiemposOficina = new Triplet<>(o.getCodigo(), tiempo, numeroPedidos);
+            Triplet<String, Long, Integer> tiemposOficina = new Triplet<>(o.getCodigo(), tiempo, cantidadPaq);
             listaTiempos.add(tiemposOficina);
         }
 
