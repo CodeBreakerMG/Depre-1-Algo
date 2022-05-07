@@ -100,6 +100,7 @@ public class App
         System.out.println(String.format("Cantidad de camiones:  %4d", Mapa.listaCamiones.size()));
 
         solucion.inicializar(Mapa.getListaPedidos(), alm);
+        //-> Poner: solucion.inicializar(Mapa.getListaPedidosPorAlmacen(alm), alm) //Ejecutar para cada almacen
 
         //Función que llama al PSO:
         //PSOMain.Main();

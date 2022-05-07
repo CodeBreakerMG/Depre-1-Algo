@@ -348,9 +348,9 @@ public class PrimeraSolucion{
             if(listaPedidosPorZona.get(i).size()>0){
             //Solo imprimiremos Hora de Salida cuando haya pedidos
             System.out.println("Hora y Fecha de Salida: " + cadenaFechaSalida);
-            List<Triplet<String, Long, Integer>> listaTiempos = tiempoMaximoPedidos(listaPedidosPorZona.get(i), listaOficinasXZona.get(i));
+            List<Triplet<String, Long, Integer>> listaTiempos = tiempoMaximoPedidos(listaPedidosPorZona.get(i), listaOficinasXZona.get(i), fechaSalida);
             /*
-                String: Código del Pedido
+                String: Código de la oficina destino del Pedido
                 Long: Fecha y hora de llegada máxima a la oficina, en milisegundos desde 1/1/1970
                 Integer: Cantidad de Paquetes a la oficina 
             */ 
@@ -398,6 +398,8 @@ public class PrimeraSolucion{
             }
 
             listaTramosResultado = sa.getBestListaTramos();
+
+            /*FALTA: Elegir el camion para el plan de transporte y asignar pedidos al camion*/
 
 
 /*
@@ -537,29 +539,36 @@ public class PrimeraSolucion{
         return listaTemp;
     }
 
-    public static List<Triplet<String, Long, Integer>> tiempoMaximoPedidos(List<Pedido> pedidos, List<Oficina> oficinas){
+    public static List<Triplet<String, Long, Integer>> tiempoMaximoPedidos(List<Pedido> pedidos, List<Oficina> oficinas, Date fechaSalida){
         
         List<Triplet<String, Long, Integer>> listaTiempos = new ArrayList<>(); //String: CodOficina, Long: tiempo promedio en milisegundos, integer: num Pedidos)
         
         
         for (Oficina o : oficinas){
             long tiempo = 9 * (long)10e13; //en milisegundos
+            long tiempoRealHoras = 0;
+            Date fechaMax = new Date();
             //long tiempo = 0; //en milisegundos
             int cantidadPaq = 0;
             for (Pedido p : pedidos){
                 if (p.getOficina().getCodigo() == o.getCodigo()){
                     cantidadPaq += p.getCantidadTotal();
-                    if (tiempo > p.getFechaHoraLimite().getTime())
+                    if (tiempo > p.getFechaHoraLimite().getTime()){
                         tiempo = p.getFechaHoraLimite().getTime();
+                        fechaMax = p.getFechaHoraLimite();
+                        Long temp = p.getFechaHoraLimite().getTime() - fechaSalida.getTime();
+                        tiempoRealHoras = temp/3600000;
+                    }
                 }
 
-            }    
-            Triplet<String, Long, Integer> tiemposOficina = new Triplet<>(o.getCodigo(), tiempo, cantidadPaq);
+            }
+            String cadenaFecha = formatDateString(fechaMax);
+            Triplet<String, Long, Integer> tiemposOficina = new Triplet<>(o.getCodigo(), tiempoRealHoras, cantidadPaq);
             listaTiempos.add(tiemposOficina);
         }
 
 
-        listaTiempos.sort(new TiemposOficinaComparator());
+        //listaTiempos.sort(new TiemposOficinaComparator());
         //Collections.sort(oficinas, Comparator.comparing(item -> listaTiempos.indexOf(item)));
 
         return listaTiempos;
