@@ -3,6 +3,11 @@ package pe.edu.pucp.g4algoritmos.solucion1;
 import pe.edu.pucp.g4algoritmos.model.*;
 import pe.edu.pucp.g4algoritmos.utilitarios.Stats;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.BufferedWriter;
+import java.io.PrintWriter;
+import java.io.Writer;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -55,18 +60,19 @@ public class PrimeraSolucion{
     
     public PrimeraSolucion(){}
 
-    public void inicializar(List<Pedido> listaPed, Oficina alm){
+    public void inicializar(List<Pedido> listaPed, Oficina alm, PrintWriter writer){
         
         Mapa.inicializarGrafoAstar();
 
-        System.out.println("");
+        //System.out.println("");
         //Inputs de la PrimeraSolucion
         this.listaPedidos = listaPed;
         this.almacen = alm;
 
         /*I. Oficinas de todos los pedido*/
         listaOficinas = contabilizarOficinas();
-        System.out.println(String.format("Cantidad de oficinas a recorrer:  %4d", listaOficinas.size()));
+        writer.println(String.format("Cantidad de oficinas a recorrer:  %4d", listaOficinas.size()));
+        //System.out.println(String.format("Cantidad de oficinas a recorrer:  %4d", listaOficinas.size()));
         /*II: Polígono o área de reparto total (solo incluye oficinas con al menos un pedido*/
         coordinates = generateCoordinatesOficina();
         poligonPedidos = crearPoligono();
@@ -74,7 +80,8 @@ public class PrimeraSolucion{
 
         
         listaCamiones = seleccionarCam();
-        System.out.println(String.format("Cantidad de camiones a utilizar:  %4d", listaCamiones.size()));
+        writer.println(String.format("Cantidad de camiones a utilizar:  %4d", listaCamiones.size()));
+        //System.out.println(String.format("Cantidad de camiones a utilizar:  %4d", listaCamiones.size()));
         listaZonas = generarZonasReparto();
 
         
@@ -88,7 +95,7 @@ public class PrimeraSolucion{
         //planesDeTransporte = asignarPedidosCamiones();
 
         //areaMaxima = areaPoligono();
-        simulatedAnnealing();
+        simulatedAnnealing(writer);
         
     }
 
@@ -327,7 +334,7 @@ public class PrimeraSolucion{
     /*7. Ordenamiento de prioridades de pedidos según tiempo, distancia, etc*/
 
 
-    public void simulatedAnnealing(){
+    public void simulatedAnnealing(PrintWriter writer){
 
     /*
         Función que determinará el orden de las oficinas en base a 
@@ -339,62 +346,66 @@ public class PrimeraSolucion{
             long tiempoSalida = tiempoMaximoRegistroPedidos(listaPedidosPorZona.get(i));
             Date fechaSalida = fechaHoraMaximaSalida(listaPedidosPorZona.get(i)) ;
             String cadenaFechaSalida = formatDateString(fechaSalida);
-
+            /*
             System.out.println("");
             System.out.println("Zona: " + (i+1));
             System.out.println("N° de Pedidos: " + listaPedidosPorZona.get(i).size());
+            */
+            writer.println("");
+            writer.println("Zona: " + (i+1));
+            writer.println("N° de Pedidos: " + listaPedidosPorZona.get(i).size());
             
 
             if(listaPedidosPorZona.get(i).size()>0){
             //Solo imprimiremos Hora de Salida cuando haya pedidos
-            System.out.println("Hora y Fecha de Salida: " + cadenaFechaSalida);
+            writer.println("Hora y Fecha de Salida: " + cadenaFechaSalida);
             List<Triplet<String, Long, Integer>> listaTiempos = tiempoMaximoPedidos(listaPedidosPorZona.get(i), listaOficinasXZona.get(i), fechaSalida);
             /*
                 String: Código de la oficina destino del Pedido
                 Long: Fecha y hora de llegada máxima a la oficina, en milisegundos desde 1/1/1970
                 Integer: Cantidad de Paquetes a la oficina 
             */ 
-            System.out.println("Lista tiempos: " + listaTiempos);
-            System.out.println("");
+            writer.println("Lista tiempos: " + listaTiempos);
+            writer.println("");
 
-            System.out.println("Lista oficinasxZona antes: ");
+            writer.println("Lista oficinasxZona antes: ");
             for(int z=0; z<listaOficinasXZona.get(i).size();z++){
-                System.out.print(listaOficinasXZona.get(i).get(z).getProvincia() + " ");
+                writer.print(listaOficinasXZona.get(i).get(z).getProvincia() + " ");
             }
-            System.out.println("");
+            writer.println("");
             listaOficinasXZona.get(i).sort(new OficinasComparator(listaTiempos, false));
-            System.out.println("Lista oficinasxZona despues: ");
+            writer.println("Lista oficinasxZona despues: ");
             for(int x=0; x<listaOficinasXZona.get(i).size();x++){
-                System.out.print(listaOficinasXZona.get(i).get(x).getProvincia() + " ");
+                writer.print(listaOficinasXZona.get(i).get(x).getProvincia() + " ");
             }
-            System.out.println("");
+            writer.println("");
             listaOficinasXZona.get(i).add(0, almacen);
-            System.out.println("Lista oficinasxZona despues de agregar almacen: ");
+            writer.println("Lista oficinasxZona despues de agregar almacen: ");
             for(int z=0; z<listaOficinasXZona.get(i).size();z++){
-                System.out.print(listaOficinasXZona.get(i).get(z).getProvincia() + " ");
+                writer.print(listaOficinasXZona.get(i).get(z).getProvincia() + " ");
             }
-            System.out.println("");
+            writer.println("");
 
             SimulatedAnnealing sa = new SimulatedAnnealing(listaOficinasXZona.get(i), listaTiempos, tiempoSalida);
-            sa.simulate();
+            sa.simulate(writer);
             listaOficinasResultado = sa.getBestListaOficina();
-            System.out.println("Lista oficinas: ");
+            writer.println("Lista oficinas: ");
             for(int w=0; w<listaOficinasResultado.size();w++){
-                System.out.print(listaOficinasResultado.get(w).getProvincia() + " ");
+                writer.print(listaOficinasResultado.get(w).getProvincia() + " ");
             }
-            System.out.println("");
-            System.out.println("Mejor costo solucion: " + sa.getBestCosto());
+            writer.println("");
+            writer.println("Mejor costo solucion: " + sa.getBestCosto());
             
             listaTramosXOficinaResultado = sa.getBestTramosXOficina();
-            System.out.println("");
+            writer.println("");
             int contadorOfi = 0;
             for(List<Tramo> listTramo : listaTramosXOficinaResultado){
                 contadorOfi++;
-                System.out.print("Lista de Tramos Oficina " + contadorOfi + ": ");
+                writer.print("Lista de Tramos Oficina " + contadorOfi + ": ");
                 for(Tramo t: listTramo){
-                    System.out.println(t.getCiudadInicio().getProvincia() + " => " + t.getCiudadFin().getProvincia() + " => ");
+                    writer.println(t.getCiudadInicio().getProvincia() + " => " + t.getCiudadFin().getProvincia() + " => ");
                 }
-                System.out.println("");
+                writer.println("");
             }
 
             listaTramosResultado = sa.getBestListaTramos();
@@ -413,7 +424,7 @@ public class PrimeraSolucion{
 
         }
 
-        System.out.println("El simulated annealing terminó");
+        writer.println("El simulated annealing terminó");
     }
 
 
