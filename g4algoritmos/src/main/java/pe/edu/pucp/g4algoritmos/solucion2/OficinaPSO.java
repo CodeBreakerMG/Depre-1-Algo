@@ -12,7 +12,8 @@ public class OficinaPSO {
 
     private Oficina oficina; //Oficina en la que se dejará un pedido al menos (No incluye ciudades intermedias)
     private List<Pedido> pedidos; //Pedidos de la Oficina
-    private Date l;                 //e: tiempoMinimoLlegada
+    private Date l;                 //l: tiempoMaximoLlegada
+    private Date e;                 //e: tiempoMinimo de salida del camion o enrutamiento para esta ciudad //Ultimo pedido registrado
     private int q;                  //q: cantidad de paquetes A
 
     public OficinaPSO(Oficina oficina) {
@@ -20,6 +21,7 @@ public class OficinaPSO {
         this.pedidos = new ArrayList<>();
         q = 0;
         l = new Date(9 * (long)10e13);
+        e = new Date(1 * (long)10e13);
     }
 
     public OficinaPSO() {
@@ -66,6 +68,15 @@ public class OficinaPSO {
         this.l = l;
     }
 
+    
+    public Date getE() {
+        return e;
+    }
+
+    public void setE(Date e) {
+        this.e = e;
+    }
+
     public int getQ() {
         return q;
     }
@@ -81,6 +92,16 @@ public class OficinaPSO {
     public void setTiempoLimiteLlegada(Date l) {
         this.l = l;
     }
+
+
+    public Date tiempoMinimoSalidaCamion() {
+        return e;
+    }
+
+    public void setTiempoMinimoSalidaCamion(Date e) {
+        this.e = e;
+    }
+
 
     public int cantidadPaquetes() {
         return q;

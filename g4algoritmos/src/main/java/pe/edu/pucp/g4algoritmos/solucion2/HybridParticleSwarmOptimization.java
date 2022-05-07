@@ -1,25 +1,29 @@
 package pe.edu.pucp.g4algoritmos.solucion2;
 
 import java.util.List;
+import java.util.PriorityQueue;
 
 import pe.edu.pucp.g4algoritmos.model.Camion;
 import pe.edu.pucp.g4algoritmos.model.Oficina;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class HybridParticleSwarmOptimization {
     
     private List<Position> globalBestSolution;  //Best global solution 
     private Particle[] particleSwarm;           //Collection of particles that will compose the swarm
-    private int epochs;                         //To count how many iterations we are going to make
+    private int epochs = 0;                         //To count how many iterations we are going to make
+    private double globalBestCost;
 
     
     private RepositoryPSO repository;
     private int num_dimensions ;                //Numero de oficinas
     private int num_almacenes ;                 //Numero de almacenes
-    private double min = 0.0;
+    private double min = 0.0;                   //min value (as parameter constant of PSO)
 
-    public HybridParticleSwarmOptimization(List<Oficina> oficinas, List<Camion> camiones, List<Oficina> almacenes, double tiempoSalida) {
+    public HybridParticleSwarmOptimization(List<OficinaPSO> oficinas, List<Camion> camiones, List<Oficina> almacenes, Date tiempoSalida) {
 
         /*Repositorio*/   
         this.repository = new RepositoryPSO(oficinas, camiones, almacenes, tiempoSalida);
@@ -28,6 +32,25 @@ public class HybridParticleSwarmOptimization {
         num_dimensions = oficinas.size();
         num_almacenes = almacenes.size();   //Se asume solo un almacen, por el momento:
         this.min = 0.0;
+
+        initializa();
+    }
+
+    public HybridParticleSwarmOptimization(List<OficinaPSO> oficinas, List<Oficina> almacenes, Date tiempoSalida) {
+
+        /*Repositorio*/   
+        this.repository = new RepositoryPSO(oficinas, almacenes, tiempoSalida);
+        
+        /*Definición de las constantes del problema*/
+        num_dimensions = oficinas.size();
+        num_almacenes = almacenes.size();   //Se asume solo un almacen, por el momento:
+        
+        initializa();
+        
+
+    }
+
+    private void initializa(){
 
         this.globalBestSolution = new ArrayList<>(num_dimensions); 
         this.particleSwarm = new Particle[ConstantesPSO.NUM_PARTICLES]; 
@@ -40,8 +63,8 @@ public class HybridParticleSwarmOptimization {
     private void generateRandomSolution() {
         for (int i = 0; i < num_dimensions; ++i){
             double randCoordinate = random(this.min, (double)num_almacenes);
-            Position pos = new Position(repository.getOficina(i), randCoordinate);
-            this.globalBestSolution.set(i, pos);
+            Position pos = new Position(repository.getOficinaPSO(i), randCoordinate);
+            this.globalBestSolution.add(pos);
         }
     }
 
@@ -52,7 +75,7 @@ public class HybridParticleSwarmOptimization {
             List<Double>  locations = initializeLocations();
             List<Double> velocities = initializeVelocities();
 
-            this.particleSwarm[i] = new Particle(repository.getOficinas(), locations, velocities);
+            this.particleSwarm[i] = new Particle(repository.getOficinasPSO(), locations, velocities);
         }
 
         while ( epochs < ConstantesPSO.MAX_ITERATIONS){
@@ -90,8 +113,12 @@ public class HybridParticleSwarmOptimization {
             actualParticle.setBestPositions(actualParticle.getCurrentPositions());
         }
         //5. Check for best position for the particle
-        if (fitnessFunction(actualParticle.getBestPositions()) < fitnessFunction(this.globalBestSolution)){
+
+        double gBest = fitnessFunction(actualParticle.getBestPositions());
+        if (gBest < fitnessFunction(this.globalBestSolution)){
             setGlobalBestPositions(actualParticle.getBestPositions());
+            globalBestCost = gBest;
+            System.out.println("Best So far: " + gBest);
         }   
 
 
@@ -101,16 +128,14 @@ public class HybridParticleSwarmOptimization {
         }
     }
 
-    
-
-
 
     private List<Double> initializeLocations(){
         /**/
         List<Double> newLocations = new ArrayList<>();
 
         for (int i = 0; i < num_dimensions ; i++){
-            newLocations.add(random(this.min, (double) num_almacenes));
+            double loc = random(this.min, (double) num_almacenes);
+            newLocations.add(loc);
         }
 
         return newLocations;
@@ -121,7 +146,7 @@ public class HybridParticleSwarmOptimization {
         List<Double> newVelocities = new ArrayList<>();
 
         for (int i = 0; i < num_dimensions ; i++){
-            random(-( (double) num_almacenes- this.min),  (double) num_almacenes - this.min);
+            newVelocities.add(random(-( (double) num_almacenes- this.min),  (double) num_almacenes - this.min));
         }
  
         return newVelocities;
@@ -142,13 +167,62 @@ public class HybridParticleSwarmOptimization {
     }
 
     public double fitnessFunction(List<Position> positions){
-        return ConstantesPSO.f(positions, num_dimensions, num_almacenes);
+        return ConstantesPSO.f(positions, num_dimensions, num_almacenes, repository.getTiempoSalida(), repository.getAlmacenes(), repository.getCamiones());
+    }
+
+    public void printOficinasXAlmacen(){
+
+        int i,j;
+        PriorityQueue<Position> queue = new PriorityQueue<>(new PositionComparator());
+        List<List<Oficina>> oficinasPorAlmacen = new ArrayList<>();
+        List<List<Double>> order = new ArrayList<>();
+        
+        //List<List<Double>> paquetesPorAlmacen = new ArrayList<>();
+        
+        for (Position p: globalBestSolution){
+            queue.add(p);
+        }
+
+        for (i = 0; i < num_almacenes; i++){
+            double pos = (double) i;
+            List<Oficina> listOficinas = new ArrayList<>();
+            List<Double> ordenlocal = new ArrayList<>();
+            do{
+                Position position = queue.peek();
+                
+                if (position == null)
+                    break;
+                pos = position.getRandomPosition();
+                
+                if (pos < (double)(i + 1)){
+                    listOficinas.add(position.getOficina());
+                    ordenlocal.add(pos);
+                    queue.poll();
+                }
+
+            }while (pos < (double)(i + 1));
+            
+            oficinasPorAlmacen.add(listOficinas);
+            order.add(ordenlocal);
+        }
+
+
+        i = 1;
+        for (List<Oficina> lista : oficinasPorAlmacen){
+            System.out.println("Lista almacen: " + i);
+            j = 1;
+            for (Oficina oficina : lista){
+                System.out.println("\t" +  j + ". " + oficina.toString() + ". POS: " + order.get(i-1).get(j-1));
+                j++;
+            }
+            i++;
+        }
+        /*
+        for (Position position : globalBestSolution){
+            System.out.println(position.getOficina().getProvincia() + ". POS: " + position.getRandomPosition());
+          //  i++;
+        }*/
+        System.out.println("Global Besto Cost: " + globalBestCost);
     }
 }
 
-/*
-
-List<Oficina> oficinas,  List<Triplet<String, Long, Integer>> listaTiempos, long tiempoInicio ){
-        
-        this.repository = new RepositorySA(oficinas, listaTiempos, tiempoInicio);
-*/
