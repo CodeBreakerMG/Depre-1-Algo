@@ -399,6 +399,8 @@ public class PrimeraSolucion{
 
             listaTramosResultado = sa.getBestListaTramos();
 
+            /*FALTA: Elegir el camion para el plan de transporte y asignar pedidos al camion*/
+
 
 /*
             System.out.println("");

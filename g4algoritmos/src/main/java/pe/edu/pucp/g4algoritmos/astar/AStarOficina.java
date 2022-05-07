@@ -44,8 +44,8 @@ public class AStarOficina {
             for(Tramo tramo: current.getListaTramos()){
                 
                 //Aqui verificar si el tramo/arista esta bloqueado
-                //if (arista.getTramo().estaBloqueado())
-                //   continue;
+                if (tramo.estaBloqueado())
+                   continue;
 
                 if (explored.contains(tramo.getCiudadFin()) )
                     continue;
