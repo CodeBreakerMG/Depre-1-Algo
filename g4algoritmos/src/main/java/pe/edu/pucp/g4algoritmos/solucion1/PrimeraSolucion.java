@@ -206,106 +206,6 @@ public class PrimeraSolucion{
 
         return camiones;
     }
-    public static List<Camion> seleccionarCamiones(){
-        
-        int [] countCamiones = Mapa.calcularTipoCamionesPorAlmacen(almacen);
-        List<Camion> camiones = new ArrayList<>();
-        /*
-        int cantidadPaquetes30 = 0; //Contabilizar paquetes que pesen hasta 10
-        int cantidadPaquetes45 = 0; //Contabilizar paquetes que pesen hasta 30
-        int cantidadPaquetes1000 = 0; 
-
-        
-    
-
-        for (Pedido p : listaPedidos){
-            if(p.getCantidadActual() <= 30) 
-                cantidadPaquetes30 += p.getCantidadActual();
-            else if (p.getCantidadActual() <= 45)
-                cantidadPaquetes45 += p.getCantidadActual();
-            else
-                cantidadPaquetes1000 += p.getCantidadActual();
-        }      
-
-        int cantidadCamionesC = cantidadPaquetes30 / 30;
-        int cantidadCamionesB = cantidadPaquetes45 / 45;
-        int cantidadCamionesA = cantidadPaquetes1000 / 90;
-
-        */
-
-        //Pendiente a mejorar con un algoritmo de AI:
-
-        int cantidadPaquetes = 0;
-
-        for (Pedido p : listaPedidos)
-            cantidadPaquetes += p.getCantidadActual();
-        
-        int cantidadCamionesC = (int) Math.round(cantidadPaquetes / 30.0);
-        int cantidadCamionesB = cantidadCamionesC;
-
-        if (countCamiones[2] - cantidadCamionesC > 0){ //Si hay mayor cantidad de camiones que los requeridos
-            countCamiones[2] -= cantidadCamionesC;
-            cantidadCamionesB = 0;
-        }
-        else{
-            cantidadCamionesC = countCamiones[2];
-            cantidadCamionesB =- countCamiones[2];
-
-            cantidadPaquetes -= cantidadCamionesC * 30;
-            
-            countCamiones[2] = 0;
-
-            cantidadCamionesB = (int) Math.round(cantidadPaquetes / 45.0);
-        }
-
-
-
-        int cantidadCamionesA = cantidadCamionesB;
-
-        if (cantidadCamionesB > cantidadCamionesC) { //Si ya no hay camiones C disponibles
-            if (countCamiones[1] - cantidadCamionesB > 0){ //Si hay mayor cantidad de camiones B que los requeridos
-                countCamiones[1] -= cantidadCamionesB;
-                cantidadCamionesA = 0;
-                
-            }
-            else{
-                cantidadCamionesB = countCamiones[1];
-                cantidadCamionesA -= countCamiones[1];
-    
-                cantidadPaquetes -= cantidadCamionesB * 45;
-                
-                countCamiones[1] = 0;
-    
-                cantidadCamionesA = (int) Math.round(cantidadPaquetes / 90.0);
-            }
-        }
-
-        if (cantidadCamionesA > cantidadCamionesB) { //Si ya no hay camiones B disponibles
-            if (countCamiones[0] - cantidadCamionesA > 0){ //Si hay mayor cantidad de camiones B que los requeridos
-                countCamiones[0] -= cantidadCamionesA;
-               
-            }
-            else{
-                cantidadCamionesA = countCamiones[0];   
-                cantidadPaquetes -= cantidadCamionesA * 90;
-                
-                countCamiones[0] = 0;
-    
-                
-            }
-        }
-
-        camiones.addAll(Mapa.extractListaCamionesPorAlmacen(almacen, 'C', cantidadCamionesC));
-        if (cantidadCamionesB > 0)
-            camiones.addAll(Mapa.extractListaCamionesPorAlmacen(almacen, 'B', cantidadCamionesB));
-        if (cantidadCamionesA > 0)
-            camiones.addAll(Mapa.extractListaCamionesPorAlmacen(almacen, 'A', cantidadCamionesA));
-
-
-        return camiones;
-    }
-
-
 
     /*5. Generar Zonas de Reparto*/ 
 
@@ -498,7 +398,10 @@ public class PrimeraSolucion{
             }
 
             listaTramosResultado = sa.getBestListaTramos();
-            /*System.out.println("");
+
+
+/*
+            System.out.println("");
             for(Tramo t: listaTramosResultado){
                 System.out.print(t.getCiudadInicio().getProvincia() + " => " + t.getCiudadFin().getProvincia() + " => ");
             }*/

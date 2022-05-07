@@ -159,7 +159,7 @@ public class AStarOficina {
         List<Oficina> path = new ArrayList<>();
         for (Oficina oficina = destination; oficina != null; oficina = oficina.getParent()){
             
-            if (oficina.getParent() == null)
+
                 //System.out.println("ES ULTIMO WAAA" + oficina.toString());
             path.add(oficina);
         }
