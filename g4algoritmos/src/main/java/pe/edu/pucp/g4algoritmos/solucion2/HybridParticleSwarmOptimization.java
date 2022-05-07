@@ -10,6 +10,31 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+/*
+
+CAMBIOS A REALIZAR: 
+
+Particula PSO (arreglo de N ciudades) = 
+	[
+		ciudades,
+		orden de entrga (double-> parte entera: almacen, parte decimal: orden),
+		viajes o rutas (double con dos decimales -> entera: almacen, parte decimal: numero de camion(i.e. : 01, 02, 03 ...) )
+	];
+
+
+Consideraciones: 
+
+**EN ESTE CONTEXTO, VIAJE O RUTA TIENE UN SOLO CAMION, POR LO QUE VIAJE = CAMION POR ALMACEN
+**SE DEBE MINIMIZAR LOS CAMIONES A UTILIZAR, POR LO UE SE IMPLEMENTARA IOP PARA RESOLVERLO
+**Se debería considerar utilizar un máximo de camiones por tipo.
+
+Camion: debe ser random de 0 a 3 parte entera, y parte decimal solo de 00-num camiones del almacen
+
+Tonces, para generalo, se debe hacer un foorloop por almacen
+
+
+*/ 
+
 public class HybridParticleSwarmOptimization {
     
     private List<Position> globalBestSolution;  //Best global solution 
