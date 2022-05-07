@@ -44,9 +44,18 @@ public class ConstantesPSO {
 
         List<List<Oficina>> oficinasPorAlmacen = new ArrayList<>(num_almacenes);
         
+        for (int i = 0; i < num_almacenes; i++){
+            List<Oficina> auxListOficinas = new ArrayList<>();
+            oficinasPorAlmacen.add(auxListOficinas);
+        }
+        
         for (Position p: positions){
             int aQueAlmacenPertenece = (int) p.getRandomPosition();
-            
+            for (int i = 0; i < num_almacenes; i++){
+                if (aQueAlmacenPertenece == i){
+                    oficinasPorAlmacen.get(i).add(p.getOficina());
+                }
+            }
         }
 
         for (int i = 0; i < num_almacenes; i++){
@@ -62,8 +71,17 @@ public class ConstantesPSO {
         LV(p): Amount of load violation of vehicle in trip p
         
         */
-
-        
         return 0;
+    }
+
+    public void printOficinasXAlmacen(List<List<Oficina>> oficinasXAlmacen){
+
+        int i = 0;
+        for (List<Oficina> lista : oficinasXAlmacen){
+            System.out.println("Lista almacen: " + i);
+            for (Oficina oficina : lista){
+                System.out.println("\t" + oficina.toString());
+            }
+        }
     }
 }
