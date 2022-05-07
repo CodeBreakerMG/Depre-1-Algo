@@ -97,7 +97,7 @@ public class AStarModified {
     private double calcularH(VertexOficina current, VertexOficina destination){
         
         double costo = heuristicEucledian(current, destination);
-        costo = (costo / Mapa.velocidadCamiones) ;
+        costo = (costo / Mapa.getVelocidadByOficinas(current.getOficina(), destination.getOficina())) ;
         return costo;
 
         //El costo del tramo sería: peso tiempo + destinos de los pedidos
