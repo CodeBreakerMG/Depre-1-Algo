@@ -2,6 +2,7 @@ package pe.edu.pucp.g4algoritmos.solucion2;
 
 
 import pe.edu.pucp.g4algoritmos.model.Oficina;
+import java.util.Date;
 
 
 /*
@@ -11,22 +12,46 @@ Because it's a lot of parameters, we must have it like this
 
 public class Position {
     
-    private Oficina oficina; //Oficina en la que se dejará un pedido al menos (No incluye ciudades intermedias)
+    private OficinaPSO oficina; //Oficina en la que se dejará un pedido al menos (No incluye ciudades intermedias)
     private double randomPosition; /*Posición en la que se encuentra en la ruta potencial y de qué almacén viene
                                      Parte entera del numero: almacen del cual saldrá (0....Numero de almacenes-1)
                                      Parte decimal del numero: posicion en la que se encuentra, mas bajo... mas antes se llegará ahí.                             
 
     */
-    public Position(Oficina oficina, double randomPosition) {
+
+    //AQUÍ TAMBIEN QUIZÁ SE PODRÍA AGREGAR QUE CAMION UTILIZARÁ XD
+
+    public Position(OficinaPSO oficina, double randomPosition) {
         this.oficina = oficina;
         this.randomPosition = randomPosition;
     }
-    public Oficina getOficina() {
+
+    public OficinaPSO getOficinaPSO() {
         return oficina;
     }
-    public void setOficina(Oficina oficina) {
-        this.oficina = oficina;
+
+    public void setOficinaPSO(OficinaPSO oficinaPSO) {
+        this.oficina = oficinaPSO;
     }
+
+    public Oficina getOficina() {
+        return oficina.getOficina();
+    }
+
+    public Date getL(){
+        //L: tiempo maximo en la que debe llegar el camion a esta oficina
+        return oficina.getL();
+    }
+
+    public int getCantidadPedidos(){
+        return oficina.getCantidadPedidos();
+    }
+
+    public int cantidadPaquetes(){
+        return oficina.cantidadPaquetes();
+    }
+
+
     public double getRandomPosition() {
         return randomPosition;
     }

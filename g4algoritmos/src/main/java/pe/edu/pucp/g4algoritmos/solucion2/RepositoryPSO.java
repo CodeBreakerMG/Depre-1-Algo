@@ -2,6 +2,7 @@ package pe.edu.pucp.g4algoritmos.solucion2;
 import org.javatuples.Triplet;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import pe.edu.pucp.g4algoritmos.model.Camion;
@@ -10,27 +11,26 @@ import pe.edu.pucp.g4algoritmos.model.Oficina;
 
 public class RepositoryPSO {
     
-    private List<Oficina> oficinas; //LISTA DE OFICINAS NO INCLUYE ALMACEN
+    private List<OficinaPSO> oficinas; //LISTA DE OFICINAS NO INCLUYE ALMACEN
     private List<Camion> camiones;
     private List<Oficina> almacenes;
 
-    private double tiempoSalida;
+    private Date tiempoSalida;
     private double num_dimensions;
     private int num_almacenes;
     
 
-    public RepositoryPSO(List<Oficina> oficinas, double tiempoSalida) {
-        this.oficinas = oficinas;
-        this.tiempoSalida = tiempoSalida;
-
-        this.almacenes = new ArrayList<>();
-        this.almacenes.add(oficinas.get(0));
+    public RepositoryPSO(List<OficinaPSO> oficinas, List<Oficina> almacenes, Date tiempoSalida) {
         
-        this.num_almacenes = 1;
+        this.oficinas = oficinas;
+        this.almacenes = almacenes;
+
+        this.tiempoSalida = tiempoSalida;
+        this.num_almacenes = almacenes.size();
         this.num_dimensions = oficinas.size();
     }
 
-    public RepositoryPSO(List<Oficina> oficinas, List<Camion> camiones, List<Oficina> almacenes, double tiempoSalida) {
+    public RepositoryPSO(List<OficinaPSO> oficinas, List<Camion> camiones, List<Oficina> almacenes, Date tiempoSalida) {
         
         this.oficinas = oficinas;
         this.camiones = camiones;
@@ -42,10 +42,23 @@ public class RepositoryPSO {
     }
 
     public List<Oficina> getOficinas() {
-        return oficinas;
+        List<Oficina> list = new ArrayList<>();
+
+        for (OficinaPSO o : this.oficinas)
+            list.add(o.getOficina());
+        return list;
     }
 
     public Oficina getOficina(int index){
+        return oficinas.get(index).getOficina();
+    }
+
+    public List<OficinaPSO> getOficinasPSO() {
+        
+        return this.oficinas;
+    }
+
+    public OficinaPSO getOficinaPSO(int index){
         return oficinas.get(index);
     }
 
@@ -74,7 +87,7 @@ public class RepositoryPSO {
         return num_almacenes;
     }
 
-    public double getTiempoSalida() {
+    public Date getTiempoSalida() {
         return tiempoSalida;
     }
  

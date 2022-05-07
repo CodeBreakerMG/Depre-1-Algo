@@ -18,25 +18,27 @@ import java.util.HashMap;
 public class SegundaSolucion {
     
         /*Variables OUTPUT*/ 
-        public static List<Date> tiempoDeSalidasZona = new ArrayList<>();
+        private  List<Date> tiempoDeSalidasZona = new ArrayList<>();
         
-        public static List <Ruta> planesDeTransporte = new ArrayList<>(); //Lista de los planes de transporte o RUTAS por camion
+        private  List <Ruta> planesDeTransporte = new ArrayList<>(); //Lista de los planes de transporte o RUTAS por camion
 
         /*Variables INPUT*/ 
-        public static List<Pedido> listaPedidos = new ArrayList<>(); //Lista inicial de los pedidos
-        public static List<OficinaPSO> listaOficinas = new ArrayList<>(); //Lista de oficinas que tienen al menos un pedido
-        public static List<Camion> listaCamiones = new ArrayList<>(); //Lista de camiones disponibles de un ALMACEN
+        private  List<Pedido> listaPedidos = new ArrayList<>(); //Lista inicial de los pedidos
+        private  List<OficinaPSO> listaOficinas = new ArrayList<>(); //Lista de oficinas que tienen al menos un pedido
+        private  List<Oficina> listaAlmacenes= new ArrayList<>(); //Lista de oficinas que tienen al menos un pedido
+        private  List<Camion> listaCamiones = new ArrayList<>(); //Lista de camiones disponibles de un ALMACEN
 
-        public static int paquetes; //Cantidad total de paquetes A 
+        private  int paquetes; //Cantidad total de paquetes A 
         
-        public void inicializar(List<Pedido> pedidos){
+        public void inicializar(List<Pedido> pedidos, List<Oficina> almacenes){
             
             System.out.println("Solución PSO: ");
-        
-            listaPedidos = pedidos;
+            
+            this.listaAlmacenes = almacenes;
+            this.listaPedidos = pedidos;
 
             /*I. Oficinas de todos los pedido*/
-            listaOficinas = contabilizarOficinas();
+            this.listaOficinas = contabilizarOficinas();
             System.out.println(String.format("Cantidad de oficinas a recorrer:  %4d", listaOficinas.size()));
 
             /*II. Asignación de Rutas*/
@@ -56,15 +58,19 @@ public class SegundaSolucion {
 
             for (Oficina o: oficinas){
                 long max_miliseconds = 9 * (long)10e13; //en milisegundos
+                long min_miliseconds = 0; //en milisegundos
                 OficinaPSO oficinaPSO = new OficinaPSO(o);
                 for (Pedido p : listaPedidos){
                     if (p.getOficina().getCodigo() == o.getCodigo()){
                         oficinaPSO.addPedido(p);
                         max_miliseconds = p.getFechaHoraLimite().getTime() < max_miliseconds ? p.getFechaHoraLimite().getTime() : max_miliseconds;
+                        min_miliseconds = p.getFechaHoraPedido().getTime() > min_miliseconds ? p.getFechaHoraPedido().getTime() : min_miliseconds;
                         oficinaPSO.addPaquetes(p.getCantidadActual());
                     }
                 }
-                oficinaPSO.setL(new Date(max_miliseconds));
+                oficinaPSO.setTiempoLimiteLlegada(new Date(max_miliseconds));
+                oficinaPSO.setTiempoMinimoSalidaCamion(new Date(min_miliseconds));
+                oficinasPSO.add(oficinaPSO);
             }
 
             return oficinasPSO;
@@ -72,6 +78,18 @@ public class SegundaSolucion {
 
         private void particleSwarmOptimization(){
 
+            Date tiempoSalida = listaOficinas.get(0).tiempoMinimoSalidaCamion();
+
+            for (OficinaPSO oficina : listaOficinas)
+                tiempoSalida = AuxiliaryFunctions.minimumDate(oficina.tiempoMinimoSalidaCamion(), tiempoSalida);
+
+            HybridParticleSwarmOptimization pso = new HybridParticleSwarmOptimization(listaOficinas, listaAlmacenes, tiempoSalida);
+            pso.solve();
+            pso.printOficinasXAlmacen();
+           // planesDeTransporte = HybridParticleSwarmOptimization
+
+
+           System.out.println("Se termino el PSO con exito");
         }
 
 

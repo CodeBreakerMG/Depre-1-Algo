@@ -15,33 +15,37 @@ public class Particle {
     private List<Position> bestPosition;    //pi -> mejor local (oficina, posicion= "almacen"."prioridad")
     private double costo = 0; //summ of the path
 
-    public Particle(List<Oficina> listOficinas, List<Double> velocity) {
+    public Particle(List<OficinaPSO> listOficinas, List<Double> velocity) {
 
         this.currentPosition = new ArrayList<>();
         this.costo = 0;
-        this.velocity = new ArrayList<>(listOficinas.size());
+        this.velocity = new ArrayList<>();
         this.bestPosition = new ArrayList<>();
 
         System.arraycopy(velocity, 0, this.velocity, 0, velocity.size());
 
-        for (Oficina oficina : listOficinas ){
+        int i = 0;
+        for (OficinaPSO oficina : listOficinas ){
             Position pos = new Position(oficina, 0.0);
             this.currentPosition.add(pos);
+
+            this.velocity.add(velocity.get(i));
+            i++;
         }
     }
 
-    public Particle(List<Oficina> listOficinas, List<Double> positions, List<Double> velocity) {
+    public Particle(List<OficinaPSO>listOficinas, List<Double> positions, List<Double> velocity) {
 
         this.currentPosition = new ArrayList<>();
         this.costo = 0;
-        this.velocity = new ArrayList<>(listOficinas.size());
+        this.velocity = new ArrayList<>();
         this.bestPosition = new ArrayList<>();
-
-        System.arraycopy(velocity, 0, this.velocity, 0, velocity.size());
 
         for (int i = 0; i < listOficinas.size(); i++ ){
             Position pos = new Position(listOficinas.get(i), positions.get(i));
             this.currentPosition.add(pos);
+            this.bestPosition.add(pos);
+            this.velocity.add(velocity.get(i));
         }
     }
 

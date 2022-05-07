@@ -6,6 +6,7 @@ import pe.edu.pucp.g4algoritmos.astar.AStarMain;
 import pe.edu.pucp.g4algoritmos.model.Mapa;
 import pe.edu.pucp.g4algoritmos.pso.PSOMain;
 import pe.edu.pucp.g4algoritmos.solucion1.PrimeraSolucion;
+import pe.edu.pucp.g4algoritmos.solucion2.SegundaSolucion;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -33,7 +34,8 @@ public class App
 
 
         //Función que llama a la primera solucion
-        PrimeraSolucion solucion = new PrimeraSolucion();
+        //PrimeraSolucion solucion = new PrimeraSolucion();
+        SegundaSolucion solucion = new SegundaSolucion();
 
         //Primero, cargar la data al maestro MAPA
         final String sep = File.separator;
@@ -99,7 +101,9 @@ public class App
         System.out.println(String.format("Cantidad de pedidos:  %4d", Mapa.listaPedidos.size()));
         System.out.println(String.format("Cantidad de camiones:  %4d", Mapa.listaCamiones.size()));
 
-        solucion.inicializar(Mapa.getListaPedidos(), alm);
+      
+
+        solucion.inicializar(Mapa.getListaPedidos(), Mapa.listaAlmacenes);
         //-> Poner: solucion.inicializar(Mapa.getListaPedidosPorAlmacen(alm), alm) //Ejecutar para cada almacen
 
         //Función que llama al PSO:
