@@ -548,7 +548,6 @@ public class PrimeraSolucion{
             long tiempo = 9 * (long)10e13; //en milisegundos
             long tiempoRealHoras = 0;
             Date fechaMax = new Date();
-            //long tiempo = 0; //en milisegundos
             int cantidadPaq = 0;
             for (Pedido p : pedidos){
                 if (p.getOficina().getCodigo() == o.getCodigo()){
@@ -568,7 +567,7 @@ public class PrimeraSolucion{
         }
 
 
-        //listaTiempos.sort(new TiemposOficinaComparator());
+        listaTiempos.sort(new TiemposOficinaComparator());
         //Collections.sort(oficinas, Comparator.comparing(item -> listaTiempos.indexOf(item)));
 
         return listaTiempos;
