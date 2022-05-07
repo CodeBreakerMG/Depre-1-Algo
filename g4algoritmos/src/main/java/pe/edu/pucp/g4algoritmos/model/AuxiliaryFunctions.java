@@ -1,5 +1,7 @@
 package pe.edu.pucp.g4algoritmos.model;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Calendar;
@@ -41,7 +43,17 @@ public class AuxiliaryFunctions {
         return (date1.getMinutes() - date2.getMinutes());
     }
 
-    
+    public static Date setDateWithTime(String datetime){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = new Date();
+        try {
+            date = simpleDateFormat.parse(datetime);
+        } catch (ParseException e) {
+           
+             
+        }
+        return date;
+    }
 
 
 }
