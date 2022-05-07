@@ -6,6 +6,7 @@ import pe.edu.pucp.g4algoritmos.astar.AStarMain;
 import pe.edu.pucp.g4algoritmos.model.Mapa;
 import pe.edu.pucp.g4algoritmos.pso.PSOMain;
 import pe.edu.pucp.g4algoritmos.solucion1.PrimeraSolucion;
+import pe.edu.pucp.g4algoritmos.solucion2.SegundaSolucion;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -113,6 +114,16 @@ public class App
         sol1Arequipa.inicializar(Mapa.getListaPedidosPorAlmacen(Mapa.getOficinaByCodigo("040101")), Mapa.getOficinaByCodigo("040101"));
         System.out.println("AREQUIPA OK  ==========================================================");
         
+
+        System.out.println("==========================================================");
+        System.out.println("");
+        System.out.println("");
+        System.out.println("==========================================================");
+
+
+        SegundaSolucion solPSO = new SegundaSolucion();
+        solPSO.inicializar(Mapa.listaPedidos, Mapa.listaAlmacenes);
+
         //Función que llama al PSO:
         //PSOMain.Main();
     }
