@@ -1,8 +1,6 @@
 package pe.edu.pucp.g4algoritmos.solucion2;
 
 
-import java.util.Random;
-
 import pe.edu.pucp.g4algoritmos.model.Oficina;
 
 

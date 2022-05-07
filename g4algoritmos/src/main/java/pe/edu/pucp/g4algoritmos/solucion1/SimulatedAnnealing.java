@@ -31,7 +31,7 @@ public class SimulatedAnnealing {
         actualState.generateIndividual(repository);
         bestState = new SingleTour(actualState.getTour(), actualState.getTiemposLlegadaOficinas(), actualState.getTramosARecorrerPorOficina(), actualState.getCosto(), repository);
 
-        System.out.println("Costo Solucion Actual: " + actualState.getCosto());
+        //System.out.println("Costo Solucion Actual: " + actualState.getCosto());
 
         while ( temp > ConstantesSA.MIN_TEMPERATURE ) {
 
@@ -67,9 +67,11 @@ public class SimulatedAnnealing {
         int randomIndex1 = (int) (Math.random()*newState.getTourSize());
 		int randomIndex2 = (int) (Math.random()*newState.getTourSize());
 		
-        while (newState.getciudadesPedido().get(randomIndex1).EsAlmacen() == true || newState.getciudadesPedido().get(randomIndex2).EsAlmacen() == true ) {
-            randomIndex1 = (int) (Math.random()*newState.getTourSize());
-		    randomIndex2 = (int) (Math.random()*newState.getTourSize());
+        if(newState.getciudadesPedido().size()>2){
+            while (newState.getciudadesPedido().get(randomIndex1).EsAlmacen() == true || newState.getciudadesPedido().get(randomIndex2).EsAlmacen() == true ) {
+                randomIndex1 = (int) (Math.random()*newState.getTourSize());
+                randomIndex2 = (int) (Math.random()*newState.getTourSize());
+            }
         }
 		
 		Oficina city1 = newState.getOficina(randomIndex1);
