@@ -52,9 +52,17 @@ public class SingleTour {
             else
                 destinationOficina = ciudadesPedido.get(0);
 
+            System.out.println("");    
+            System.out.println("Oficina inicial: " + fromOficina.getProvincia());
+            System.out.println("Oficina final: " + destinationOficina.getProvincia());
+            System.out.println(""); 
             List<Tramo> tramosParciales = fromOficina.recorridoHasta(destinationOficina);
             double tiempoLlegada = 0.0;
-
+            System.out.println("Tramos parciales: ");
+            for (Tramo t : tramosParciales){
+                System.out.print(t.getCiudadInicio() + "-" + t.getCiudadFin() + " ");
+            }
+            System.out.println("");
             for (Tramo tramo : tramosParciales)
                 tiempoLlegada += tramo.getCosto();
 
@@ -135,12 +143,23 @@ public class SingleTour {
     public void generateIndividual(RepositorySA repositorio) {
         /*Function to generate a random individual (random ciudadesPedido)*/
         //This is how we generate the hamiltonian cycle
+        List<Oficina> newListOficina = new ArrayList<>();
+        for (int index = 0; index < repositorio.getNumberOfOficinas(); ++index){
+            if(repositorio.getOficina(index).EsAlmacen() == false){
+                newListOficina.add(repositorio.getOficina(index));
+                //setOficina(index, repositorio.getOficina(index));
+            }
+        }
         
-        for (int index = 0; index < repositorio.getNumberOfOficinas(); ++index)
-            setOficina(index, repositorio.getOficina(index));
-
         //The order is randomized
-        Collections.shuffle(ciudadesPedido);
+        //Collections.shuffle(ciudadesPedido);
+        Collections.shuffle(newListOficina);
+        setOficina(0, repositorio.getAlmacen());
+        for (int index = 0; index < newListOficina.size(); ++index){
+            
+           setOficina(index+1, newListOficina.get(index));
+            
+        }
         calcularTramos(repositorio); 
         this.costo = calcularCosto();
         

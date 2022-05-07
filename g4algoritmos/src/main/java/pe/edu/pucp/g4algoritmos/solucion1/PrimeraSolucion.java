@@ -47,7 +47,8 @@ public class PrimeraSolucion{
 
     /*Variables resultados*/
     public static List<Oficina> listaOficinasResultado = new ArrayList<>();
-    
+    public static List<List<Tramo>> listaTramosXOficinaResultado = new ArrayList<>();
+    public static List<Tramo> listaTramosResultado = new ArrayList<>();
     /*Variables Auxiliares*/ 
 
     public static GeometryFactory factory = new GeometryFactory(); //Variable auxiliar de Geometría. Para generar zonas de reparto
@@ -156,7 +157,7 @@ public class PrimeraSolucion{
 
         //System.out.println((int) 0.988);
 
-        cantidadPaquetes = 500; //CAMBIAR, DEBE PASARSE EL PARÁMETRO
+        //cantidadPaquetes = 500; //CAMBIAR, DEBE PASARSE EL PARÁMETRO
         
         int cantidadCamionesA = (int) (cantidadPaquetes / 90);
         int cantPaquetesSobraA = cantidadPaquetes % 90;
@@ -405,7 +406,7 @@ public class PrimeraSolucion{
             List<Oficina> oficinasZona = new ArrayList<>();
             
             //SE AGREGA ALMACEN al inicio de la lista
-            oficinasZona.add(almacen);
+            //oficinasZona.add(almacen);
             
             for (Pedido pedido : listaPedidos){
                 Coordinate coordPedido = new Coordinate(pedido.getOficina().getCoordX(), pedido.getOficina().getCoordY());    
@@ -433,7 +434,7 @@ public class PrimeraSolucion{
             1. Tiempo de entrega pedidos
             2. Distancia (recorrido más corto posible)
     */ 
-
+        
         for (int i = 0; i < listaZonas.size(); i++){
             long tiempoSalida = tiempoMaximoRegistroPedidos(listaPedidosPorZona.get(i));
             Date fechaSalida = fechaHoraMaximaSalida(listaPedidosPorZona.get(i)) ;
@@ -454,18 +455,53 @@ public class PrimeraSolucion{
                 Integer: Cantidad de Paquetes a la oficina 
             */ 
             System.out.println("Lista tiempos: " + listaTiempos);
+            System.out.println("");
 
+            System.out.println("Lista oficinasxZona antes: ");
+            for(int z=0; z<listaOficinasXZona.get(i).size();z++){
+                System.out.print(listaOficinasXZona.get(i).get(z).getProvincia() + " ");
+            }
+            System.out.println("");
             listaOficinasXZona.get(i).sort(new OficinasComparator(listaTiempos, false));
-            
+            System.out.println("Lista oficinasxZona despues: ");
+            for(int x=0; x<listaOficinasXZona.get(i).size();x++){
+                System.out.print(listaOficinasXZona.get(i).get(x).getProvincia() + " ");
+            }
+            System.out.println("");
+            listaOficinasXZona.get(i).add(0, almacen);
+            System.out.println("Lista oficinasxZona despues de agregar almacen: ");
+            for(int z=0; z<listaOficinasXZona.get(i).size();z++){
+                System.out.print(listaOficinasXZona.get(i).get(z).getProvincia() + " ");
+            }
+            System.out.println("");
+
             SimulatedAnnealing sa = new SimulatedAnnealing(listaOficinasXZona.get(i), listaTiempos, tiempoSalida);
             sa.simulate();
             listaOficinasResultado = sa.getBestListaOficina();
             System.out.println("Lista oficinas: ");
             for(int w=0; w<listaOficinasResultado.size();w++){
-                System.out.print(listaOficinasResultado.get(w).getCodigo() + " ");
+                System.out.print(listaOficinasResultado.get(w).getProvincia() + " ");
             }
             System.out.println("");
             System.out.println("Mejor costo solucion: " + sa.getBestCosto());
+            
+            listaTramosXOficinaResultado = sa.getBestTramosXOficina();
+            System.out.println("");
+            int contadorOfi = 0;
+            for(List<Tramo> listTramo : listaTramosXOficinaResultado){
+                contadorOfi++;
+                System.out.print("Lista de Tramos Oficina " + contadorOfi + ": ");
+                for(Tramo t: listTramo){
+                    System.out.println(t.getCiudadInicio().getProvincia() + " => " + t.getCiudadFin().getProvincia() + " => ");
+                }
+                System.out.println("");
+            }
+
+            listaTramosResultado = sa.getBestListaTramos();
+            /*System.out.println("");
+            for(Tramo t: listaTramosResultado){
+                System.out.print(t.getCiudadInicio().getProvincia() + " => " + t.getCiudadFin().getProvincia() + " => ");
+            }*/
             //System.out.println("Best Solution: "  + sa.getBest().getDistance());
             //System.out.println(sa.getBest()); 
             }      
