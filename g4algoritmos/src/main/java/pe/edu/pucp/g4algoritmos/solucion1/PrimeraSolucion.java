@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 
 import org.locationtech.jts.geom.Coordinate;
@@ -435,11 +437,17 @@ public class PrimeraSolucion{
         
         for (int i = 0; i < listaZonas.size(); i++){
             long tiempoSalida = tiempoMaximoRegistroPedidos(listaPedidosPorZona.get(i));
-            System.out.println("");
-            System.out.println("Zona " + (i+1));
-            System.out.println("TiempoSalida: " + tiempoSalida);
+            Date fechaSalida = fechaHoraMaximaSalida(listaPedidosPorZona.get(i)) ;
+            String cadenaFechaSalida = formatDateString(fechaSalida);
 
+            System.out.println("");
+            System.out.println("Zona: " + (i+1));
+            System.out.println("N° de Pedidos: " + listaPedidosPorZona.get(i).size());
             
+
+            if(listaPedidosPorZona.get(i).size()>0){
+            //Solo imprimiremos Hora de Salida cuando haya pedidos
+            System.out.println("Hora y Fecha de Salida: " + cadenaFechaSalida);
             List<Triplet<String, Long, Integer>> listaTiempos = tiempoMaximoPedidos(listaPedidosPorZona.get(i), listaOficinasXZona.get(i));
             /*
                 String: Código del Pedido
@@ -495,7 +503,8 @@ public class PrimeraSolucion{
                 System.out.print(t.getCiudadInicio().getProvincia() + " => " + t.getCiudadFin().getProvincia() + " => ");
             }*/
             //System.out.println("Best Solution: "  + sa.getBest().getDistance());
-            //System.out.println(sa.getBest());        
+            //System.out.println(sa.getBest()); 
+            }      
 
         }
 
@@ -664,5 +673,26 @@ public class PrimeraSolucion{
 
             return tiempo;
     }
+    public static Date fechaHoraMaximaSalida(List<Pedido> pedidos){
+        long tiempo = 0;
+        Date fecha = new Date();
+        for (Pedido p :pedidos){
+            if (tiempo < p.getFechaHoraPedido().getTime()){
+                tiempo = p.getFechaHoraPedido().getTime();
+                fecha = p.getFechaHoraPedido();
+            }
+        }
+
+        return fecha;
+    }
+    //Procedimiento para imprimir la fecha de Salida del camión para la entrega de pedidos en una zoma.
+    public static String formatDateString(Date fecha)
+    {
+       SimpleDateFormat f = new SimpleDateFormat("HH:mm:ss yyyy/MM/dd ");
+       String cadena= f.format(fecha);
+       return cadena; 
+    }
+
+
     
 }
