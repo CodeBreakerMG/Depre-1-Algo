@@ -5,7 +5,7 @@ import java.util.Date;
 public class Pedido {
 
     private long id;    //Id del pedido
-    private String codigo; //Código del pedido
+    private String codigo; //Código del pedido (total)
     private int cantidadTotal; //Cantidad de Paquetes Total
     private int cantidadActual; //Cantidad de Paquetes Actual. Si llega a 0, se entrego.
     private Date fechaHoraPedido; // Fecha en la que se realizo el pedido
@@ -21,15 +21,17 @@ public class Pedido {
                             5: Cancelado    
                         */
 
+    private String codPedidoUnitario; // Código del pedido unitario (entrega de un paquete)
 
     //Para carga con archivo txt
-    public Pedido(String codigo,  int cantidadTotal, Date fechaHoraPedido, Date fechaHoraLimite, String codOficina, String codCliente) {
+    public Pedido(String codigo,  int cantidadTotal, Date fechaHoraPedido, Date fechaHoraLimite, String codOficina, String codCliente, String codPedidoUnitario) {
         this.codigo = codigo;
         this.cantidadTotal = cantidadTotal;
         this.fechaHoraPedido = fechaHoraPedido;
         this.fechaHoraLimite = fechaHoraLimite;
         this.oficina = Mapa.getOficinaByCodigo(codOficina);
         this.estado = 0;
+        this.codPedidoUnitario = codPedidoUnitario;
     }
 
     
@@ -125,6 +127,14 @@ public class Pedido {
     } 
 
 
+    public String getCodPedidoUnitario() {
+        return codPedidoUnitario;
+    }
+
+
+    public void setCodPedidoUnitario(String codPedidoUnitario) {
+        this.codPedidoUnitario = codPedidoUnitario;
+    }
                         
     
 }

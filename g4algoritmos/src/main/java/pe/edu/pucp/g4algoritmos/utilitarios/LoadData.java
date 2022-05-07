@@ -145,48 +145,37 @@ public class LoadData {
             String line = "";
             BufferedReader br = new BufferedReader(new FileReader(ruta));
             
-            SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-            int counter = 0;
+            int contadorPedidos = 0;
 
             while ((line = br.readLine()) != null) {  
                 String[] linea_pedido = String.join("-", line.split("[,( =>  )]")).split("-+");
                 
-                Date fecha_hora_pedido = new Date();
-                try{
-                    fecha_hora_pedido = sf.parse(year+"-"+month+"-"+linea_pedido[0]+" "+linea_pedido[1]);
-                }
-                catch(ParseException ex){
-                    System.out.println(ex.getMessage());
-                }
-
                 // Si la oficina con el código provisto no existe, se omite la carga del pedido.
-                if(Mapa.getOficinaByCodigo(linea_pedido[3].trim()) == null)
+                String codOficina = linea_pedido[3].trim();
+                if(Mapa.getOficinaByCodigo(codOficina) == null)
                     continue;
+                
+                String codigoPedido = year_month + String.format("%04d", contadorPedidos);
+                String codCliente = linea_pedido[5].trim();
+                Date fecha_hora_pedido = fechaHoraStrToDate(year, month, linea_pedido[0], linea_pedido[1]);
+                Date fecha_hora_limite = calcularFechaHoraLimite(fecha_hora_pedido, codOficina);
+                
+                contadorPedidos++;
 
-                // Creación del objeto Pedido
-                Pedido pedido = new Pedido(
-                    year_month + String.format("%04d", ++counter),   // codigo será tipo yyyyMM01
-                    Integer.valueOf(linea_pedido[4]),                       // cantidad
-                    fecha_hora_pedido,                                      // fecha y hora de pedido
-                    new Date(),                                             // fecha límite (temporal)
-                    linea_pedido[3],                                         // código de oficina
-                    linea_pedido[5]                                         //código del cliente
-                    );
+                // Creación del Pedido y sus entregas unitarias
+                int cantidadTotal = Integer.valueOf(linea_pedido[4]);
 
-                try {
-                    // Asignación de fecha límite de entrega según región
-                    switch (pedido.getOficina().getRegion()) { // Se asume que 1 día de entrega = 24 horas
-                        case 'C': pedido.setFechaHoraLimite(new Date(pedido.getFechaHoraPedido().getTime()+1*DAY)); break;
-                        case 'S': pedido.setFechaHoraLimite(new Date(pedido.getFechaHoraPedido().getTime()+2*DAY)); break;
-                        case 'E': pedido.setFechaHoraLimite(new Date(pedido.getFechaHoraPedido().getTime()+3*DAY)); break;
-                    }
-                    
+                for(int i=1; i<=cantidadTotal; i++){
+                    // Creación del pedido unitario                    
+                    String codPedidoUnit = codigoPedido + String.format("%04d", i);
+                    int cantUnit = 1;
+
+                    Pedido pedidoUnit = new Pedido(codigoPedido, cantUnit, fecha_hora_pedido,
+                                            fecha_hora_limite, codOficina, codCliente, codPedidoUnit);
+
                     // Agregación del pedido en la lista de pedidos
-                    listaPedidos.add(pedido);
-                }
-                catch(NullPointerException ex){
-                    System.out.println("Oficina con código "+linea_pedido[3]+" no se encuentra en el Mapa.");
-                }
+                    listaPedidos.add(pedidoUnit);                
+                }                
             }
             br.close();
         }
@@ -195,6 +184,34 @@ public class LoadData {
         }
 
         return listaPedidos;
+    }
+
+    public static Date calcularFechaHoraLimite(Date fecha_hora_pedido, String codOficina){
+        Oficina oficina = Mapa.getOficinaByCodigo(codOficina);
+        
+        if(oficina == null) return new Date();
+
+        switch (oficina.getRegion()) {
+            case 'C':
+                return new Date(fecha_hora_pedido.getTime() + 1*DAY);
+            case 'S':
+                return new Date(fecha_hora_pedido.getTime() + 2*DAY);
+            case 'E':
+                return new Date(fecha_hora_pedido.getTime() + 3*DAY);
+        }
+        return new Date();
+    }
+
+    public static Date fechaHoraStrToDate(String year, String month, String day, String time){
+        // year = "yyyy" ; month == "MM" ; day = "dd" ; time = "HH:mm"        
+        SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        try {
+            return sf.parse(year+"-"+month+"-"+day+" "+time);
+        }
+        catch(ParseException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return new Date();
     }
 
     /* leerTramos(String ruta) retorna una lista de todos los tramos

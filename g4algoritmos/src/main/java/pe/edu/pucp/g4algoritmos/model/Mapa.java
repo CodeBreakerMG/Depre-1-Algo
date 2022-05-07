@@ -5,6 +5,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -44,6 +45,7 @@ public class Mapa {
 
     public static GrafoAStar grafoAStar = new GrafoAStar(1);
 
+    public static HashMap<Oficina, List<Pedido>> hashMapPedidosAlmacen = new HashMap<>();
 
     public Mapa (){
 
@@ -282,12 +284,37 @@ public class Mapa {
     }
 
     public static void cargarPedidos(String... rutas) {
+        // Carga de pedidos en listaPedidos
         for (String ruta : rutas) {
             List<Pedido> lista_ped = LoadData.leerPedidos(ruta);
             if(lista_ped != null) {
                 listaPedidos.addAll(lista_ped);
             }
         }
+
+        // Creación de listas de pedidos para cada almacén
+        List<Pedido> lista_pedidos_Trujillo = new ArrayList<>();
+        List<Pedido> lista_pedidos_Lima     = new ArrayList<>();
+        List<Pedido> lista_pedidos_Arequipa = new ArrayList<>();
+
+        // Repartición de pedidos para cada almacén
+        for(Pedido ped : listaPedidos){
+            double dist_Trujillo = calcularDistancia(getOficinaByCodigo("130101"), ped.getOficina());
+            double dist_Lima     = calcularDistancia(getOficinaByCodigo("150101"), ped.getOficina());
+            double dist_Arequipa = calcularDistancia(getOficinaByCodigo("040101"), ped.getOficina());
+
+            if(dist_Trujillo < dist_Lima && dist_Trujillo < dist_Arequipa)
+                lista_pedidos_Trujillo.add(ped);
+            else if(dist_Lima < dist_Arequipa && dist_Lima < dist_Trujillo)
+                lista_pedidos_Lima.add(ped);
+            else
+                lista_pedidos_Arequipa.add(ped);
+        }
+
+        // Guardado de listas de pedidos por almacén en hashmap
+        hashMapPedidosAlmacen.put(getOficinaByCodigo("130101"), lista_pedidos_Trujillo);
+        hashMapPedidosAlmacen.put(getOficinaByCodigo("150101"), lista_pedidos_Lima);
+        hashMapPedidosAlmacen.put(getOficinaByCodigo("040101"), lista_pedidos_Arequipa);
     }
 
     public static void cargarBloqueos(String... rutas) {
@@ -348,5 +375,11 @@ public class Mapa {
             return getVelocidadByOficinas(oficinaInicio, oficinaFin);
         
         return 60.0;
+    }
+
+    public static List<Pedido> getListaPedidosPorAlmacen (Oficina almacen) {
+        if(hashMapPedidosAlmacen.get(almacen) != null)
+            return hashMapPedidosAlmacen.get(almacen);
+        return new ArrayList<Pedido>();
     }
 }

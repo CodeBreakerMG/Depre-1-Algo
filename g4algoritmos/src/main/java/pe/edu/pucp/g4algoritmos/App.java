@@ -33,7 +33,9 @@ public class App
 
 
         //Función que llama a la primera solucion
-        PrimeraSolucion solucion = new PrimeraSolucion();
+        PrimeraSolucion sol1Trujillo = new PrimeraSolucion();
+        PrimeraSolucion sol1Lima = new PrimeraSolucion();
+        PrimeraSolucion sol1Arequipa = new PrimeraSolucion();
 
         //Primero, cargar la data al maestro MAPA
         final String sep = File.separator;
@@ -99,9 +101,18 @@ public class App
         System.out.println(String.format("Cantidad de pedidos:  %4d", Mapa.listaPedidos.size()));
         System.out.println(String.format("Cantidad de camiones:  %4d", Mapa.listaCamiones.size()));
 
-        solucion.inicializar(Mapa.getListaPedidos(), alm);
+        //solucion.inicializar(Mapa.getListaPedidos(), alm);
         //-> Poner: solucion.inicializar(Mapa.getListaPedidosPorAlmacen(alm), alm) //Ejecutar para cada almacen
-
+        
+        sol1Lima.inicializar(Mapa.getListaPedidosPorAlmacen(Mapa.getOficinaByCodigo("150101")), Mapa.getOficinaByCodigo("150101"));
+        System.out.println("LIMA OK      ==========================================================");
+        
+        sol1Trujillo.inicializar(Mapa.getListaPedidosPorAlmacen(Mapa.getOficinaByCodigo("130101")), Mapa.getOficinaByCodigo("130101"));
+        System.out.println("TRUJILLO OK  ==========================================================");
+        
+        sol1Arequipa.inicializar(Mapa.getListaPedidosPorAlmacen(Mapa.getOficinaByCodigo("040101")), Mapa.getOficinaByCodigo("040101"));
+        System.out.println("AREQUIPA OK  ==========================================================");
+        
         //Función que llama al PSO:
         //PSOMain.Main();
     }

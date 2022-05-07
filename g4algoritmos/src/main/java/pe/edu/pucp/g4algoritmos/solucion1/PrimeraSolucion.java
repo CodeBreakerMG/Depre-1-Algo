@@ -25,33 +25,33 @@ import org.locationtech.jts.algorithm.locate.SimplePointInAreaLocator;
 public class PrimeraSolucion{
 
     /*Variables OUTPUT*/ 
-    public static List<List<Pedido>> listaPedidosPorZona = new ArrayList<>(); //Lista de Pedidos por Zona de reparto
-    public static List<List<Oficina>> listaOficinasXZona = new ArrayList<>(); //Lista de Oficinas por zona de reparto
-    public static List<Long> tiempoDeSalidasZona = new ArrayList<>();
+    private List<List<Pedido>> listaPedidosPorZona = new ArrayList<>(); //Lista de Pedidos por Zona de reparto
+    private List<List<Oficina>> listaOficinasXZona = new ArrayList<>(); //Lista de Oficinas por zona de reparto
+    private List<Long> tiempoDeSalidasZona = new ArrayList<>();
     
-    public static List<Geometry> listaZonas = new ArrayList<>(); //Lista de Zonas (Formato de Polígono)
+    private List<Geometry> listaZonas = new ArrayList<>(); //Lista de Zonas (Formato de Polígono)
 
-    public static List <Ruta> planesDeTransporte = new ArrayList<>(); //Lista de los planes de transporte o RUTAS por camion
+    private List <Ruta> planesDeTransporte = new ArrayList<>(); //Lista de los planes de transporte o RUTAS por camion
     
     /*Variables INPUT*/ 
-    public static List<Pedido> listaPedidos = new ArrayList<>(); //Lista inicial de los pedidos
-    public static List<Oficina> listaOficinas = new ArrayList<>(); //Lista de oficinas que tienen al menos un pedido
-    public static List<Camion> listaCamiones = new ArrayList<>(); //Lista de camiones disponibles de un ALMACEN
+    private List<Pedido> listaPedidos = new ArrayList<>(); //Lista inicial de los pedidos
+    private List<Oficina> listaOficinas = new ArrayList<>(); //Lista de oficinas que tienen al menos un pedido
+    private List<Camion> listaCamiones = new ArrayList<>(); //Lista de camiones disponibles de un ALMACEN
     
-    public static Oficina almacen; //Almacen seleccionado para esta lista de pedidos
-    public static int paquetes; //Cantidad total de paquetes A 
+    private Oficina almacen; //Almacen seleccionado para esta lista de pedidos
+    private int paquetes; //Cantidad total de paquetes A 
 
-    public static int cantidadZonasDeReparto = 9;                             //Numero de zonas, 9 por defecto  
-    public static Polygon poligonPedidos ; //Polígono que contiene todas las zonas, y a su vez las coordenadas de todos los pedidos
-    public static List<Coordinate> coordinates; //Coordenadas de todas las oficinas.
+    public int cantidadZonasDeReparto = 9;                             //Numero de zonas, 9 por defecto  
+    public Polygon poligonPedidos ; //Polígono que contiene todas las zonas, y a su vez las coordenadas de todos los pedidos
+    public List<Coordinate> coordinates; //Coordenadas de todas las oficinas.
 
     /*Variables resultados*/
-    public static List<Oficina> listaOficinasResultado = new ArrayList<>();
-    public static List<List<Tramo>> listaTramosXOficinaResultado = new ArrayList<>();
-    public static List<Tramo> listaTramosResultado = new ArrayList<>();
+    private List<Oficina> listaOficinasResultado = new ArrayList<>();
+    private List<List<Tramo>> listaTramosXOficinaResultado = new ArrayList<>();
+    private List<Tramo> listaTramosResultado = new ArrayList<>();
     /*Variables Auxiliares*/ 
 
-    public static GeometryFactory factory = new GeometryFactory(); //Variable auxiliar de Geometría. Para generar zonas de reparto
+    private GeometryFactory factory = new GeometryFactory(); //Variable auxiliar de Geometría. Para generar zonas de reparto
     
     public PrimeraSolucion(){}
 
@@ -93,7 +93,7 @@ public class PrimeraSolucion{
     }
 
     /*1. Determinar lista de oficinas de los pedidos*/ 
-    public static List<Oficina> contabilizarOficinas(){
+    public List<Oficina> contabilizarOficinas(){
         List<Oficina> oficinas = new ArrayList<>();
         for (Pedido p : listaPedidos){
             if(oficinas.contains(p.getOficina()) == false) {
@@ -104,7 +104,7 @@ public class PrimeraSolucion{
     }
 
     /*2. Determinar los puntos totales de cada oficina*/ 
-    public static List<Coordinate> generateCoordinatesOficina(){
+    public List<Coordinate> generateCoordinatesOficina(){
         List<Coordinate> coordinates = new ArrayList<>();
         for (Oficina oficina : listaOficinas){
             Coordinate coordinate = new Coordinate(oficina.getCoordX(), oficina.getCoordY());
@@ -115,7 +115,7 @@ public class PrimeraSolucion{
 
 
     /*3. Generar AREA TOTAL DE REPARTO polígono para distribución */ 
-    public static Polygon crearPoligono(){
+    public Polygon crearPoligono(){
 
         // El polígono a crear será un rectángulo circunscrito a la
         // figura formada por las coordenadas de los puntos de la zona
@@ -146,7 +146,7 @@ public class PrimeraSolucion{
 
     //Determinar CUANTAS ZONAS DE REPARTO VAMOS A UTILIZAR (Cuantos camiones y qué camiones vamos a utilizar).
     /*4. Determinar lista de camiones a utilizar*/
-    public static List<Camion> seleccionarCam(){
+    public List<Camion> seleccionarCam(){
 
         int [] countCamiones = Mapa.calcularTipoCamionesPorAlmacen(almacen);
         List<Camion> camiones = new ArrayList<>();
@@ -418,7 +418,7 @@ public class PrimeraSolucion{
 
 
 /*FUNCIONES AUXILIARES*/
-    public static double areaPoligono()
+    public double areaPoligono()
     {
         // Initialize area
         double area = 0.0;
