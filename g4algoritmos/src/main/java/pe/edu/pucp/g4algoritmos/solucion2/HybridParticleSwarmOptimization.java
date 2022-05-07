@@ -86,12 +86,12 @@ public class HybridParticleSwarmOptimization {
 
 
         //4. Check for best position for the particle
-        if (Constants.f(actualParticle.getPosition()) < Constants.f(actualParticle.getBestPosition() ))  {
-            actualParticle.setBestPosition(actualParticle.getPosition());
+        if (fitnessFunction(actualParticle.getCurrentPositions()) < fitnessFunction(actualParticle.getBestPositions() ))  {
+            actualParticle.setBestPositions(actualParticle.getCurrentPositions());
         }
         //5. Check for best position for the particle
-        if (Constants.f(actualParticle.getBestPosition()) < Constants.f(this.globalBestSolutions)){
-             System.arraycopy(actualParticle.getBestPosition(),0, globalBestSolutions, 0, actualParticle.getBestPosition().length);
+        if (fitnessFunction(actualParticle.getBestPositions()) < fitnessFunction(this.globalBestSolution)){
+            setGlobalBestPositions(actualParticle.getBestPositions());
         }   
 
 
@@ -131,6 +131,19 @@ public class HybridParticleSwarmOptimization {
         return min + (max-min) * Math.random();
     }
 
+
+    public void setGlobalBestPositions(List<Position> positions) {
+        
+        globalBestSolution = new ArrayList<>();
+        
+        for (int i = 0; i < positions.size(); i++ ){
+            globalBestSolution.add(positions.get(i));
+        }
+    }
+
+    public double fitnessFunction(List<Position> positions){
+        return ConstantesPSO.f(positions, num_dimensions, num_almacenes);
+    }
 }
 
 /*

@@ -1,4 +1,9 @@
 package pe.edu.pucp.g4algoritmos.solucion2;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import pe.edu.pucp.g4algoritmos.model.Oficina;
 
 public class ConstantesPSO {
  
@@ -13,6 +18,11 @@ public class ConstantesPSO {
     public final static double c1 = 1.49; //Cognitive Weight / Local
     public final static double c2 = 1.49; //Social Weight / Global
 
+    /*Pensalization Constants*/
+    public final static double theta = 5.0;
+    public final static double lambda = 2.0;
+    
+    
     public static double f(double[] data){
         /*The parameter for this function is an array of two parameters because we are working on 2 dimensions*/
 
@@ -28,5 +38,32 @@ public class ConstantesPSO {
         //P.D: it is a 2 dimensional function, a picture can be found on this proyect
 
         
+    }
+
+    public static double f(List<Position> positions, int num_dimensions, int num_almacenes){
+
+        List<List<Oficina>> oficinasPorAlmacen = new ArrayList<>(num_almacenes);
+        
+        for (Position p: positions){
+            int aQueAlmacenPertenece = (int) p.getRandomPosition();
+            
+        }
+
+        for (int i = 0; i < num_almacenes; i++){
+            
+        }
+
+        /*
+
+        Sd: City sequence of depot d
+
+        DS(p): Travelling time of trip p
+        TV(p): Amount of time window violation in trip p
+        LV(p): Amount of load violation of vehicle in trip p
+        
+        */
+
+        
+        return 0;
     }
 }
