@@ -2,6 +2,7 @@ package pe.edu.pucp.g4algoritmos.solucion1;
 
 import pe.edu.pucp.g4algoritmos.model.*;
 import pe.edu.pucp.g4algoritmos.utilitarios.Stats;
+import pe.edu.pucp.g4algoritmos.astar.AStarOficina;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -350,10 +351,6 @@ public class PrimeraSolucion{
             long tiempoSalida = tiempoMaximoRegistroPedidos(listaPedidosPorZona.get(i));
             Date fechaSalida = fechaHoraMaximaSalida(listaPedidosPorZona.get(i)) ;
             String cadenaFechaSalida = formatDateString(fechaSalida);
-            
-            writer.println("");
-            writer.println("Zona: " + (i+1));
-            writer.println("N° de Pedidos: " + listaPedidosPorZona.get(i).size());
                         
             writer.println("");
             writer.println("Zona: " + (i+1));
@@ -362,6 +359,10 @@ public class PrimeraSolucion{
 
             listaCamiones = seleccionarCam(listaPedidosPorZona.get(i));
             writer.println(String.format("Cantidad de camiones a utilizar:  %4d", listaCamiones.size()));
+            for(Camion c: listaCamiones){
+                System.out.println(c.getCodigo() + " " + c.capacidad());
+            }
+            System.out.println();
 
             if(listaPedidosPorZona.get(i).size()>0){
                 //Solo imprimiremos Hora de Salida cuando haya pedidos
@@ -375,27 +376,27 @@ public class PrimeraSolucion{
                 writer.println("Lista tiempos: " + listaTiempos);
                 writer.println("");
 
-                writer.println("Lista oficinasxZona antes: ");
+                /*writer.println("Lista oficinasxZona antes: ");
                 for(int z=0; z<listaOficinasXZona.get(i).size();z++){
                     writer.print(listaOficinasXZona.get(i).get(z).getProvincia() + " ");
                 }
-                writer.println("");
+                writer.println("");*/
 
                 listaOficinasXZona.get(i).sort(new OficinasComparator(listaTiempos, false));
                 
-                writer.println("Lista oficinasxZona despues: ");
+                /*writer.println("Lista oficinasxZona despues: ");
                 for(int x=0; x<listaOficinasXZona.get(i).size();x++){
                     writer.print(listaOficinasXZona.get(i).get(x).getProvincia() + " ");
                 }
-                writer.println("");
+                writer.println("");*/
 
                 listaOficinasXZona.get(i).add(0, almacen);
 
-                writer.println("Lista oficinasxZona despues de agregar almacen: ");
+                /*writer.println("Lista oficinasxZona despues de agregar almacen: ");
                 for(int z=0; z<listaOficinasXZona.get(i).size();z++){
                     writer.print(listaOficinasXZona.get(i).get(z).getProvincia() + " ");
                 }
-                writer.println("");
+                writer.println("");*/
 
                 SimulatedAnnealing sa = new SimulatedAnnealing(listaOficinasXZona.get(i), listaTiempos, tiempoSalida);
                 sa.simulate(writer);
@@ -460,6 +461,22 @@ public class PrimeraSolucion{
             writer.println("");
             writer.println("");
         }
+        double costoTotal = 0.0;
+        writer.println("");
+        writer.println("");
+        writer.println("COSTO TOTAL CADA RUTA DE UN CAMION");
+        for(Ruta rut: planesDeTransporte){
+            double costoCamion = 0.0;
+            writer.println("Camion: " + rut.getCamion().getCodigo());
+            for(List<Tramo> listTra : rut.getListaTramosPorOficina()){
+                costoCamion = costoCamion + rut.calcularCostoTotal(listTra);
+            }
+            writer.println("Costo: " + costoCamion);
+            writer.println("");
+            costoTotal = costoTotal + costoCamion;
+        }
+        writer.println("");
+        writer.println("Costo TOTAL: " + costoTotal);
 
         writer.println("El simulated annealing terminó");
     }
@@ -624,6 +641,8 @@ public class PrimeraSolucion{
 
     public void asignarRutaCamion(List<List<Tramo>> tramosRuta, List<Oficina> oficinas, List<Pedido> pedidos){
 
+        
+        
         int capacidadLlevar = 0;
         int contador = 1;
         for(int i=0; i< listaCamiones.size(); i++){
@@ -631,6 +650,7 @@ public class PrimeraSolucion{
             List<Oficina> ofic = new ArrayList<>();
             List<Pedido> ped = new ArrayList<>();
             List<List<Tramo>> tram = new ArrayList<>();
+            List<Tramo> tramosAstar = new ArrayList<>();
             int capacidad = listaCamiones.get(i).capacidad();
             boolean puede = true;
             for(int j=contador; j < oficinas.size(); j++){//Empezamos con 1 el contador porque el 0 es el almacen y no queremos tomarlo
@@ -638,8 +658,11 @@ public class PrimeraSolucion{
                 if(capacidadLlevar > 0){
                     capacidad = capacidad - capacidadLlevar;
                     capacidadLlevar = 0;
-                    ofic.add(oficinas.get((j-1)));
-                    tram.add(tramosRuta.get((j-2)));
+                    AStarOficina Astar = new AStarOficina(oficinas.get(0), oficinas.get((j-1)));
+                    Astar.run();
+                    tramosAstar = Astar.getTramosRecorrer();
+                    ofic.add(oficinas.get(0));//Se le agrega el almacen
+                    tram.add(tramosAstar);
                 }
                 else{
                     for(Pedido p: ped){   
@@ -659,6 +682,13 @@ public class PrimeraSolucion{
                     tram.add(tramosRuta.get((j-1)));
                 }
                 else{
+                    ofic.add(oficinas.get(j));
+                    tram.add(tramosRuta.get((j-1)));
+                    AStarOficina Astar = new AStarOficina(oficinas.get(j), oficinas.get(0));
+                    Astar.run();
+                    tramosAstar = Astar.getTramosRecorrer();
+                    ofic.add(oficinas.get(0));//Se le agrega el almacen
+                    tram.add(tramosAstar);
                     rut.setListaOficinas(ofic);
                     rut.setListaTramosPorOficina(tram);
                     rut.setCamion(listaCamiones.get(i));
