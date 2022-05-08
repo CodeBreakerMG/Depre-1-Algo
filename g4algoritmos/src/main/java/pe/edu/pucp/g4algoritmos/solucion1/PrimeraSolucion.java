@@ -40,6 +40,7 @@ public class PrimeraSolucion{
     private List<Geometry> listaZonas = new ArrayList<>(); //Lista de Zonas (Formato de Polígono)
 
     private List <Ruta> planesDeTransporte = new ArrayList<>(); //Lista de los planes de transporte o RUTAS por camion
+    private double costoTotal = 0.0;
     
     /*Variables INPUT*/ 
     private List<Pedido> listaPedidos = new ArrayList<>(); //Lista inicial de los pedidos
@@ -63,7 +64,7 @@ public class PrimeraSolucion{
     
     public PrimeraSolucion(){}
 
-    public void inicializar(List<Pedido> listaPed, Oficina alm, PrintWriter writer){
+    public double inicializar(List<Pedido> listaPed, Oficina alm, PrintWriter writer){
         
         Mapa.inicializarGrafoAstar();
 
@@ -97,6 +98,7 @@ public class PrimeraSolucion{
         //areaMaxima = areaPoligono();
         simulatedAnnealing(writer);
         
+        return costoTotal;
     }
 
     /*1. Determinar lista de oficinas de los pedidos*/ 
@@ -461,7 +463,6 @@ public class PrimeraSolucion{
             writer.println("");
             writer.println("");
         }
-        double costoTotal = 0.0;
         writer.println("");
         writer.println("");
         writer.println("COSTO TOTAL CADA RUTA DE UN CAMION");

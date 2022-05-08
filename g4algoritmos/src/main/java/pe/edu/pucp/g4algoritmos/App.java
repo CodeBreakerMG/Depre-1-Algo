@@ -32,6 +32,7 @@ public class App {
     public static void main( String[] args ){
 
 		try{
+			double costo = 0.0;
 			/*1. Preparacion del archivo OUTPUT:*/
 			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("_yyyy_MM_dd_HH_mm");  
             LocalDateTime now = LocalDateTime.now();  
@@ -54,7 +55,8 @@ public class App {
             Mapa.cargarCamiones(System.getProperty("user.dir")+sep+"data"+sep+"inf226.camiones.txt");
 			
 			Mapa.cargarTramos(System.getProperty("user.dir")+sep+"data"+sep+"inf226.tramos.v.2.0.txt");
-			Mapa.cargarPedidos(System.getProperty("user.dir")+sep+"data"+sep+"inf226.ventas202202.txt");
+			Mapa.cargarBloqueos(System.getProperty("user.dir")+sep+"data"+sep+"inf226.bloqueo.05.txt");
+			Mapa.cargarPedidos(System.getProperty("user.dir")+sep+"data"+sep+"inf226.ventas202205temp.txt");
 			
 
 			/*
@@ -74,19 +76,20 @@ public class App {
 
 			writer.println(String.format("Cantidad de oficinas: %4d", Mapa.listaOficinas.size() + Mapa.listaAlmacenes.size()));
 			writer.println(String.format("Cantidad de tramos:   %4d", Mapa.listaTramos.size()));
+			writer.println(String.format("Cantidad de bloqueos:   %4d", Mapa.listaBloqueos.size()));
 			writer.println(String.format("Cantidad de pedidos:  %4d", Mapa.listaPedidos.size()));
 			writer.println(String.format("Cantidad de camiones:  %4d", Mapa.listaCamiones.size()));
 
 			/*4. Corremos la solucion: solucion.inicializar(Mapa.getListaPedidos(), alm);*/
 			//-> Poner: solucion.inicializar(Mapa.getListaPedidosPorAlmacen(alm), alm) //Ejecutar para cada almacen
 			
-			sol1Lima.inicializar(Mapa.getListaPedidosPorAlmacen(Mapa.getOficinaByCodigo("150101")), Mapa.getOficinaByCodigo("150101"), writer);
+			costo = costo + sol1Lima.inicializar(Mapa.getListaPedidosPorAlmacen(Mapa.getOficinaByCodigo("150101")), Mapa.getOficinaByCodigo("150101"), writer);
 			writer.println("LIMA OK      ==========================================================");
 			
-			sol1Trujillo.inicializar(Mapa.getListaPedidosPorAlmacen(Mapa.getOficinaByCodigo("130101")), Mapa.getOficinaByCodigo("130101"), writer);
+			costo = costo + sol1Trujillo.inicializar(Mapa.getListaPedidosPorAlmacen(Mapa.getOficinaByCodigo("130101")), Mapa.getOficinaByCodigo("130101"), writer);
 			writer.println("TRUJILLO OK  ==========================================================");
 			
-			sol1Arequipa.inicializar(Mapa.getListaPedidosPorAlmacen(Mapa.getOficinaByCodigo("040101")), Mapa.getOficinaByCodigo("040101"), writer);
+			costo = costo + sol1Arequipa.inicializar(Mapa.getListaPedidosPorAlmacen(Mapa.getOficinaByCodigo("040101")), Mapa.getOficinaByCodigo("040101"), writer);
 			writer.println("AREQUIPA OK  ==========================================================");
 			
 
@@ -94,6 +97,9 @@ public class App {
 			writer.println("");
 			writer.println("");
 			writer.println("==========================================================");
+			writer.println("El costo total del algoritmo Simulated Annealing : " + costo);
+			writer.println("");
+			writer.println("");
 
             writer.close();
             System.out.println("Se ejecutó la primera solución con éxito.");
