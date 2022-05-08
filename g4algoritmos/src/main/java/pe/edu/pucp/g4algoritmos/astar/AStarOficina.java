@@ -180,6 +180,31 @@ public class AStarOficina {
         return tramos;
     }
     
+    public double getCost(){
+
+        /*
+        Funcion que devuelve los tramos a recorrer desde la Ciudad inicio hasta final. 
+        Debe correrse el Astar primer (astar.run())
+        */
+        
+        double cost = 0.0;
+
+        List<Oficina> path = new ArrayList<>();
+        for (Oficina oficina = destination; oficina != null; oficina = oficina.getParent()){
+            path.add(oficina);
+        }
+        Collections.reverse(path);
+        for (int i = 0; i < path.size()-1; i++){
+         
+            cost += (Mapa.getTramoByOficinas(path.get(i).getCodigo(), path.get(i+1).getCodigo())).getCosto();
+        }       
+
+        for (Oficina oficina : path)
+            oficina.resetAstar();
+
+        return cost;
+    }
+    
 
 
 }

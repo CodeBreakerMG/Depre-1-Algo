@@ -45,6 +45,10 @@ public class Position {
         return camionNumber;
     }
 
+    public int getDepot(){
+        return (int)randomPosition; //Devolviendo parte entera
+    }
+
     public int getVehiclePosition() {
         
         double decimalPart = camionNumber % 1;
