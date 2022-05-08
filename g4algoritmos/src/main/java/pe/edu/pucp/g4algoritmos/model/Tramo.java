@@ -43,13 +43,7 @@ public class Tramo {
 
     private double calcularDistancia() {
         
-        double x1 = CiudadInicio.getCoordX();
-        double y1 = CiudadInicio.getCoordY();
-        double x2 = CiudadFin.getCoordX();
-        double y2 = CiudadFin.getCoordY();
-
-        //return Math.sqrt(x2-))
-        return Math.sqrt(Math.pow((x2-x1),2) + Math.pow((y2-y1),2));
+        return Mapa.calcularDistancia(CiudadInicio, CiudadFin);
 
     }
 

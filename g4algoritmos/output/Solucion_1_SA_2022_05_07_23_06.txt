@@ -1,0 +1,206 @@
+Planes de Transporte para la atención de Pedidos
+Cantidad de oficinas:  196
+Cantidad de tramos:   7008
+Cantidad de pedidos:    99
+Cantidad de camiones:    45
+Cantidad de oficinas a recorrer:     2
+
+Zona: 1
+N° de Pedidos: 23
+
+Zona: 1
+N° de Pedidos: 23
+Cantidad de camiones a utilizar:     1
+Hora y Fecha de Salida: 11:09:00 2022/02/14 
+Lista tiempos: [[110401, 20, 18], [090101, 48, 5]]
+
+Lista oficinasxZona antes: 
+PALPA HUANCAVELICA 
+Lista oficinasxZona despues: 
+PALPA HUANCAVELICA 
+Lista oficinasxZona despues de agregar almacen: 
+LIMA PALPA HUANCAVELICA 
+
+Oficina inicial: LIMA
+Oficina final: PALPA
+
+Tramos parciales: 
+C: LIMA-> -C: CHINCHA->  C: CHINCHA-> -C: PISCO->  C: PISCO-> -C: ICA->  C: ICA-> -C: PALPA->  
+
+Oficina inicial: PALPA
+Oficina final: HUANCAVELICA
+
+Tramos parciales: 
+C: PALPA-> -C: HUANCAVELICA->  
+
+Oficina inicial: HUANCAVELICA
+Oficina final: LIMA
+
+Tramos parciales: 
+C: HUANCAVELICA-> -C: LIMA->  
+Lista oficinas: 
+LIMA PALPA HUANCAVELICA 
+Mejor costo solucion: 1.7764433605423935E7
+
+Lista de Tramos Oficina 1: LIMA => CHINCHA => CHINCHA => PISCO => PISCO => ICA => ICA => PALPA => 
+Lista de Tramos Oficina 2: PALPA => HUANCAVELICA => 
+Lista de Tramos Oficina 3: HUANCAVELICA => LIMA => 
+
+
+PLANES DE TRANSPORTE
+Camion C001
+Lista oficinas: 
+PALPA HUANCAVELICA 
+Lista de Tramos Oficina 1: LIMA => CHINCHA => CHINCHA => PISCO => PISCO => ICA => ICA => PALPA => 
+Lista de Tramos Oficina 2: PALPA => HUANCAVELICA => 
+Lista de Tramos Oficina 3: HUANCAVELICA => LIMA => 
+
+
+El simulated annealing terminó
+LIMA OK      ==========================================================
+Cantidad de oficinas a recorrer:     4
+
+Zona: 1
+N° de Pedidos: 37
+
+Zona: 1
+N° de Pedidos: 37
+Cantidad de camiones a utilizar:     1
+Hora y Fecha de Salida: 10:36:00 2022/02/14 
+Lista tiempos: [[021301, 19, 21], [130501, 24, 4], [100701, 40, 9], [160701, 64, 3]]
+
+Lista oficinasxZona antes: 
+MARAÃ‘ON DATEM DEL MARAÃ‘ON MARISCAL LUZURIAGA JULCAN 
+Lista oficinasxZona despues: 
+MARISCAL LUZURIAGA JULCAN MARAÃ‘ON DATEM DEL MARAÃ‘ON 
+Lista oficinasxZona despues de agregar almacen: 
+TRUJILLO MARISCAL LUZURIAGA JULCAN MARAÃ‘ON DATEM DEL MARAÃ‘ON 
+
+Oficina inicial: TRUJILLO
+Oficina final: MARISCAL LUZURIAGA
+
+Tramos parciales: 
+C: TRUJILLO-> -C: MARISCAL LUZURIAGA->  
+
+Oficina inicial: MARISCAL LUZURIAGA
+Oficina final: JULCAN
+
+Tramos parciales: 
+C: MARISCAL LUZURIAGA-> -C: JULCAN->  
+
+Oficina inicial: JULCAN
+Oficina final: MARAÃ‘ON
+
+Tramos parciales: 
+C: JULCAN-> -C: MARAÃ‘ON->  
+
+Oficina inicial: MARAÃ‘ON
+Oficina final: DATEM DEL MARAÃ‘ON
+
+Tramos parciales: 
+C: MARAÃ‘ON-> -C: MARISCAL LUZURIAGA->  C: MARISCAL LUZURIAGA-> -C: SIHUAS->  C: SIHUAS-> -C: PALLASCA->  C: PALLASCA-> -C: SANTIAGO DE CHUCO->  C: SANTIAGO DE CHUCO-> -C: CAJABAMBA->  C: CAJABAMBA-> -C: SANCHEZ CARRION->  C: SANCHEZ CARRION-> -C: BOLIVAR->  C: BOLIVAR-> -C: RODRIGUEZ DE MENDOZA->  C: RODRIGUEZ DE MENDOZA-> -C: BONGARA->  C: BONGARA-> -C: RIOJA->  C: RIOJA-> -C: DATEM DEL MARAÃ‘ON->  
+
+Oficina inicial: DATEM DEL MARAÃ‘ON
+Oficina final: TRUJILLO
+
+Tramos parciales: 
+C: DATEM DEL MARAÃ‘ON-> -C: ALTO AMAZONAS->  C: ALTO AMAZONAS-> -C: SAN MARTIN->  C: SAN MARTIN-> -C: EL DORADO->  C: EL DORADO-> -C: HUALLAGA->  C: HUALLAGA-> -C: MARISCAL CACERES->  C: MARISCAL CACERES-> -C: BOLIVAR->  C: BOLIVAR-> -C: SAN MARCOS->  C: SAN MARCOS-> -C: CAJAMARCA->  C: CAJAMARCA-> -C: CONTUMAZA->  C: CONTUMAZA-> -C: ASCOPE->  C: ASCOPE-> -C: TRUJILLO->  
+Lista oficinas: 
+TRUJILLO JULCAN MARISCAL LUZURIAGA MARAÃ‘ON DATEM DEL MARAÃ‘ON 
+Mejor costo solucion: 2.9607353717231322E7
+
+Lista de Tramos Oficina 1: TRUJILLO => JULCAN => 
+Lista de Tramos Oficina 2: JULCAN => MARISCAL LUZURIAGA => 
+Lista de Tramos Oficina 3: MARISCAL LUZURIAGA => MARAÃ‘ON => 
+Lista de Tramos Oficina 4: MARAÃ‘ON => MARISCAL LUZURIAGA => MARISCAL LUZURIAGA => SIHUAS => SIHUAS => PALLASCA => PALLASCA => SANTIAGO DE CHUCO => SANTIAGO DE CHUCO => CAJABAMBA => CAJABAMBA => SANCHEZ CARRION => SANCHEZ CARRION => BOLIVAR => BOLIVAR => RODRIGUEZ DE MENDOZA => RODRIGUEZ DE MENDOZA => BONGARA => BONGARA => RIOJA => RIOJA => DATEM DEL MARAÃ‘ON => 
+Lista de Tramos Oficina 5: DATEM DEL MARAÃ‘ON => ALTO AMAZONAS => ALTO AMAZONAS => SAN MARTIN => SAN MARTIN => EL DORADO => EL DORADO => HUALLAGA => HUALLAGA => MARISCAL CACERES => MARISCAL CACERES => BOLIVAR => BOLIVAR => SAN MARCOS => SAN MARCOS => CAJAMARCA => CAJAMARCA => CONTUMAZA => CONTUMAZA => ASCOPE => ASCOPE => TRUJILLO => 
+
+
+PLANES DE TRANSPORTE
+Camion B008
+Lista oficinas: 
+JULCAN MARISCAL LUZURIAGA MARAÃ‘ON DATEM DEL MARAÃ‘ON 
+Lista de Tramos Oficina 1: TRUJILLO => JULCAN => 
+Lista de Tramos Oficina 2: JULCAN => MARISCAL LUZURIAGA => 
+Lista de Tramos Oficina 3: MARISCAL LUZURIAGA => MARAÃ‘ON => 
+Lista de Tramos Oficina 4: MARAÃ‘ON => MARISCAL LUZURIAGA => MARISCAL LUZURIAGA => SIHUAS => SIHUAS => PALLASCA => PALLASCA => SANTIAGO DE CHUCO => SANTIAGO DE CHUCO => CAJABAMBA => CAJABAMBA => SANCHEZ CARRION => SANCHEZ CARRION => BOLIVAR => BOLIVAR => RODRIGUEZ DE MENDOZA => RODRIGUEZ DE MENDOZA => BONGARA => BONGARA => RIOJA => RIOJA => DATEM DEL MARAÃ‘ON => 
+Lista de Tramos Oficina 5: DATEM DEL MARAÃ‘ON => ALTO AMAZONAS => ALTO AMAZONAS => SAN MARTIN => SAN MARTIN => EL DORADO => EL DORADO => HUALLAGA => HUALLAGA => MARISCAL CACERES => MARISCAL CACERES => BOLIVAR => BOLIVAR => SAN MARCOS => SAN MARCOS => CAJAMARCA => CAJAMARCA => CONTUMAZA => CONTUMAZA => ASCOPE => ASCOPE => TRUJILLO => 
+
+
+El simulated annealing terminó
+TRUJILLO OK  ==========================================================
+Cantidad de oficinas a recorrer:     4
+
+Zona: 1
+N° de Pedidos: 39
+
+Zona: 1
+N° de Pedidos: 39
+Cantidad de camiones a utilizar:     1
+Hora y Fecha de Salida: 10:09:00 2022/02/14 
+Lista tiempos: [[230101, 14, 4], [040601, 23, 14], [040501, 24, 7], [030501, 39, 14]]
+
+Lista oficinasxZona antes: 
+TACNA COTABAMBAS CONDESUYOS CAYLLOMA 
+Lista oficinasxZona despues: 
+TACNA CONDESUYOS CAYLLOMA COTABAMBAS 
+Lista oficinasxZona despues de agregar almacen: 
+AREQUIPA TACNA CONDESUYOS CAYLLOMA COTABAMBAS 
+
+Oficina inicial: AREQUIPA
+Oficina final: COTABAMBAS
+
+Tramos parciales: 
+C: AREQUIPA-> -C: COTABAMBAS->  
+
+Oficina inicial: COTABAMBAS
+Oficina final: TACNA
+
+Tramos parciales: 
+C: COTABAMBAS-> -C: ACOMAYO->  C: ACOMAYO-> -C: CANAS->  C: CANAS-> -C: CANCHIS->  C: CANCHIS-> -C: ESPINAR->  C: ESPINAR-> -C: MELGAR->  C: MELGAR-> -C: AZANGARO->  C: AZANGARO-> -C: LAMPA->  C: LAMPA-> -C: SAN ROMAN->  C: SAN ROMAN-> -C: PUNO->  C: PUNO-> -C: CHUCUITO->  C: CHUCUITO-> -C: CANDARAVE->  C: CANDARAVE-> -C: MARISCAL NIETO->  C: MARISCAL NIETO-> -C: JORGE BASADRE->  C: JORGE BASADRE-> -C: TACNA->  
+
+Oficina inicial: TACNA
+Oficina final: CONDESUYOS
+
+Tramos parciales: 
+C: TACNA-> -C: JORGE BASADRE->  C: JORGE BASADRE-> -C: MARISCAL NIETO->  C: MARISCAL NIETO-> -C: GENERAL SANCHEZ CERRO->  C: GENERAL SANCHEZ CERRO-> -C: AREQUIPA->  C: AREQUIPA-> -C: CAYLLOMA->  C: CAYLLOMA-> -C: CASTILLA->  C: CASTILLA-> -C: CONDESUYOS->  
+
+Oficina inicial: CONDESUYOS
+Oficina final: CAYLLOMA
+
+Tramos parciales: 
+C: CONDESUYOS-> -C: CASTILLA->  C: CASTILLA-> -C: CAYLLOMA->  
+
+Oficina inicial: CAYLLOMA
+Oficina final: AREQUIPA
+
+Tramos parciales: 
+C: CAYLLOMA-> -C: AREQUIPA->  
+Lista oficinas: 
+AREQUIPA CAYLLOMA COTABAMBAS CONDESUYOS TACNA 
+Mejor costo solucion: 2.9607324594162527E7
+
+Lista de Tramos Oficina 1: AREQUIPA => CAYLLOMA => 
+Lista de Tramos Oficina 2: CAYLLOMA => COTABAMBAS => 
+Lista de Tramos Oficina 3: COTABAMBAS => CHUMBIVILCAS => CHUMBIVILCAS => LA UNION => LA UNION => CONDESUYOS => 
+Lista de Tramos Oficina 4: CONDESUYOS => CASTILLA => CASTILLA => CAMANA => CAMANA => AREQUIPA => AREQUIPA => GENERAL SANCHEZ CERRO => GENERAL SANCHEZ CERRO => MARISCAL NIETO => MARISCAL NIETO => JORGE BASADRE => JORGE BASADRE => TACNA => 
+Lista de Tramos Oficina 5: TACNA => JORGE BASADRE => JORGE BASADRE => MARISCAL NIETO => MARISCAL NIETO => GENERAL SANCHEZ CERRO => GENERAL SANCHEZ CERRO => AREQUIPA => 
+
+
+PLANES DE TRANSPORTE
+Camion B011
+Lista oficinas: 
+CAYLLOMA COTABAMBAS CONDESUYOS TACNA 
+Lista de Tramos Oficina 1: AREQUIPA => CAYLLOMA => 
+Lista de Tramos Oficina 2: CAYLLOMA => COTABAMBAS => 
+Lista de Tramos Oficina 3: COTABAMBAS => CHUMBIVILCAS => CHUMBIVILCAS => LA UNION => LA UNION => CONDESUYOS => 
+Lista de Tramos Oficina 4: CONDESUYOS => CASTILLA => CASTILLA => CAMANA => CAMANA => AREQUIPA => AREQUIPA => GENERAL SANCHEZ CERRO => GENERAL SANCHEZ CERRO => MARISCAL NIETO => MARISCAL NIETO => JORGE BASADRE => JORGE BASADRE => TACNA => 
+Lista de Tramos Oficina 5: TACNA => JORGE BASADRE => JORGE BASADRE => MARISCAL NIETO => MARISCAL NIETO => GENERAL SANCHEZ CERRO => GENERAL SANCHEZ CERRO => AREQUIPA => 
+
+
+El simulated annealing terminó
+AREQUIPA OK  ==========================================================
+==========================================================
+
+
+==========================================================

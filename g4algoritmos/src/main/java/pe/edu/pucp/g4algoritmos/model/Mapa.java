@@ -415,4 +415,14 @@ public class Mapa {
         hashMapCamionesAlmacen.put(getOficinaByCodigo("150101"), lista_camiones_Lima);
         hashMapCamionesAlmacen.put(getOficinaByCodigo("040101"), lista_camiones_Arequipa);
     }
+    
+    public static List<Pedido> getListaPedidosPorOficina (Oficina of, List<Pedido> pedidos) {
+        List<Pedido> pedTemp = new ArrayList<>();
+        for(Pedido p: pedidos){
+            if(of.getCodigo().equals(p.getOficina().getCodigo())){
+                pedTemp.add(p);
+            }
+        }
+        return pedTemp;
+    }
 }
