@@ -8,9 +8,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import pe.edu.pucp.g4algoritmos.model.Bloqueo;
+import pe.edu.pucp.g4algoritmos.model.Camion;
 import pe.edu.pucp.g4algoritmos.model.Mapa;
 import pe.edu.pucp.g4algoritmos.model.Oficina;
 import pe.edu.pucp.g4algoritmos.model.Pedido;
+import pe.edu.pucp.g4algoritmos.model.TipoCamion;
 import pe.edu.pucp.g4algoritmos.model.Tramo;
 
 import javax.swing.JFileChooser;
@@ -307,5 +309,71 @@ public class LoadData {
         }
 
         return listaBloqueos;
+    }
+
+    public static List<Camion> leerCamionesYTipos(String ruta){
+        List<Camion> listaCamiones = new ArrayList<>();
+        try {
+            String line = "";
+            BufferedReader br = new BufferedReader(new FileReader(ruta));
+            
+            // Lee cabecera "Tipo,Capacidad,Lima,Trujillo,Arequipa"
+            br.readLine();
+
+            // Lee tipos de camiones y capacidades de almacenes hasta encontrar la línea separadora "==="
+            int numTiposCamiones = 0;
+            List<TipoCamion> tiposCamiones = new ArrayList<>();
+            while ((line = br.readLine()).charAt(0) != '=') {
+                String[] linea_tipo_Camion = line.split(", *");
+                
+                int idTipoCamion = ++numTiposCamiones;
+                char codTipoCamion = linea_tipo_Camion[0].trim().charAt(0);
+                int capacidad = Integer.valueOf(linea_tipo_Camion[1].trim());
+
+                TipoCamion tipoCamion = new TipoCamion(idTipoCamion, codTipoCamion, capacidad);
+                tiposCamiones.add(tipoCamion);
+            }
+
+            // Lee los camiones para cada almacén
+            int numCamiones = 0;
+            while((line = br.readLine()) != null){
+                line = line.toUpperCase();
+
+                // Si la línea leída es el nombre de un almacén, se lee todos los camiones por tipo
+                if(line.equals("LIMA") || line.equals("AREQUIPA") || line.equals("TRUJILLO")){
+                    Oficina almacen;
+                    if(line.equals("LIMA"))
+                        almacen = Mapa.getOficinaByCodigo("150101");
+                    if(line.equals("AREQUIPA"))
+                        almacen = Mapa.getOficinaByCodigo("040101");
+                    else
+                        almacen = Mapa.getOficinaByCodigo("130101");
+
+                    for(int i=0; i<numTiposCamiones; i++){
+                        TipoCamion tipoCamionAux = tiposCamiones.get(i);                    
+                        
+                        // Leer línea de camiones de un tipo
+                        line = br.readLine();
+                        if(line.charAt(line.length() - 1) == ',')
+                            line = line.substring(0, line.length() - 1);
+                        String[] linea_camiones = line.split(", *");
+                        
+                        // Agregar camiones a lista de camiones
+                        for(String codCamion : linea_camiones){
+                            if(codCamion.trim().length() == 0) continue;
+                            int idCamionAux = numCamiones++;                            
+                            Camion camionAux = new Camion(idCamionAux, codCamion.trim(), tipoCamionAux, 0.0, 0.0, almacen);
+                            listaCamiones.add(camionAux);
+                        }
+                    }
+                }
+            }
+            br.close();
+        }
+        catch (IOException ex) {  
+            ex.printStackTrace();  
+        }
+
+        return listaCamiones;
     }
 }

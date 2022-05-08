@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import javax.lang.model.util.ElementScanner6;
+
 import pe.edu.pucp.g4algoritmos.astar.GrafoAStar;
 import pe.edu.pucp.g4algoritmos.utilitarios.LoadData;
 
@@ -46,6 +48,7 @@ public class Mapa {
     public static GrafoAStar grafoAStar = new GrafoAStar(1);
 
     public static HashMap<Oficina, List<Pedido>> hashMapPedidosAlmacen = new HashMap<>();
+    public static HashMap<Oficina, List<Camion>> hashMapCamionesAlmacen = new HashMap<>();
 
     public Mapa (){
 
@@ -181,6 +184,12 @@ public class Mapa {
                 }
             }
         return camiones;
+    }
+
+    public static List<Camion> getListaCamionesPorAlmacen(Oficina almacen) {
+        if(hashMapCamionesAlmacen.get(almacen) != null)
+            return hashMapCamionesAlmacen.get(almacen);
+        return new ArrayList<Camion>();
     }
 
     public static List<Camion> extractListaCamionesPorAlmacen(Oficina almacen, char tipoCamion, int cantidad){
@@ -381,5 +390,29 @@ public class Mapa {
         if(hashMapPedidosAlmacen.get(almacen) != null)
             return hashMapPedidosAlmacen.get(almacen);
         return new ArrayList<Pedido>();
+    }
+
+    public static void cargarCamiones(String ruta) {
+        listaCamiones = LoadData.leerCamionesYTipos(ruta);
+
+        // Creación de listas de camiones para cada almacén
+        List<Camion> lista_camiones_Trujillo = new ArrayList<>();
+        List<Camion> lista_camiones_Lima     = new ArrayList<>();
+        List<Camion> lista_camiones_Arequipa = new ArrayList<>();
+
+        // Repartición de camiones para cada almacén
+        for(Camion camion : listaCamiones){
+            if(camion.getAlmacen().equals(getOficinaByCodigo("130101")))
+                lista_camiones_Trujillo.add(camion);
+            else if(camion.getAlmacen().equals(getOficinaByCodigo("150101")))
+                lista_camiones_Lima.add(camion);
+            else
+                lista_camiones_Arequipa.add(camion);
+        }
+
+        // Guardado de listas de camiones por almacén en hashmap
+        hashMapCamionesAlmacen.put(getOficinaByCodigo("130101"), lista_camiones_Trujillo);
+        hashMapCamionesAlmacen.put(getOficinaByCodigo("150101"), lista_camiones_Lima);
+        hashMapCamionesAlmacen.put(getOficinaByCodigo("040101"), lista_camiones_Arequipa);
     }
 }
