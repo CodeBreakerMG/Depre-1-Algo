@@ -14,6 +14,9 @@ import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+
 
 public class SegundaSolucion {
     
@@ -26,24 +29,34 @@ public class SegundaSolucion {
         private  List<Pedido> listaPedidos; //Lista inicial de los pedidos
         private  List<OficinaPSO> listaOficinas; //Lista de oficinas que tienen al menos un pedido
         private  List<Oficina> listaAlmacenes; //Lista de oficinas que tienen al menos un pedido
-        private  List<Camion> listaCamiones; //Lista de camiones disponibles de un ALMACEN
+        private  List<List<Camion>> listaCamionesPorAlmacen; //Lista de camiones disponibles de un todos los almacenes
 
         private  int paquetes; //Cantidad total de paquetes A 
         
-        public void inicializar(List<Pedido> pedidos){
+        public long inicializar(List<Pedido> pedidos){
             
             System.out.println("Solución PSO: ");
             
             this.listaAlmacenes = Mapa.listaAlmacenes;
             this.listaPedidos = pedidos;
-            this.listaCamiones = Mapa.listaCamiones;
-            
+            this.listaCamionesPorAlmacen = new ArrayList<>();
+
+            for (Oficina almacen : listaAlmacenes){
+                List<Camion> camiones = Mapa.getCamionesPorAlmacen(almacen);
+                this.listaCamionesPorAlmacen.add(camiones) ;
+            }
+
             /*I. Oficinas de todos los pedido*/
             this.listaOficinas = contabilizarOficinas();
             System.out.println(String.format("Cantidad de oficinas a recorrer:  %4d", listaOficinas.size()));
 
             /*II. Asignación de Rutas*/
+            LocalDateTime startTime  = LocalDateTime.now();
             particleSwarmOptimization();
+            LocalDateTime endTime = LocalDateTime.now();
+
+            return ChronoUnit.SECONDS.between(startTime, endTime);
+            
         }
 
         /*1. Determinar lista de oficinas de los pedidos*/ 
@@ -77,6 +90,7 @@ public class SegundaSolucion {
             return oficinasPSO;
         }
 
+        /*2. Llamar al PSO. Determinar lista de oficinas de los pedidos*/ 
         private void particleSwarmOptimization(){
 
             Date tiempoSalida = listaOficinas.get(0).tiempoMinimoSalidaCamion();
@@ -84,7 +98,7 @@ public class SegundaSolucion {
             for (OficinaPSO oficina : listaOficinas)
                 tiempoSalida = AuxiliaryFunctions.minimumDate(oficina.tiempoMinimoSalidaCamion(), tiempoSalida);
 
-            HybridParticleSwarmOptimization pso = new HybridParticleSwarmOptimization(listaOficinas, listaAlmacenes, tiempoSalida);
+            HybridParticleSwarmOptimization pso = new HybridParticleSwarmOptimization(listaOficinas, listaCamionesPorAlmacen, listaAlmacenes, tiempoSalida);
             pso.solve();
             pso.printOficinasXAlmacen();
            // planesDeTransporte = HybridParticleSwarmOptimization

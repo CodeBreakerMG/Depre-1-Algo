@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.PriorityQueue;
 
+import org.javatuples.Triplet;
+
 import pe.edu.pucp.g4algoritmos.model.AuxiliaryFunctions;
 import pe.edu.pucp.g4algoritmos.model.Camion;
 import pe.edu.pucp.g4algoritmos.model.Oficina;
@@ -28,9 +30,12 @@ public class ConstantesPSO {
     public final static double theta = 5.0;
     public final static double lambda = 2.0;
     public static final double MILI_HORAS = 3.6e-6; //MILI to hours 
+    public static final int MAX_NUM_CAMIONES = 4;
 
     //Variable global:
+    
     public static double costoParcial;
+    public static double cargaParcial;
     
     public static double f(double[] data){
         /*The parameter for this function is an array of two parameters because we are working on 2 dimensions*/
@@ -49,13 +54,16 @@ public class ConstantesPSO {
         
     }
 
-    public static double f(List<Position> positions, int num_dimensions, int num_almacenes, Date tiempo_salida, List<Oficina> almacenes, List<Camion> camiones){
+
+    public static double f(List<Position> positions, int num_dimensions, int num_almacenes, Date tiempo_salida, List<Oficina> almacenes, List<List<Camion>> camiones, RepositoryPSO repository){
 
         //Funcion Fitness basado en el paper 
 
         int i,j;
         PriorityQueue<Position> queue = new PriorityQueue<>(new PositionComparator());
         List<List<Oficina>> oficinasPorAlmacen = new ArrayList<>();
+        List<List<Integer>> cargaOficinaAlmacen = new ArrayList<>();
+        List<List<Camion>> camionesPorAlmacen = new ArrayList<>();
         List<List<Date>> tiempoMinimoOficinasPorAlmacen = new ArrayList<>();
         
         //List<List<Double>> paquetesPorAlmacen = new ArrayList<>();
@@ -67,7 +75,9 @@ public class ConstantesPSO {
         for (i = 0; i < num_almacenes; i++){
             double pos = (double) i;
             List<Oficina> listOficinas = new ArrayList<>();
+            List<Camion> listCamiones = new ArrayList<>();
             List<Date> tiemposMinimos = new ArrayList<>();
+            List<Integer> cargaOficina = new ArrayList<>();
             do{
                 Position position = queue.peek();
                 
@@ -77,6 +87,9 @@ public class ConstantesPSO {
                 
                 if (pos < (double)(i + 1)){
                     listOficinas.add(position.getOficina());
+                    cargaOficina.add(position.getOficinaPSO().getQ());
+                    if (listCamiones.contains(repository.getCamion(i, position.getVehiclePosition())) == false)
+                        listCamiones.add(repository.getCamion(i, position.getVehiclePosition()));
                     tiemposMinimos.add(position.getL());
                     queue.poll();
                 }
@@ -84,6 +97,8 @@ public class ConstantesPSO {
             }while (pos < (double)(i + 1));
             
             oficinasPorAlmacen.add(listOficinas);
+            cargaOficinaAlmacen.add(cargaOficina);
+            camionesPorAlmacen.add(listCamiones);
             tiempoMinimoOficinasPorAlmacen.add(tiemposMinimos);
         }
 
@@ -106,10 +121,20 @@ public class ConstantesPSO {
 
         //DS & TV:
         for (i = 0; i < num_almacenes; i++){
+
             
-            List<Date> tiempoLlegadaPorOficina = calcularCostoYTiempoLlegadasRuta(oficinasPorAlmacen.get(i), almacenes.get(i), tiempo_salida);
+            /*
+            Triplet:
+
+                Value 0 : List of dates
+                Value 1 : total Cost of time
+                Value 2 : total quantity 
+
+            */
+
+            Triplet<List<Date>, Double, Integer> values = calcularCostoYTiempoLlegadasRuta(oficinasPorAlmacen.get(i), almacenes.get(i), cargaOficinaAlmacen.get(i),camionesPorAlmacen.get(i),tiempo_salida);
             
-            ds += costoParcial; //costo parcial calculado en: calcularCostoYTiempoLlegadasRuta
+            //ds += costoTiempo; //costo parcial calculado en: calcularCostoYTiempoLlegadasRuta
             
             /*
             for (j = 0; j < oficinasPorAlmacen.get(i).size(); j++){
@@ -128,14 +153,22 @@ public class ConstantesPSO {
  
 
 
-    private static List<Date> calcularCostoYTiempoLlegadasRuta(List<Oficina> oficinas, Oficina almacen, Date tiempo_salida) {
+    private static  Triplet<List<Date>, Double, Integer> calcularCostoYTiempoLlegadasRuta(List<Oficina> oficinas, Oficina almacen, List<Integer> cantidadesPorOficina, List<Camion> camion, Date tiempo_salida) {
         
-        costoParcial = 0.0; //Costo de la ruta actual EN HORAS. CONSTANTE DE ESTA CLASE
+        double costo = 0.0; //Costo de la ruta actual EN HORAS. CONSTANTE DE ESTA CLASE
+        int carga = 0; //Carga de paquetes
 
         //Se realizará un TSP y se obtendrá el costo de la ruta
 
         List<Date> tiempoLlegadaPorOficina = new ArrayList<>(); //Tiempos de Llegada por Oficina de oficina i a j, 
-        double tiempo_salida_horas = tiempo_salida.getTime() * MILI_HORAS;
+        
+        for (int i = 0; i < camion.size(); i++){
+
+            List<Oficina> listaOficinas = new ArrayList<>();
+            listaOficinas.add(almacen);
+            listaOficinas.addAll(oficinas);
+    
+        }
 
         List<Oficina> listaOficinas = new ArrayList<>();
         listaOficinas.add(almacen);
@@ -161,7 +194,7 @@ public class ConstantesPSO {
                 tiempoLlegadaOficinaDestino += t.getCosto();
             }
 
-            costoParcial += tiempoLlegadaOficinaDestino;
+            costo += tiempoLlegadaOficinaDestino;
 
             if (index == 0){
                 Date tiempoParcial = tiempo_salida;
@@ -175,7 +208,48 @@ public class ConstantesPSO {
             
         }
  
-        return tiempoLlegadaPorOficina;
+        return new Triplet<List<Date>,Double,Integer>(tiempoLlegadaPorOficina, costo, carga);
+    }
+
+    public static Triplet<List<Date>, Double, Integer>  calcularCostoRutas(List<Oficina> listaOficinas, Date tiempo_salida) {
+
+        double costo = 0.0; //Costo de la ruta actual EN HORAS. CONSTANTE DE ESTA CLASE
+        int carga = 0; //Carga de paquetes
+        List<Date> tiempoLlegadaPorOficina = new ArrayList<>(); //Tiempos de Llegada por Oficina de oficina i a j, 
+ 
+        for (int index = 0; index < listaOficinas.size(); ++index){
+            
+            double tiempoLlegadaOficinaDestino = 0.0;
+            //Mismo Loop utilizado que en SingleTour.calcularTramos
+            Oficina fromOficina = listaOficinas.get(index);
+            Oficina destinationOficina = null;
+
+            if(index + 1 < listaOficinas.size())
+                destinationOficina = listaOficinas.get(index + 1);
+            else
+                destinationOficina = listaOficinas.get(0);
+            
+            List<Tramo> tramosParciales = fromOficina.recorridoHasta(destinationOficina);
+
+            for (Tramo t : tramosParciales){
+                tiempoLlegadaOficinaDestino += t.getCosto();
+            }
+
+            costo += tiempoLlegadaOficinaDestino;
+
+            if (index == 0){
+                Date tiempoParcial = tiempo_salida;
+                tiempoParcial = AuxiliaryFunctions.addHoursToJavaUtilDate(tiempoParcial, tiempoLlegadaOficinaDestino);
+                tiempoLlegadaPorOficina.add(tiempoParcial);
+            }
+            else {
+                Date tiempoParcial = AuxiliaryFunctions.addHoursToJavaUtilDate(tiempoLlegadaPorOficina.get(index - 1), tiempoLlegadaOficinaDestino);
+                tiempoLlegadaPorOficina.add(tiempoParcial);
+            }
+            
+        }
+ 
+        return new Triplet<List<Date>,Double,Integer>(tiempoLlegadaPorOficina, costo, carga);
     }
 
     public void printOficinasXAlmacen(List<List<OficinaPSO>> oficinasXAlmacen){

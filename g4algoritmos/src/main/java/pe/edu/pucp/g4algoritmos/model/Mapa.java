@@ -174,11 +174,23 @@ public class Mapa {
         return counter;
     }
 
-    public static List<Camion> getListaCamionesPorAlmacen(Oficina almacen, char tipoCamion){
+    public static List<Camion> getListaCamionesPorTipoPorAlmacen(Oficina almacen, char tipoCamion){
         List<Camion> camiones = new ArrayList<>();
             for (Camion camion : listaCamiones){
                 if (camion.getAlmacen().getCodigo().equals(almacen.getCodigo()) && 
                     camion.getTipo().getCodigo() == tipoCamion &&
+                    camion.getEstado() == 1){
+                    camiones.add(camion);
+                }
+            }
+        return camiones;
+    }
+
+    
+    public static List<Camion> getCamionesPorAlmacen(Oficina almacen){
+        List<Camion> camiones = new ArrayList<>();
+            for (Camion camion : listaCamiones){
+                if (camion.getAlmacen().getCodigo().equals(almacen.getCodigo()) && 
                     camion.getEstado() == 1){
                     camiones.add(camion);
                 }

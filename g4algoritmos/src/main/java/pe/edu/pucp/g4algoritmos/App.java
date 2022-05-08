@@ -113,6 +113,8 @@ public class App {
 
 		try{
 			/*1. Preparacion del archivo OUTPUT:*/
+
+			/*
 			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("_yyyy_MM_dd_HH_mm");  
             LocalDateTime now = LocalDateTime.now();  
             
@@ -121,7 +123,7 @@ public class App {
 
             
             writer.println("Solucion de PSO");
-			
+			*/
 
 			/*2. cargar la data al maestro MAPA*/
 			final String sep = File.separator;
@@ -135,23 +137,28 @@ public class App {
 			Mapa.setTramosToOficinas();
 			Mapa.setTramosToAlmacenes();
 
+			/*
 			writer.println(String.format("Cantidad de oficinas: %4d", Mapa.listaOficinas.size() + Mapa.listaAlmacenes.size()));
 			writer.println(String.format("Cantidad de tramos:   %4d", Mapa.listaTramos.size()));
 			writer.println(String.format("Cantidad de pedidos:  %4d", Mapa.listaPedidos.size()));
 			writer.println(String.format("Cantidad de camiones:  %4d", Mapa.listaCamiones.size()));
-
+			*/
 			/*Ejecución PSO*/
 
 			SegundaSolucion solPSO = new SegundaSolucion();
-			solPSO.inicializar(Mapa.listaPedidos);
+			long runTime = solPSO.inicializar(Mapa.listaPedidos);
 
+			
+			/*
 			writer.println("==========================================================");
 			writer.println("");
 			writer.println("");
 			writer.println("==========================================================");
 
             writer.close();
+			*/
             System.out.println("Se ejecutó la segunda solución con éxito.");
+			System.out.println("Tiempo de Ejecución (en segundos): " + runTime);
 		   
 	   }
 		catch (Exception e) {

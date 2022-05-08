@@ -10,7 +10,7 @@ import pe.edu.pucp.g4algoritmos.model.Tramo;
 public class Particle {
 
 
-    private List<Position> currentPosition; //xi -> actual (oficina, posicion= "almacen"."prioridad")
+    private List<Position> currentPosition; //xi -> actual (oficina, posicion= "almacen"."prioridad", camion = "almacen"."camion del almacen")
     private List<Double>   velocity;        //vi -> (velocidad para la posicion: siendo posicion= "almacen"."prioridad")
     private List<Position> bestPosition;    //pi -> mejor local (oficina, posicion= "almacen"."prioridad")
     private double costo = 0; //summ of the path
@@ -26,7 +26,7 @@ public class Particle {
 
         int i = 0;
         for (OficinaPSO oficina : listOficinas ){
-            Position pos = new Position(oficina, 0.0);
+            Position pos = new Position(oficina, 0.0, 0.0);
             this.currentPosition.add(pos);
 
             this.velocity.add(velocity.get(i));
@@ -34,7 +34,7 @@ public class Particle {
         }
     }
 
-    public Particle(List<OficinaPSO>listOficinas, List<Double> positions, List<Double> velocity) {
+    public Particle(List<OficinaPSO>listOficinas, List<Double> positions, List<Double> vehicles, List<Double> velocity) {
 
         this.currentPosition = new ArrayList<>();
         this.costo = 0;
@@ -42,7 +42,7 @@ public class Particle {
         this.bestPosition = new ArrayList<>();
 
         for (int i = 0; i < listOficinas.size(); i++ ){
-            Position pos = new Position(listOficinas.get(i), positions.get(i));
+            Position pos = new Position(listOficinas.get(i), positions.get(i), vehicles.get(i));
             this.currentPosition.add(pos);
             this.bestPosition.add(pos);
             this.velocity.add(velocity.get(i));
@@ -70,9 +70,10 @@ public class Particle {
         return currentPosition.get(index);
     }
 
-    public void setPosition(int index, double position) {
+    public void setPosition(int index, double position, double vehicle) {
         Position auxPosition = this.currentPosition.get(index);
         auxPosition.setRandomPosition(position);
+        auxPosition.setCamionNumber(vehicle);
         this.currentPosition.set(index, auxPosition);
     }
 
@@ -105,9 +106,12 @@ public class Particle {
         return bestPosition.get(index);
     }
     
-    public void setBestPosition(int index, double position) {
+    public void setBestPosition(int index, double position, double vehicle) {
+ 
+
         Position auxPosition = this.bestPosition.get(index);
         auxPosition.setRandomPosition(position);
+        auxPosition.setCamionNumber(vehicle);
         this.bestPosition.set(index, auxPosition);
     }
 
