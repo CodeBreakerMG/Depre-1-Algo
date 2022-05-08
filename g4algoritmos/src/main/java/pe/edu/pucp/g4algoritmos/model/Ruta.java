@@ -70,6 +70,12 @@ public class Ruta {
         return this.costoTotal;
     }
     
+    public double calcularCostoTotal(List<Tramo> tram){
+        this.costoTotal = 0;
+        for (Tramo tramo : tram)
+            this.costoTotal += tramo.getPesoTiempo();
+        return this.costoTotal;
+    }
 
     public double calcularCostoAcumulado(){
         this.costoAcumulado = 0;
