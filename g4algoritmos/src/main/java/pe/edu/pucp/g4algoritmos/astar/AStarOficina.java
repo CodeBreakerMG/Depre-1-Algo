@@ -44,8 +44,8 @@ public class AStarOficina {
             for(Tramo tramo: current.getListaTramos()){
                 
                 //Aqui verificar si el tramo/arista esta bloqueado
-                //if (arista.getTramo().estaBloqueado())
-                //   continue;
+                if (tramo.estaBloqueado())
+                   continue;
 
                 if (explored.contains(tramo.getCiudadFin()) )
                     continue;
@@ -159,7 +159,7 @@ public class AStarOficina {
         List<Oficina> path = new ArrayList<>();
         for (Oficina oficina = destination; oficina != null; oficina = oficina.getParent()){
             
-            if (oficina.getParent() == null)
+
                 //System.out.println("ES ULTIMO WAAA" + oficina.toString());
             path.add(oficina);
         }

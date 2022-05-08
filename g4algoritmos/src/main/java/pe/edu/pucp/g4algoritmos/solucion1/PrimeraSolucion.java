@@ -3,11 +3,20 @@ package pe.edu.pucp.g4algoritmos.solucion1;
 import pe.edu.pucp.g4algoritmos.model.*;
 import pe.edu.pucp.g4algoritmos.utilitarios.Stats;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.BufferedWriter;
+import java.io.PrintWriter;
+import java.io.Writer;
 import java.util.List;
+import java.util.Map;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
+import java.lang.management.BufferPoolMXBean;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 
 import org.locationtech.jts.geom.Coordinate;
@@ -23,70 +32,74 @@ import org.locationtech.jts.algorithm.locate.SimplePointInAreaLocator;
 public class PrimeraSolucion{
 
     /*Variables OUTPUT*/ 
-    public static List<List<Pedido>> listaPedidosPorZona = new ArrayList<>(); //Lista de Pedidos por Zona de reparto
-    public static List<List<Oficina>> listaOficinasXZona = new ArrayList<>(); //Lista de Oficinas por zona de reparto
-    public static List<Long> tiempoDeSalidasZona = new ArrayList<>();
-    
-    public static List<Geometry> listaZonas = new ArrayList<>(); //Lista de Zonas (Formato de Polígono)
+    private List<List<Pedido>> listaPedidosPorZona = new ArrayList<>(); //Lista de Pedidos por Zona de reparto
+    private List<List<Oficina>> listaOficinasXZona = new ArrayList<>(); //Lista de Oficinas por zona de reparto
+    private List<Long> tiempoDeSalidasZona = new ArrayList<>();
+    private Map mapa;
+    private List<Geometry> listaZonas = new ArrayList<>(); //Lista de Zonas (Formato de Polígono)
 
-    public static List <Ruta> planesDeTransporte = new ArrayList<>(); //Lista de los planes de transporte o RUTAS por camion
+    private List <Ruta> planesDeTransporte = new ArrayList<>(); //Lista de los planes de transporte o RUTAS por camion
     
     /*Variables INPUT*/ 
-    public static List<Pedido> listaPedidos = new ArrayList<>(); //Lista inicial de los pedidos
-    public static List<Oficina> listaOficinas = new ArrayList<>(); //Lista de oficinas que tienen al menos un pedido
-    public static List<Camion> listaCamiones = new ArrayList<>(); //Lista de camiones disponibles de un ALMACEN
+    private List<Pedido> listaPedidos = new ArrayList<>(); //Lista inicial de los pedidos
+    private List<Oficina> listaOficinas = new ArrayList<>(); //Lista de oficinas que tienen al menos un pedido
+    private List<Camion> listaCamiones = new ArrayList<>(); //Lista de camiones disponibles de un ALMACEN
     
-    public static Oficina almacen; //Almacen seleccionado para esta lista de pedidos
-    public static int paquetes; //Cantidad total de paquetes A 
+    private Oficina almacen; //Almacen seleccionado para esta lista de pedidos
+    private int paquetes; //Cantidad total de paquetes A 
 
-    public static int cantidadZonasDeReparto = 9;                             //Numero de zonas, 9 por defecto  
-    public static Polygon poligonPedidos ; //Polígono que contiene todas las zonas, y a su vez las coordenadas de todos los pedidos
-    public static List<Coordinate> coordinates; //Coordenadas de todas las oficinas.
-    
+    public int cantidadZonasDeReparto = 9;                             //Numero de zonas, 9 por defecto  
+    public Polygon poligonPedidos ; //Polígono que contiene todas las zonas, y a su vez las coordenadas de todos los pedidos
+    public List<Coordinate> coordinates; //Coordenadas de todas las oficinas.
+
+    /*Variables resultados*/
+    private List<Oficina> listaOficinasResultado = new ArrayList<>();
+    private List<List<Tramo>> listaTramosXOficinaResultado = new ArrayList<>();
+    private List<Tramo> listaTramosResultado = new ArrayList<>();
     /*Variables Auxiliares*/ 
 
-    public static GeometryFactory factory = new GeometryFactory(); //Variable auxiliar de Geometría. Para generar zonas de reparto
+    private GeometryFactory factory = new GeometryFactory(); //Variable auxiliar de Geometría. Para generar zonas de reparto
     
     public PrimeraSolucion(){}
 
-    public void inicializar(List<Pedido> listaPed, Oficina alm){
+    public void inicializar(List<Pedido> listaPed, Oficina alm, PrintWriter writer){
         
         Mapa.inicializarGrafoAstar();
 
+        //writer.println("");
         //Inputs de la PrimeraSolucion
         this.listaPedidos = listaPed;
         this.almacen = alm;
 
         /*I. Oficinas de todos los pedido*/
         listaOficinas = contabilizarOficinas();
-        System.out.println(String.format("Cantidad de oficinas:  %4d", listaOficinas.size()));
+        writer.println(String.format("Cantidad de oficinas a recorrer:  %4d", listaOficinas.size()));
+        //writer.println(String.format("Cantidad de oficinas a recorrer:  %4d", listaOficinas.size()));
         /*II: Polígono o área de reparto total (solo incluye oficinas con al menos un pedido*/
         coordinates = generateCoordinatesOficina();
         poligonPedidos = crearPoligono();
 
 
-        
-        listaCamiones = seleccionarCam();
-        System.out.println(String.format("Cantidad de camiones:  %4d", listaCamiones.size()));
         listaZonas = generarZonasReparto();
 
         
         listaPedidosPorZona = asignarPedidosPorZona();
+        
         /*for (int i = 0; i < listaZonas.size(); i++){
-            System.out.println("ZONA " + (i+1));       
-            System.out.println(listaPedidosPorZona.get(i));
+            writer.println("ZONA " + (i+1));       
+            writer.println(listaPedidosPorZona.get(i));
         }*/
         //Lo demas se hara con Simulated Annealing
         //ordenarPedidos();
         //planesDeTransporte = asignarPedidosCamiones();
 
         //areaMaxima = areaPoligono();
-        simulatedAnnealing();
+        simulatedAnnealing(writer);
         
     }
 
     /*1. Determinar lista de oficinas de los pedidos*/ 
-    public static List<Oficina> contabilizarOficinas(){
+    public List<Oficina> contabilizarOficinas(){
         List<Oficina> oficinas = new ArrayList<>();
         for (Pedido p : listaPedidos){
             if(oficinas.contains(p.getOficina()) == false) {
@@ -97,7 +110,7 @@ public class PrimeraSolucion{
     }
 
     /*2. Determinar los puntos totales de cada oficina*/ 
-    public static List<Coordinate> generateCoordinatesOficina(){
+    public List<Coordinate> generateCoordinatesOficina(){
         List<Coordinate> coordinates = new ArrayList<>();
         for (Oficina oficina : listaOficinas){
             Coordinate coordinate = new Coordinate(oficina.getCoordX(), oficina.getCoordY());
@@ -108,7 +121,7 @@ public class PrimeraSolucion{
 
 
     /*3. Generar AREA TOTAL DE REPARTO polígono para distribución */ 
-    public static Polygon crearPoligono(){
+    public Polygon crearPoligono(){
 
         // El polígono a crear será un rectángulo circunscrito a la
         // figura formada por las coordenadas de los puntos de la zona
@@ -139,18 +152,18 @@ public class PrimeraSolucion{
 
     //Determinar CUANTAS ZONAS DE REPARTO VAMOS A UTILIZAR (Cuantos camiones y qué camiones vamos a utilizar).
     /*4. Determinar lista de camiones a utilizar*/
-    public static List<Camion> seleccionarCam(){
+    public List<Camion> seleccionarCam(List<Pedido> pedidos){
 
         int [] countCamiones = Mapa.calcularTipoCamionesPorAlmacen(almacen);
         List<Camion> camiones = new ArrayList<>();
         int cantidadPaquetes = 0;
 
-        for (Pedido p : listaPedidos)
+        for (Pedido p : pedidos)
             cantidadPaquetes += p.getCantidadTotal();
 
-        //System.out.println((int) 0.988);
+        //writer.println((int) 0.988);
 
-        cantidadPaquetes = 500; //CAMBIAR, DEBE PASARSE EL PARÁMETRO
+        //cantidadPaquetes = 500; //CAMBIAR, DEBE PASARSE EL PARÁMETRO
         
         int cantidadCamionesA = (int) (cantidadPaquetes / 90);
         int cantPaquetesSobraA = cantidadPaquetes % 90;
@@ -191,114 +204,19 @@ public class PrimeraSolucion{
         }
 
         
-        camiones.addAll(Mapa.extractListaCamionesPorAlmacen(almacen, 'A', cantidadCamionesA));
-        if (cantidadCamionesB > 0)
-            camiones.addAll(Mapa.extractListaCamionesPorAlmacen(almacen, 'B', cantidadCamionesB));
-        if (cantidadCamionesC > 0)
-            camiones.addAll(Mapa.extractListaCamionesPorAlmacen(almacen, 'C', cantidadCamionesC));
-
-        return camiones;
-    }
-    public static List<Camion> seleccionarCamiones(){
-        
-        int [] countCamiones = Mapa.calcularTipoCamionesPorAlmacen(almacen);
-        List<Camion> camiones = new ArrayList<>();
-        /*
-        int cantidadPaquetes30 = 0; //Contabilizar paquetes que pesen hasta 10
-        int cantidadPaquetes45 = 0; //Contabilizar paquetes que pesen hasta 30
-        int cantidadPaquetes1000 = 0; 
-
-        
-    
-
-        for (Pedido p : listaPedidos){
-            if(p.getCantidadActual() <= 30) 
-                cantidadPaquetes30 += p.getCantidadActual();
-            else if (p.getCantidadActual() <= 45)
-                cantidadPaquetes45 += p.getCantidadActual();
-            else
-                cantidadPaquetes1000 += p.getCantidadActual();
-        }      
-
-        int cantidadCamionesC = cantidadPaquetes30 / 30;
-        int cantidadCamionesB = cantidadPaquetes45 / 45;
-        int cantidadCamionesA = cantidadPaquetes1000 / 90;
-
-        */
-
-        //Pendiente a mejorar con un algoritmo de AI:
-
-        int cantidadPaquetes = 0;
-
-        for (Pedido p : listaPedidos)
-            cantidadPaquetes += p.getCantidadActual();
-        
-        int cantidadCamionesC = (int) Math.round(cantidadPaquetes / 30.0);
-        int cantidadCamionesB = cantidadCamionesC;
-
-        if (countCamiones[2] - cantidadCamionesC > 0){ //Si hay mayor cantidad de camiones que los requeridos
-            countCamiones[2] -= cantidadCamionesC;
-            cantidadCamionesB = 0;
-        }
-        else{
-            cantidadCamionesC = countCamiones[2];
-            cantidadCamionesB =- countCamiones[2];
-
-            cantidadPaquetes -= cantidadCamionesC * 30;
-            
-            countCamiones[2] = 0;
-
-            cantidadCamionesB = (int) Math.round(cantidadPaquetes / 45.0);
-        }
-
-
-
-        int cantidadCamionesA = cantidadCamionesB;
-
-        if (cantidadCamionesB > cantidadCamionesC) { //Si ya no hay camiones C disponibles
-            if (countCamiones[1] - cantidadCamionesB > 0){ //Si hay mayor cantidad de camiones B que los requeridos
-                countCamiones[1] -= cantidadCamionesB;
-                cantidadCamionesA = 0;
-                
-            }
-            else{
-                cantidadCamionesB = countCamiones[1];
-                cantidadCamionesA -= countCamiones[1];
-    
-                cantidadPaquetes -= cantidadCamionesB * 45;
-                
-                countCamiones[1] = 0;
-    
-                cantidadCamionesA = (int) Math.round(cantidadPaquetes / 90.0);
-            }
-        }
-
-        if (cantidadCamionesA > cantidadCamionesB) { //Si ya no hay camiones B disponibles
-            if (countCamiones[0] - cantidadCamionesA > 0){ //Si hay mayor cantidad de camiones B que los requeridos
-                countCamiones[0] -= cantidadCamionesA;
-               
-            }
-            else{
-                cantidadCamionesA = countCamiones[0];   
-                cantidadPaquetes -= cantidadCamionesA * 90;
-                
-                countCamiones[0] = 0;
-    
-                
-            }
-        }
-
-        camiones.addAll(Mapa.extractListaCamionesPorAlmacen(almacen, 'C', cantidadCamionesC));
-        if (cantidadCamionesB > 0)
-            camiones.addAll(Mapa.extractListaCamionesPorAlmacen(almacen, 'B', cantidadCamionesB));
-        if (cantidadCamionesA > 0)
+        if(cantidadCamionesA > 0){
             camiones.addAll(Mapa.extractListaCamionesPorAlmacen(almacen, 'A', cantidadCamionesA));
-
-
+        }
+        if (cantidadCamionesB > 0){
+            camiones.addAll(Mapa.extractListaCamionesPorAlmacen(almacen, 'B', cantidadCamionesB));
+        }
+            
+        if (cantidadCamionesC > 0){
+            camiones.addAll(Mapa.extractListaCamionesPorAlmacen(almacen, 'C', cantidadCamionesC));
+        }
+            
         return camiones;
     }
-
-
 
     /*5. Generar Zonas de Reparto*/ 
 
@@ -399,7 +317,7 @@ public class PrimeraSolucion{
             List<Oficina> oficinasZona = new ArrayList<>();
             
             //SE AGREGA ALMACEN al inicio de la lista
-            oficinasZona.add(almacen);
+            //oficinasZona.add(almacen);
             
             for (Pedido pedido : listaPedidos){
                 Coordinate coordPedido = new Coordinate(pedido.getOficina().getCoordX(), pedido.getOficina().getCoordY());    
@@ -420,42 +338,135 @@ public class PrimeraSolucion{
     /*7. Ordenamiento de prioridades de pedidos según tiempo, distancia, etc*/
 
 
-    public void simulatedAnnealing(){
+    public void simulatedAnnealing(PrintWriter writer){
 
     /*
         Función que determinará el orden de las oficinas en base a 
             1. Tiempo de entrega pedidos
             2. Distancia (recorrido más corto posible)
     */ 
-
+        
         for (int i = 0; i < listaZonas.size(); i++){
             long tiempoSalida = tiempoMaximoRegistroPedidos(listaPedidosPorZona.get(i));
-            System.out.println("TiempoSalida: " + tiempoSalida);
-
+            Date fechaSalida = fechaHoraMaximaSalida(listaPedidosPorZona.get(i)) ;
+            String cadenaFechaSalida = formatDateString(fechaSalida);
             
-            List<Triplet<String, Long, Integer>> listaTiempos = tiempoMaximoPedidos(listaPedidosPorZona.get(i), listaOficinasXZona.get(i));
-            /*
-                String: Código del Pedido
-                Long: Fecha y hora de llegada máxima a la oficina, en milisegundos desde 1/1/1970
-                Integer: Cantidad de Paquetes a la oficina 
-            */ 
-            System.out.println("Lista tiempos: " + listaTiempos);
+            writer.println("");
+            writer.println("Zona: " + (i+1));
+            writer.println("N° de Pedidos: " + listaPedidosPorZona.get(i).size());
+                        
+            writer.println("");
+            writer.println("Zona: " + (i+1));
+            writer.println("N° de Pedidos: " + listaPedidosPorZona.get(i).size());
 
-            listaOficinasXZona.get(i).sort(new OficinasComparator(listaTiempos, false));
-            
-            SimulatedAnnealing sa = new SimulatedAnnealing(listaOficinasXZona.get(i), listaTiempos, tiempoSalida);
-            sa.simulate();
-            //System.out.println("Best Solution: "  + sa.getBest().getDistance());
-            //System.out.println(sa.getBest());        
+
+            listaCamiones = seleccionarCam(listaPedidosPorZona.get(i));
+            writer.println(String.format("Cantidad de camiones a utilizar:  %4d", listaCamiones.size()));
+
+            if(listaPedidosPorZona.get(i).size()>0){
+                //Solo imprimiremos Hora de Salida cuando haya pedidos
+                writer.println("Hora y Fecha de Salida: " + cadenaFechaSalida);
+                List<Triplet<String, Long, Integer>> listaTiempos = tiempoMaximoPedidos(listaPedidosPorZona.get(i), listaOficinasXZona.get(i), fechaSalida);
+                /*
+                    String: Código de la oficina destino del Pedido
+                    Long: Fecha y hora de llegada máxima a la oficina, en milisegundos desde 1/1/1970
+                    Integer: Cantidad de Paquetes a la oficina 
+                */ 
+                writer.println("Lista tiempos: " + listaTiempos);
+                writer.println("");
+
+                writer.println("Lista oficinasxZona antes: ");
+                for(int z=0; z<listaOficinasXZona.get(i).size();z++){
+                    writer.print(listaOficinasXZona.get(i).get(z).getProvincia() + " ");
+                }
+                writer.println("");
+
+                listaOficinasXZona.get(i).sort(new OficinasComparator(listaTiempos, false));
+                
+                writer.println("Lista oficinasxZona despues: ");
+                for(int x=0; x<listaOficinasXZona.get(i).size();x++){
+                    writer.print(listaOficinasXZona.get(i).get(x).getProvincia() + " ");
+                }
+                writer.println("");
+
+                listaOficinasXZona.get(i).add(0, almacen);
+
+                writer.println("Lista oficinasxZona despues de agregar almacen: ");
+                for(int z=0; z<listaOficinasXZona.get(i).size();z++){
+                    writer.print(listaOficinasXZona.get(i).get(z).getProvincia() + " ");
+                }
+                writer.println("");
+
+                SimulatedAnnealing sa = new SimulatedAnnealing(listaOficinasXZona.get(i), listaTiempos, tiempoSalida);
+                sa.simulate(writer);
+                listaOficinasResultado = sa.getBestListaOficina();
+
+                writer.println("Lista oficinas: ");
+                for(int w=0; w<listaOficinasResultado.size();w++){
+                    writer.print(listaOficinasResultado.get(w).getProvincia() + " ");
+                }
+
+                writer.println("");
+                writer.println("Mejor costo solucion: " + sa.getBestCosto());
+                
+                listaTramosXOficinaResultado = sa.getBestTramosXOficina();
+                writer.println("");
+
+                int contadorOfi = 0;
+                for(List<Tramo> listTramo : listaTramosXOficinaResultado){
+                    contadorOfi++;
+                    writer.print("Lista de Tramos Oficina " + contadorOfi + ": ");
+                    for(Tramo t: listTramo){
+                        writer.print(t.getCiudadInicio().getProvincia() + " => " + t.getCiudadFin().getProvincia() + " => ");
+                    }
+                    writer.println("");
+                }
+
+                listaTramosResultado = sa.getBestListaTramos();
+
+                /*FALTA: Elegir el camion para el plan de transporte y asignar pedidos al camion*/
+
+                asignarRutaCamion(listaTramosXOficinaResultado, listaOficinasResultado, listaPedidosPorZona.get(i));
+    /*
+                writer.println("");
+                for(Tramo t: listaTramosResultado){
+                    writer.print(t.getCiudadInicio().getProvincia() + " => " + t.getCiudadFin().getProvincia() + " => ");
+                }*/
+                //writer.println("Best Solution: "  + sa.getBest().getDistance());
+                //writer.println(sa.getBest()); 
+            }      
 
         }
 
-        System.out.println("El simulated annealing terminó");
+        writer.println("");
+        writer.println("");
+        writer.println("PLANES DE TRANSPORTE");
+        for(Ruta rut: planesDeTransporte){
+            writer.println("Camion " + rut.getCamion().getCodigo());
+            writer.println("Lista oficinas: ");
+            for(int w=0; w<rut.getListaOficinas().size();w++){
+                writer.print(rut.getListaOficinas().get(w).getProvincia() + " ");
+            }
+            writer.println("");
+            int contadores = 0;
+            for(List<Tramo> listTra : rut.getListaTramosPorOficina()){
+                contadores++;
+                writer.print("Lista de Tramos Oficina " + contadores + ": ");
+                for(Tramo t: listTra){
+                    writer.print(t.getCiudadInicio().getProvincia() + " => " + t.getCiudadFin().getProvincia() + " => ");
+                }
+                writer.println("");
+            }
+            writer.println("");
+            writer.println("");
+        }
+
+        writer.println("El simulated annealing terminó");
     }
 
 
 /*FUNCIONES AUXILIARES*/
-    public static double areaPoligono()
+    public double areaPoligono()
     {
         // Initialize area
         double area = 0.0;
@@ -576,24 +587,30 @@ public class PrimeraSolucion{
         return listaTemp;
     }
 
-    public static List<Triplet<String, Long, Integer>> tiempoMaximoPedidos(List<Pedido> pedidos, List<Oficina> oficinas){
+    public static List<Triplet<String, Long, Integer>> tiempoMaximoPedidos(List<Pedido> pedidos, List<Oficina> oficinas, Date fechaSalida){
         
         List<Triplet<String, Long, Integer>> listaTiempos = new ArrayList<>(); //String: CodOficina, Long: tiempo promedio en milisegundos, integer: num Pedidos)
         
         
         for (Oficina o : oficinas){
             long tiempo = 9 * (long)10e13; //en milisegundos
-            //long tiempo = 0; //en milisegundos
+            long tiempoRealHoras = 0;
+            Date fechaMax = new Date();
             int cantidadPaq = 0;
             for (Pedido p : pedidos){
                 if (p.getOficina().getCodigo() == o.getCodigo()){
                     cantidadPaq += p.getCantidadTotal();
-                    if (tiempo > p.getFechaHoraLimite().getTime())
+                    if (tiempo > p.getFechaHoraLimite().getTime()){
                         tiempo = p.getFechaHoraLimite().getTime();
+                        fechaMax = p.getFechaHoraLimite();
+                        Long temp = p.getFechaHoraLimite().getTime() - fechaSalida.getTime();
+                        tiempoRealHoras = temp/3600000;
+                    }
                 }
 
-            }    
-            Triplet<String, Long, Integer> tiemposOficina = new Triplet<>(o.getCodigo(), tiempo, cantidadPaq);
+            }
+            String cadenaFecha = formatDateString(fechaMax);
+            Triplet<String, Long, Integer> tiemposOficina = new Triplet<>(o.getCodigo(), tiempoRealHoras, cantidadPaq);
             listaTiempos.add(tiemposOficina);
         }
 
@@ -602,6 +619,62 @@ public class PrimeraSolucion{
         //Collections.sort(oficinas, Comparator.comparing(item -> listaTiempos.indexOf(item)));
 
         return listaTiempos;
+
+    }
+
+    public void asignarRutaCamion(List<List<Tramo>> tramosRuta, List<Oficina> oficinas, List<Pedido> pedidos){
+
+        int capacidadLlevar = 0;
+        int contador = 1;
+        for(int i=0; i< listaCamiones.size(); i++){
+            Ruta rut = new Ruta();
+            List<Oficina> ofic = new ArrayList<>();
+            List<Pedido> ped = new ArrayList<>();
+            List<List<Tramo>> tram = new ArrayList<>();
+            int capacidad = listaCamiones.get(i).capacidad();
+            boolean puede = true;
+            for(int j=contador; j < oficinas.size(); j++){//Empezamos con 1 el contador porque el 0 es el almacen y no queremos tomarlo
+                ped = Mapa.getListaPedidosPorOficina(oficinas.get(j), pedidos);
+                if(capacidadLlevar > 0){
+                    capacidad = capacidad - capacidadLlevar;
+                    capacidadLlevar = 0;
+                    ofic.add(oficinas.get((j-1)));
+                    tram.add(tramosRuta.get((j-2)));
+                }
+                else{
+                    for(Pedido p: ped){   
+                        if(capacidad > p.getCantidadTotal()){
+                            capacidad = capacidad - p.getCantidadTotal();
+                            
+                        }
+                        else{
+                            puede = false;
+                            capacidadLlevar = capacidadLlevar + p.getCantidadTotal();
+                        }   
+                    }
+                }
+                
+                if(puede == true){
+                    ofic.add(oficinas.get(j));
+                    tram.add(tramosRuta.get((j-1)));
+                }
+                else{
+                    rut.setListaOficinas(ofic);
+                    rut.setListaTramosPorOficina(tram);
+                    rut.setCamion(listaCamiones.get(i));
+                    planesDeTransporte.add(rut);
+                    break;
+                }
+                contador++;
+                if(contador == oficinas.size()){//Si ya se recorrieron todas las oficinas y un camion puede ir por todas
+                    tram.add(tramosRuta.get((j)));
+                    rut.setListaOficinas(ofic);
+                    rut.setListaTramosPorOficina(tram);
+                    rut.setCamion(listaCamiones.get(i));
+                    planesDeTransporte.add(rut);
+                }
+            }
+        }
 
     }
 
@@ -615,5 +688,26 @@ public class PrimeraSolucion{
 
             return tiempo;
     }
+    public static Date fechaHoraMaximaSalida(List<Pedido> pedidos){
+        long tiempo = 0;
+        Date fecha = new Date();
+        for (Pedido p :pedidos){
+            if (tiempo < p.getFechaHoraPedido().getTime()){
+                tiempo = p.getFechaHoraPedido().getTime();
+                fecha = p.getFechaHoraPedido();
+            }
+        }
+
+        return fecha;
+    }
+    //Procedimiento para imprimir la fecha de Salida del camión para la entrega de pedidos en una zoma.
+    public static String formatDateString(Date fecha)
+    {
+       SimpleDateFormat f = new SimpleDateFormat("HH:mm:ss yyyy/MM/dd ");
+       String cadena= f.format(fecha);
+       return cadena; 
+    }
+
+
     
 }

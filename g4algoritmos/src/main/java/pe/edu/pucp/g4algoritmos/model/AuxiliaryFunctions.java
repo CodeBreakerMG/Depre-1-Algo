@@ -1,5 +1,7 @@
 package pe.edu.pucp.g4algoritmos.model;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Calendar;
@@ -41,7 +43,64 @@ public class AuxiliaryFunctions {
         return (date1.getMinutes() - date2.getMinutes());
     }
 
-    
+    public static int compareDatesBySeconds(Date date1, Date date2){
+
+        //0: equals
+        //Negative: date 1 is more
+        //Positive: date 2 is more
+
+        return (date1.getSeconds() - date2.getSeconds());
+    }
+
+    public static int compareDates(Date date1, Date date2){
+
+        //0: equals
+        //Positive: date 1 occurs later
+        //Negative: date 2 occurs later
+
+        return date1.compareTo(date2);
+    }
+
+    public static Date minimumDate(Date date1, Date date2){
+
+        //0: equals
+        //Positive: date 1 occurs later
+        //Negative: date 2 occurs later
+
+        if (date1.compareTo(date2) > 0 ){
+            return date2;
+        }
+        else{
+            return date1;
+        }
+    }
+
+    public static Date maximumDate(Date date1, Date date2){
+
+        //0: equals
+        //Positive: date 1 occurs later
+        //Negative: date 2 occurs later
+
+        if (date1.compareTo(date2) > 0 ){
+            return date1;
+        }
+        else{
+            return date2;
+        }
+    }
+
+
+    public static Date setDateWithTime(String datetime){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = new Date();
+        try {
+            date = simpleDateFormat.parse(datetime);
+        } catch (ParseException e) {
+           
+             
+        }
+        return date;
+    }
 
 
 }

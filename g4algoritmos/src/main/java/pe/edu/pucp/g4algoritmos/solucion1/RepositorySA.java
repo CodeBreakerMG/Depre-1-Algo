@@ -27,7 +27,12 @@ public class RepositorySA {
         return tiempoSalida;
     }
     
-    
+    public Oficina getAlmacen(){
+        for(Oficina of: cities){
+            if(of.EsAlmacen())return of;
+        }
+        return null;
+    }
 
     public List<Triplet<String, Long, Integer>> getListaTiempos() {
         return listaTiempos;

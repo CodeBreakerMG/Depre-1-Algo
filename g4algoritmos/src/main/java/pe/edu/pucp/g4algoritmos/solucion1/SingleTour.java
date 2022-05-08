@@ -3,7 +3,7 @@ package pe.edu.pucp.g4algoritmos.solucion1;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
- 
+import java.io.PrintWriter;
 import pe.edu.pucp.g4algoritmos.model.Oficina;
 import pe.edu.pucp.g4algoritmos.model.Tramo;
 
@@ -37,7 +37,7 @@ public class SingleTour {
         this.costo = costo;
     }
 
-    private double calcularTramos(RepositorySA repository) {
+    private double calcularTramos(RepositorySA repository, PrintWriter writer) {
         
         this.tramosARecorrerPorOficina = new ArrayList<>();
         tiemposLlegadaOficinas = new ArrayList<>();
@@ -46,7 +46,7 @@ public class SingleTour {
         for (int OficinaIndex = 0; OficinaIndex < ciudadesPedido.size(); ++OficinaIndex){
             Oficina fromOficina = ciudadesPedido.get(OficinaIndex);
             Oficina destinationOficina = null;
-            System.out.println(tiempoTotal);
+            //System.out.println(tiempoTotal);
             if(OficinaIndex + 1 < ciudadesPedido.size())
                 destinationOficina = ciudadesPedido.get(OficinaIndex + 1);
             else
@@ -55,6 +55,10 @@ public class SingleTour {
             List<Tramo> tramosParciales = fromOficina.recorridoHasta(destinationOficina);
             double tiempoLlegada = 0.0;
 
+            for (Tramo t : tramosParciales){
+                writer.print(t.getCiudadInicio() + "-" + t.getCiudadFin() + " ");
+            }
+            
             for (Tramo tramo : tramosParciales)
                 tiempoLlegada += tramo.getCosto();
 
@@ -132,16 +136,27 @@ public class SingleTour {
     }
 
 
-    public void generateIndividual(RepositorySA repositorio) {
+    public void generateIndividual(RepositorySA repositorio, PrintWriter writer) {
         /*Function to generate a random individual (random ciudadesPedido)*/
         //This is how we generate the hamiltonian cycle
+        List<Oficina> newListOficina = new ArrayList<>();
+        for (int index = 0; index < repositorio.getNumberOfOficinas(); ++index){
+            if(repositorio.getOficina(index).EsAlmacen() == false){
+                newListOficina.add(repositorio.getOficina(index));
+                //setOficina(index, repositorio.getOficina(index));
+            }
+        }
         
-        for (int index = 0; index < repositorio.getNumberOfOficinas(); ++index)
-            setOficina(index, repositorio.getOficina(index));
-
         //The order is randomized
-        Collections.shuffle(ciudadesPedido);
-        calcularTramos(repositorio); 
+        //Collections.shuffle(ciudadesPedido);
+        Collections.shuffle(newListOficina);
+        setOficina(0, repositorio.getAlmacen());
+        for (int index = 0; index < newListOficina.size(); ++index){
+            
+           setOficina(index+1, newListOficina.get(index));
+            
+        }
+        calcularTramos(repositorio, writer); 
         this.costo = calcularCosto();
         
 
