@@ -382,4 +382,14 @@ public class Mapa {
             return hashMapPedidosAlmacen.get(almacen);
         return new ArrayList<Pedido>();
     }
+
+    public static List<Pedido> getListaPedidosPorOficina (Oficina of, List<Pedido> pedidos) {
+        List<Pedido> pedTemp = new ArrayList<>();
+        for(Pedido p: pedidos){
+            if(of.getCodigo().equals(p.getOficina().getCodigo())){
+                pedTemp.add(p);
+            }
+        }
+        return pedTemp;
+    }
 }

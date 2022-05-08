@@ -18,7 +18,7 @@ public class Ruta {
     private List<Entrega> listaEntregas = new ArrayList<>();
     private List<Pedido> listaPedidos = new ArrayList<>();
     private List<Tramo>  listaTramos;
-    private List<List<Tramo>>  listaTramosPorOficina;
+    private List<List<Tramo>>  listaTramosPorOficina = new ArrayList<>();
     private List<Oficina> listaOficinas = new ArrayList<>();
 
     private int tramoActual;  //Indice el cual indica el tramo en el que se encuentra. 
@@ -31,6 +31,10 @@ public class Ruta {
 
     private Date fechaHoraInicio; // fecha en la que comenzó el plan de transporte
     private Date fechaHoraCompletado; //ffecha en la que se culminó el plan de transporte
+
+    public Ruta(){
+
+    }
 
     public Ruta(String codigo, Camion camion, double coordX, double coordY, ArrayList<Entrega> listaEntregas,
         ArrayList<Tramo> listaTramos) {
@@ -143,6 +147,12 @@ public class Ruta {
         this.listaTramosPorOficina = listaTramosPorOficina;
     }
 
-    
+    public void setCamion(Camion c){
+        this.camion = c;
+    }
+
+    public Camion getCamion(){
+        return camion;
+    }
 
 }
