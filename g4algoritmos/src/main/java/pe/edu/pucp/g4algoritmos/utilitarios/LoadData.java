@@ -337,14 +337,14 @@ public class LoadData {
             // Lee los camiones para cada almacén
             int numCamiones = 0;
             while((line = br.readLine()) != null){
-                line = line.toUpperCase();
+                line = line.trim().toUpperCase();
 
                 // Si la línea leída es el nombre de un almacén, se lee todos los camiones por tipo
                 if(line.equals("LIMA") || line.equals("AREQUIPA") || line.equals("TRUJILLO")){
                     Oficina almacen;
                     if(line.equals("LIMA"))
                         almacen = Mapa.getOficinaByCodigo("150101");
-                    if(line.equals("AREQUIPA"))
+                    else if(line.equals("AREQUIPA"))
                         almacen = Mapa.getOficinaByCodigo("040101");
                     else
                         almacen = Mapa.getOficinaByCodigo("130101");
@@ -361,7 +361,7 @@ public class LoadData {
                         // Agregar camiones a lista de camiones
                         for(String codCamion : linea_camiones){
                             if(codCamion.trim().length() == 0) continue;
-                            int idCamionAux = numCamiones++;                            
+                            int idCamionAux = ++numCamiones;                         
                             Camion camionAux = new Camion(idCamionAux, codCamion.trim(), tipoCamionAux, 0.0, 0.0, almacen);
                             listaCamiones.add(camionAux);
                         }
