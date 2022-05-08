@@ -186,6 +186,17 @@ public class Mapa {
         return camiones;
     }
 
+    public static List<Camion> getListaCamionesDisponibles(){
+        List<Camion> camiones = new ArrayList<>();
+            for (Camion camion : listaCamiones){
+                if (camion.getEstado() == 1){
+                    camiones.add(camion);
+                }
+            }
+        return camiones;
+    }
+
+
     public static List<Camion> getListaCamionesPorAlmacen(Oficina almacen) {
         if(hashMapCamionesAlmacen.get(almacen) != null)
             return hashMapCamionesAlmacen.get(almacen);

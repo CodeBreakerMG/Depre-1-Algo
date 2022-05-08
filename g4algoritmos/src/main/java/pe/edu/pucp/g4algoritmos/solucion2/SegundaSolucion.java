@@ -23,20 +23,21 @@ public class SegundaSolucion {
         private  List <Ruta> planesDeTransporte = new ArrayList<>(); //Lista de los planes de transporte o RUTAS por camion
 
         /*Variables INPUT*/ 
-        private  List<Pedido> listaPedidos = new ArrayList<>(); //Lista inicial de los pedidos
-        private  List<OficinaPSO> listaOficinas = new ArrayList<>(); //Lista de oficinas que tienen al menos un pedido
-        private  List<Oficina> listaAlmacenes= new ArrayList<>(); //Lista de oficinas que tienen al menos un pedido
-        private  List<Camion> listaCamiones = new ArrayList<>(); //Lista de camiones disponibles de un ALMACEN
+        private  List<Pedido> listaPedidos; //Lista inicial de los pedidos
+        private  List<OficinaPSO> listaOficinas; //Lista de oficinas que tienen al menos un pedido
+        private  List<Oficina> listaAlmacenes; //Lista de oficinas que tienen al menos un pedido
+        private  List<Camion> listaCamiones; //Lista de camiones disponibles de un ALMACEN
 
         private  int paquetes; //Cantidad total de paquetes A 
         
-        public void inicializar(List<Pedido> pedidos, List<Oficina> almacenes){
+        public void inicializar(List<Pedido> pedidos){
             
             System.out.println("Solución PSO: ");
             
-            this.listaAlmacenes = almacenes;
+            this.listaAlmacenes = Mapa.listaAlmacenes;
             this.listaPedidos = pedidos;
-
+            this.listaCamiones = Mapa.listaCamiones;
+            
             /*I. Oficinas de todos los pedido*/
             this.listaOficinas = contabilizarOficinas();
             System.out.println(String.format("Cantidad de oficinas a recorrer:  %4d", listaOficinas.size()));
