@@ -5,6 +5,9 @@ import java.io.FileWriter;
 import java.io.BufferedWriter;
 import java.io.PrintWriter;
 
+import java.time.format.DateTimeFormatter;  
+import java.time.LocalDateTime;  
+
 import pe.edu.pucp.g4algoritmos.astar.AStarMain;
 import pe.edu.pucp.g4algoritmos.model.Mapa;
 import pe.edu.pucp.g4algoritmos.pso.PSOMain;
@@ -36,7 +39,12 @@ public class App
         //Inicializamos nuestro archivos para exportar los datos
 
             try {
-            PrintWriter writer = new PrintWriter("Planes de Transporte.txt", "UTF-8");
+
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("_yyyy_MM_dd_HH_mm");  
+            LocalDateTime now = LocalDateTime.now();  
+            
+            String filename = "output\\Solucion_1_SA" + dtf.format(now) + ".txt";
+            PrintWriter writer = new PrintWriter(filename, "UTF-8");
             //writer.println("Primera línea");
             //writer.println("Segunda línea");
             //writer.close();
@@ -122,6 +130,7 @@ public class App
             //PSOMain.Main();
             writer.close();
             System.out.println("Se ejecutó la primera solución con éxito.");
+            
         } catch (Exception e) {
             e.printStackTrace();
         }
