@@ -589,8 +589,11 @@ public class PrimeraSolucion{
 
     public static List<Triplet<String, Long, Integer>> tiempoMaximoPedidos(List<Pedido> pedidos, List<Oficina> oficinas, Date fechaSalida){
         
-        List<Triplet<String, Long, Integer>> listaTiempos = new ArrayList<>(); //String: CodOficina, Long: tiempo promedio en milisegundos, integer: num Pedidos)
-        
+        List<Triplet<String, Long, Integer>> listaTiempos = new ArrayList<>(); 
+        //String: CodOficina, Long: tiempo en horas, integer: num Pedidos)
+        //List<Pedidos>: Lista de Pedidos que se entregarán en cierta zona de reparto
+        //List<Oficina>: Lista de Oficinas que se visitarán para la entrega de pedidos
+        //Date: fecha de salida del camión, es la hora en la que se registró el último del pedido
         
         for (Oficina o : oficinas){
             long tiempo = 9 * (long)10e13; //en milisegundos
@@ -677,9 +680,10 @@ public class PrimeraSolucion{
         }
 
     }
-
+    //Calcula el tiempo del pedido que se realizó último en horas
     public static long tiempoMaximoRegistroPedidos(List<Pedido> pedidos){
             long tiempo = 0;
+            
             for (Pedido p :pedidos){
                 if (tiempo < p.getFechaHoraPedido().getTime()){
                     tiempo = p.getFechaHoraPedido().getTime();
