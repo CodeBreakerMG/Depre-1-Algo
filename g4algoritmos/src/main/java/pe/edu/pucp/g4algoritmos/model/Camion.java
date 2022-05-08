@@ -123,4 +123,10 @@ public class Camion {
         return (int)this.tipo.getCapacidad();
     }
 
+
+    @Override
+    public String toString() {
+        return "Camion [almacen=" + almacen.getProvincia() + "id=" + id + ", codigo=" + codigo + ", tipo=" + tipo.getCodigo() + "]\n";
+    }
+
 }
