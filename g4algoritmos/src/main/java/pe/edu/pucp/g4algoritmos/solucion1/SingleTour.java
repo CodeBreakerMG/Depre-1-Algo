@@ -52,17 +52,13 @@ public class SingleTour {
             else
                 destinationOficina = ciudadesPedido.get(0);
 
-            writer.println("");    
-            writer.println("Oficina inicial: " + fromOficina.getProvincia());
-            writer.println("Oficina final: " + destinationOficina.getProvincia());
-            writer.println(""); 
             List<Tramo> tramosParciales = fromOficina.recorridoHasta(destinationOficina);
             double tiempoLlegada = 0.0;
-            writer.println("Tramos parciales: ");
+
             for (Tramo t : tramosParciales){
                 writer.print(t.getCiudadInicio() + "-" + t.getCiudadFin() + " ");
             }
-            writer.println("");
+            
             for (Tramo tramo : tramosParciales)
                 tiempoLlegada += tramo.getCosto();
 
