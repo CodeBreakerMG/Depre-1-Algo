@@ -1,0 +1,245 @@
+Planes de Transporte para la atención de Pedidos
+Cantidad de oficinas:  196
+Cantidad de tramos:   7008
+Cantidad de pedidos:    10
+Cantidad de camiones:    20
+Cantidad de oficinas a recorrer:    10
+Cantidad de camiones a utilizar:     2
+
+Zona: 1
+N° de Pedidos: 0
+
+Zona: 2
+N° de Pedidos: 4
+Hora y Fecha de Salida: 10:09:00 2022/02/14 
+Lista tiempos: [[230101, 14, 4], [040601, 23, 14], [040501, 24, 7], [030501, 39, 14]]
+
+Lista oficinasxZona antes: 
+TACNA COTABAMBAS CONDESUYOS CAYLLOMA 
+Lista oficinasxZona despues: 
+TACNA CONDESUYOS CAYLLOMA COTABAMBAS 
+Lista oficinasxZona despues de agregar almacen: 
+LIMA TACNA CONDESUYOS CAYLLOMA COTABAMBAS 
+
+Oficina inicial: LIMA
+Oficina final: CONDESUYOS
+
+Tramos parciales: 
+C: LIMA-> -C: CHINCHA->  C: CHINCHA-> -C: PISCO->  C: PISCO-> -C: ICA->  C: ICA-> -C: PALPA->  C: PALPA-> -C: NASCA->  C: NASCA-> -C: PARINACOCHAS->  C: PARINACOCHAS-> -C: CARAVELI->  C: CARAVELI-> -C: CONDESUYOS->  
+
+Oficina inicial: CONDESUYOS
+Oficina final: COTABAMBAS
+
+Tramos parciales: 
+C: CONDESUYOS-> -C: LA UNION->  C: LA UNION-> -C: ANTABAMBA->  C: ANTABAMBA-> -C: GRAU->  C: GRAU-> -C: CHUMBIVILCAS->  C: CHUMBIVILCAS-> -C: COTABAMBAS->  
+
+Oficina inicial: COTABAMBAS
+Oficina final: CAYLLOMA
+
+Tramos parciales: 
+C: COTABAMBAS-> -C: CAYLLOMA->  
+
+Oficina inicial: CAYLLOMA
+Oficina final: TACNA
+
+Tramos parciales: 
+C: CAYLLOMA-> -C: AREQUIPA->  C: AREQUIPA-> -C: GENERAL SANCHEZ CERRO->  C: GENERAL SANCHEZ CERRO-> -C: MARISCAL NIETO->  C: MARISCAL NIETO-> -C: JORGE BASADRE->  C: JORGE BASADRE-> -C: TACNA->  
+
+Oficina inicial: TACNA
+Oficina final: LIMA
+
+Tramos parciales: 
+C: TACNA-> -C: JORGE BASADRE->  C: JORGE BASADRE-> -C: MARISCAL NIETO->  C: MARISCAL NIETO-> -C: GENERAL SANCHEZ CERRO->  C: GENERAL SANCHEZ CERRO-> -C: AREQUIPA->  C: AREQUIPA-> -C: CAYLLOMA->  C: CAYLLOMA-> -C: CASTILLA->  C: CASTILLA-> -C: CONDESUYOS->  C: CONDESUYOS-> -C: LA UNION->  C: LA UNION-> -C: NASCA->  C: NASCA-> -C: PALPA->  C: PALPA-> -C: ICA->  C: ICA-> -C: PISCO->  C: PISCO-> -C: CHINCHA->  C: CHINCHA-> -C: CAÃ‘ETE->  C: CAÃ‘ETE-> -C: YAUYOS->  C: YAUYOS-> -C: CANTA->  C: CANTA-> -C: CALLAO->  C: CALLAO-> -C: LIMA->  
+Lista oficinas: 
+LIMA CONDESUYOS CAYLLOMA TACNA COTABAMBAS 
+Mejor costo solucion: 2.960732519301077E7
+
+Lista de Tramos Oficina 1: LIMA => CHINCHA => 
+CHINCHA => PISCO => 
+PISCO => ICA => 
+ICA => PALPA => 
+PALPA => NASCA => 
+NASCA => PARINACOCHAS => 
+PARINACOCHAS => CARAVELI => 
+CARAVELI => CONDESUYOS => 
+
+Lista de Tramos Oficina 2: CONDESUYOS => CASTILLA => 
+CASTILLA => CAYLLOMA => 
+
+Lista de Tramos Oficina 3: CAYLLOMA => AREQUIPA => 
+AREQUIPA => GENERAL SANCHEZ CERRO => 
+GENERAL SANCHEZ CERRO => MARISCAL NIETO => 
+MARISCAL NIETO => JORGE BASADRE => 
+JORGE BASADRE => TACNA => 
+
+Lista de Tramos Oficina 4: TACNA => JORGE BASADRE => 
+JORGE BASADRE => MARISCAL NIETO => 
+MARISCAL NIETO => GENERAL SANCHEZ CERRO => 
+GENERAL SANCHEZ CERRO => AREQUIPA => 
+AREQUIPA => CAYLLOMA => 
+CAYLLOMA => ESPINAR => 
+ESPINAR => CANCHIS => 
+CANCHIS => CANAS => 
+CANAS => ACOMAYO => 
+ACOMAYO => PARURO => 
+PARURO => COTABAMBAS => 
+
+Lista de Tramos Oficina 5: COTABAMBAS => URUBAMBA => 
+URUBAMBA => LA CONVENCION => 
+LA CONVENCION => ANDAHUAYLAS => 
+ANDAHUAYLAS => CHINCHEROS => 
+CHINCHEROS => VILCAS HUAMAN => 
+VILCAS HUAMAN => CANGALLO => 
+CANGALLO => LA MAR => 
+LA MAR => HUAMANGA => 
+HUAMANGA => HUANTA => 
+HUANTA => CHURCAMPA => 
+CHURCAMPA => ACOBAMBA => 
+ACOBAMBA => ANGARAES => 
+ANGARAES => HUANCAVELICA => 
+HUANCAVELICA => CONCEPCION => 
+CONCEPCION => YAULI => 
+YAULI => HUAROCHIRI => 
+HUAROCHIRI => HUAURA => 
+HUAURA => CANTA => 
+CANTA => CALLAO => 
+CALLAO => LIMA => 
+
+
+Zona: 3
+N° de Pedidos: 2
+Hora y Fecha de Salida: 11:09:00 2022/02/14 
+Lista tiempos: [[110401, 20, 18], [090101, 48, 5]]
+
+Lista oficinasxZona antes: 
+PALPA HUANCAVELICA 
+Lista oficinasxZona despues: 
+PALPA HUANCAVELICA 
+Lista oficinasxZona despues de agregar almacen: 
+LIMA PALPA HUANCAVELICA 
+
+Oficina inicial: LIMA
+Oficina final: PALPA
+
+Tramos parciales: 
+C: LIMA-> -C: CHINCHA->  C: CHINCHA-> -C: PISCO->  C: PISCO-> -C: ICA->  C: ICA-> -C: PALPA->  
+
+Oficina inicial: PALPA
+Oficina final: HUANCAVELICA
+
+Tramos parciales: 
+C: PALPA-> -C: HUANCAVELICA->  
+
+Oficina inicial: HUANCAVELICA
+Oficina final: LIMA
+
+Tramos parciales: 
+C: HUANCAVELICA-> -C: LIMA->  
+Lista oficinas: 
+LIMA PALPA HUANCAVELICA 
+Mejor costo solucion: 1.7764433605423935E7
+
+Lista de Tramos Oficina 1: LIMA => CHINCHA => 
+CHINCHA => PISCO => 
+PISCO => ICA => 
+ICA => PALPA => 
+
+Lista de Tramos Oficina 2: PALPA => HUANCAVELICA => 
+
+Lista de Tramos Oficina 3: HUANCAVELICA => LIMA => 
+
+
+Zona: 4
+N° de Pedidos: 4
+Hora y Fecha de Salida: 10:36:00 2022/02/14 
+Lista tiempos: [[021301, 19, 21], [130501, 24, 4], [100701, 40, 9], [160701, 64, 3]]
+
+Lista oficinasxZona antes: 
+MARAÃ‘ON DATEM DEL MARAÃ‘ON MARISCAL LUZURIAGA JULCAN 
+Lista oficinasxZona despues: 
+MARISCAL LUZURIAGA JULCAN MARAÃ‘ON DATEM DEL MARAÃ‘ON 
+Lista oficinasxZona despues de agregar almacen: 
+LIMA MARISCAL LUZURIAGA JULCAN MARAÃ‘ON DATEM DEL MARAÃ‘ON 
+
+Oficina inicial: LIMA
+Oficina final: JULCAN
+
+Tramos parciales: 
+C: LIMA-> -C: CALLAO->  C: CALLAO-> -C: HUARAL->  C: HUARAL-> -C: BARRANCA->  C: BARRANCA-> -C: HUARMEY->  C: HUARMEY-> -C: CASMA->  C: CASMA-> -C: SANTA->  C: SANTA-> -C: VIRU->  C: VIRU-> -C: OTUZCO->  C: OTUZCO-> -C: JULCAN->  
+
+Oficina inicial: JULCAN
+Oficina final: DATEM DEL MARAÃ‘ON
+
+Tramos parciales: 
+C: JULCAN-> -C: OTUZCO->  C: OTUZCO-> -C: CAJABAMBA->  C: CAJABAMBA-> -C: SANCHEZ CARRION->  C: SANCHEZ CARRION-> -C: BOLIVAR->  C: BOLIVAR-> -C: RODRIGUEZ DE MENDOZA->  C: RODRIGUEZ DE MENDOZA-> -C: BONGARA->  C: BONGARA-> -C: RIOJA->  C: RIOJA-> -C: DATEM DEL MARAÃ‘ON->  
+
+Oficina inicial: DATEM DEL MARAÃ‘ON
+Oficina final: MARISCAL LUZURIAGA
+
+Tramos parciales: 
+C: DATEM DEL MARAÃ‘ON-> -C: ALTO AMAZONAS->  C: ALTO AMAZONAS-> -C: SAN MARTIN->  C: SAN MARTIN-> -C: EL DORADO->  C: EL DORADO-> -C: HUALLAGA->  C: HUALLAGA-> -C: BELLAVISTA->  C: BELLAVISTA-> -C: MARISCAL CACERES->  C: MARISCAL CACERES-> -C: BOLIVAR->  C: BOLIVAR-> -C: SANCHEZ CARRION->  C: SANCHEZ CARRION-> -C: SIHUAS->  C: SIHUAS-> -C: MARISCAL LUZURIAGA->  
+
+Oficina inicial: MARISCAL LUZURIAGA
+Oficina final: MARAÃ‘ON
+
+Tramos parciales: 
+C: MARISCAL LUZURIAGA-> -C: MARAÃ‘ON->  
+
+Oficina inicial: MARAÃ‘ON
+Oficina final: LIMA
+
+Tramos parciales: 
+C: MARAÃ‘ON-> -C: MARISCAL LUZURIAGA->  C: MARISCAL LUZURIAGA-> -C: CARLOS FERMIN FITZCARRALD->  C: CARLOS FERMIN FITZCARRALD-> -C: ANTONIO RAYMONDI->  C: ANTONIO RAYMONDI-> -C: ASUNCION->  C: ASUNCION-> -C: HUARI->  C: HUARI-> -C: HUARAZ->  C: HUARAZ-> -C: RECUAY->  C: RECUAY-> -C: AIJA->  C: AIJA-> -C: BOLOGNESI->  C: BOLOGNESI-> -C: OCROS->  C: OCROS-> -C: OYON->  C: OYON-> -C: CANTA->  C: CANTA-> -C: CALLAO->  C: CALLAO-> -C: LIMA->  
+Lista oficinas: 
+LIMA MARISCAL LUZURIAGA MARAÃ‘ON JULCAN DATEM DEL MARAÃ‘ON 
+Mejor costo solucion: 2.9607354034964483E7
+
+Lista de Tramos Oficina 1: LIMA => HUARAL => 
+HUARAL => BARRANCA => 
+BARRANCA => HUARMEY => 
+HUARMEY => CASMA => 
+CASMA => YUNGAY => 
+YUNGAY => ASUNCION => 
+ASUNCION => MARISCAL LUZURIAGA => 
+
+Lista de Tramos Oficina 2: MARISCAL LUZURIAGA => MARAÃ‘ON => 
+
+Lista de Tramos Oficina 3: MARAÃ‘ON => JULCAN => 
+
+Lista de Tramos Oficina 4: JULCAN => OTUZCO => 
+OTUZCO => CAJABAMBA => 
+CAJABAMBA => SANCHEZ CARRION => 
+SANCHEZ CARRION => BOLIVAR => 
+BOLIVAR => RODRIGUEZ DE MENDOZA => 
+RODRIGUEZ DE MENDOZA => BONGARA => 
+BONGARA => RIOJA => 
+RIOJA => DATEM DEL MARAÃ‘ON => 
+
+Lista de Tramos Oficina 5: DATEM DEL MARAÃ‘ON => ALTO AMAZONAS => 
+ALTO AMAZONAS => SAN MARTIN => 
+SAN MARTIN => EL DORADO => 
+EL DORADO => HUALLAGA => 
+HUALLAGA => BELLAVISTA => 
+BELLAVISTA => MARISCAL CACERES => 
+MARISCAL CACERES => BOLIVAR => 
+BOLIVAR => SANCHEZ CARRION => 
+SANCHEZ CARRION => JULCAN => 
+JULCAN => PALLASCA => 
+PALLASCA => CORONGO => 
+CORONGO => SIHUAS => 
+SIHUAS => MARISCAL LUZURIAGA => 
+MARISCAL LUZURIAGA => CARLOS FERMIN FITZCARRALD => 
+CARLOS FERMIN FITZCARRALD => ANTONIO RAYMONDI => 
+ANTONIO RAYMONDI => ASUNCION => 
+ASUNCION => HUARI => 
+HUARI => HUARAZ => 
+HUARAZ => RECUAY => 
+RECUAY => AIJA => 
+AIJA => BOLOGNESI => 
+BOLOGNESI => OCROS => 
+OCROS => OYON => 
+OYON => CANTA => 
+CANTA => CALLAO => 
+CALLAO => LIMA => 
+
+El simulated annealing terminó

@@ -2,6 +2,7 @@ package pe.edu.pucp.g4algoritmos.solucion1;
  
 import java.util.ArrayList;
 import java.util.List;
+import java.io.PrintWriter;
 
 import org.javatuples.Triplet;
 
@@ -23,12 +24,12 @@ public class SimulatedAnnealing {
         
     }
     
-    public void simulate() {
+    public void simulate(PrintWriter writer) {
 
         double temp = ConstantesSA.MAX_TEMPERATURE;
 
         actualState = new SingleTour(repository);
-        actualState.generateIndividual(repository);
+        actualState.generateIndividual(repository, writer);
         bestState = new SingleTour(actualState.getTour(), actualState.getTiemposLlegadaOficinas(), actualState.getTramosARecorrerPorOficina(), actualState.getCosto(), repository);
 
         //System.out.println("Costo Solucion Actual: " + actualState.getCosto());

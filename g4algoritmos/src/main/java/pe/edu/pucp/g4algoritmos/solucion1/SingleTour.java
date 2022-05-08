@@ -3,7 +3,7 @@ package pe.edu.pucp.g4algoritmos.solucion1;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
- 
+import java.io.PrintWriter;
 import pe.edu.pucp.g4algoritmos.model.Oficina;
 import pe.edu.pucp.g4algoritmos.model.Tramo;
 
@@ -37,7 +37,7 @@ public class SingleTour {
         this.costo = costo;
     }
 
-    private double calcularTramos(RepositorySA repository) {
+    private double calcularTramos(RepositorySA repository, PrintWriter writer) {
         
         this.tramosARecorrerPorOficina = new ArrayList<>();
         tiemposLlegadaOficinas = new ArrayList<>();
@@ -52,17 +52,17 @@ public class SingleTour {
             else
                 destinationOficina = ciudadesPedido.get(0);
 
-            System.out.println("");    
-            System.out.println("Oficina inicial: " + fromOficina.getProvincia());
-            System.out.println("Oficina final: " + destinationOficina.getProvincia());
-            System.out.println(""); 
+            writer.println("");    
+            writer.println("Oficina inicial: " + fromOficina.getProvincia());
+            writer.println("Oficina final: " + destinationOficina.getProvincia());
+            writer.println(""); 
             List<Tramo> tramosParciales = fromOficina.recorridoHasta(destinationOficina);
             double tiempoLlegada = 0.0;
-            System.out.println("Tramos parciales: ");
+            writer.println("Tramos parciales: ");
             for (Tramo t : tramosParciales){
-                System.out.print(t.getCiudadInicio() + "-" + t.getCiudadFin() + " ");
+                writer.print(t.getCiudadInicio() + "-" + t.getCiudadFin() + " ");
             }
-            System.out.println("");
+            writer.println("");
             for (Tramo tramo : tramosParciales)
                 tiempoLlegada += tramo.getCosto();
 
@@ -140,7 +140,7 @@ public class SingleTour {
     }
 
 
-    public void generateIndividual(RepositorySA repositorio) {
+    public void generateIndividual(RepositorySA repositorio, PrintWriter writer) {
         /*Function to generate a random individual (random ciudadesPedido)*/
         //This is how we generate the hamiltonian cycle
         List<Oficina> newListOficina = new ArrayList<>();
@@ -160,7 +160,7 @@ public class SingleTour {
            setOficina(index+1, newListOficina.get(index));
             
         }
-        calcularTramos(repositorio); 
+        calcularTramos(repositorio, writer); 
         this.costo = calcularCosto();
         
 
