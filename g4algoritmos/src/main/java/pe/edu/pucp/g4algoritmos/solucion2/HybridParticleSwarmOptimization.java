@@ -42,7 +42,7 @@ public class HybridParticleSwarmOptimization {
     private List<Position> globalBestSolution;  //Best global solution 
     private Particle[] particleSwarm;           //Collection of particles that will compose the swarm
     private int epochs = 0;                         //To count how many iterations we are going to make
-    private double globalBestCost;
+    private double globalBestCost = Double.MAX_VALUE ;
 
     
     private RepositoryPSO repository;
@@ -142,6 +142,9 @@ public class HybridParticleSwarmOptimization {
                     }
                 }
 
+        //4. LS-VND Improvement and translation
+
+                actualParticle.setCurrentPosition(LS_VND.improveSolutions(actualParticle.getCurrentPositions(), num_almacenes, repository));
 
         //4. Check for best position for the particle
                 if (fitnessFunction(actualParticle.getCurrentPositions()) < fitnessFunction(actualParticle.getBestPositions() ))  {
@@ -150,14 +153,16 @@ public class HybridParticleSwarmOptimization {
 
 
         //5. Check for best position for the particle
-                double gBest = fitnessFunction(actualParticle.getBestPositions());
-                if (gBest < fitnessFunction(this.globalBestSolution)){
+                double potentialBest = fitnessFunction(actualParticle.getBestPositions());
+                if (potentialBest < globalBestCost){
                     setGlobalBestPositions(actualParticle.getBestPositions());
-                    globalBestCost = gBest;
-                    System.out.println("Best So far: " + gBest);
+                    globalBestCost = potentialBest;
+                    System.out.println("Best So far: " + globalBestCost);
                 }   
             }
             epochs++;
+            if (epochs % (ConstantesPSO.MAX_ITERATIONS / 10) == 0)
+                System.out.println("EPOCHS = " + epochs);
         }
     }
 
@@ -217,12 +222,13 @@ public class HybridParticleSwarmOptimization {
         globalBestSolution = new ArrayList<>();
         
         for (int i = 0; i < positions.size(); i++ ){
-            globalBestSolution.add(positions.get(i));
+            Position newPos = new Position(positions.get(i));
+            globalBestSolution.add(newPos);
         }
     }
 
     public double fitnessFunction(List<Position> positions){
-        return ConstantesPSO.f(positions, num_dimensions, num_almacenes, repository.getTiempoSalida(), repository.getAlmacenes(), repository.getCamiones(), repository);
+        return ConstantesPSO.f(positions, num_almacenes, repository);
     }
 
     public void printOficinasXAlmacen(){
@@ -277,7 +283,7 @@ public class HybridParticleSwarmOptimization {
             System.out.println(position.getOficina().getProvincia() + ". POS: " + position.getRandomPosition());
           //  i++;
         }*/
-        System.out.println("Global Besto Cost: " + globalBestCost);
+        System.out.println("Global Best Cost: " + fitnessFunction(globalBestSolution));
     }
 }
 

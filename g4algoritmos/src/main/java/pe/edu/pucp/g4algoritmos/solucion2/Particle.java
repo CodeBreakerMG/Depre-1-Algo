@@ -62,6 +62,8 @@ public class Particle {
         return currentPosition;
     }
 
+    //public List<Integer> getVehiclesByDeposit(int indexAlmacen){}
+
     public void setCurrentPosition(List<Position> currentPosition) {
         this.currentPosition = currentPosition;
     }

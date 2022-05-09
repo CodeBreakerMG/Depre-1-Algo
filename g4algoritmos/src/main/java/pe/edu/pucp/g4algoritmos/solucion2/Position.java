@@ -29,6 +29,12 @@ public class Position {
         this.camionNumber = camionNumber;
     }
 
+    public Position(Position pos){
+        this.oficina = pos.oficina;
+        this.randomPosition = pos.randomPosition;
+        this.camionNumber = pos.camionNumber;
+    }
+
     public OficinaPSO getOficinaPSO() {
         return oficina;
     }
@@ -51,8 +57,12 @@ public class Position {
 
     public int getVehiclePosition() {
         
-        double decimalPart = camionNumber % 1;
-        int asWhole = (int)decimalPart * 100;
+        int decimalPart = (int)(camionNumber * 100);
+        int integerPart = (int)(camionNumber);
+        integerPart *= 100;
+
+        int asWhole = decimalPart - integerPart;
+ 
         return asWhole;
     }
 

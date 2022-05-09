@@ -73,17 +73,22 @@ public class SegundaSolucion {
             for (Oficina o: oficinas){
                 long max_miliseconds = 9 * (long)10e13; //en milisegundos
                 long min_miliseconds = 0; //en milisegundos
+                int cargaPaquetes = 0;
                 OficinaPSO oficinaPSO = new OficinaPSO(o);
                 for (Pedido p : listaPedidos){
                     if (p.getOficina().getCodigo() == o.getCodigo()){
                         oficinaPSO.addPedido(p);
                         max_miliseconds = p.getFechaHoraLimite().getTime() < max_miliseconds ? p.getFechaHoraLimite().getTime() : max_miliseconds;
                         min_miliseconds = p.getFechaHoraPedido().getTime() > min_miliseconds ? p.getFechaHoraPedido().getTime() : min_miliseconds;
-                        oficinaPSO.addPaquetes(p.getCantidadActual());
+                        cargaPaquetes += p.getCantidadActual();
+                        
                     }
                 }
                 oficinaPSO.setTiempoLimiteLlegada(new Date(max_miliseconds));
                 oficinaPSO.setTiempoMinimoSalidaCamion(new Date(min_miliseconds));
+                oficinaPSO.setQ(cargaPaquetes);
+                if (cargaPaquetes > 90)
+                    System.out.println("Excedida carga paquetes a una ofina "+  cargaPaquetes);
                 oficinasPSO.add(oficinaPSO);
             }
 
