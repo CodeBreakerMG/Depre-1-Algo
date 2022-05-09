@@ -1,6 +1,4 @@
 package pe.edu.pucp.g4algoritmos.solucion2;
-import org.javatuples.Triplet;
-import org.omg.CORBA.SystemException;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,7 +16,7 @@ public class RepositoryPSO {
 
     private Date tiempoSalida;
     private double num_dimensions;
-    private int num_almacenes;
+    
     private int[][] cantidadTipoCamionPorAlmacen = new int[10][3]; //A: 0, b: 1 , C:2
 
     public RepositoryPSO(List<OficinaPSO> oficinas, List<Oficina> almacenes, Date tiempoSalida) {
@@ -27,7 +25,7 @@ public class RepositoryPSO {
         this.almacenes = almacenes;
 
         this.tiempoSalida = tiempoSalida;
-        this.num_almacenes = almacenes.size();
+        
         this.num_dimensions = oficinas.size();
     }
 
@@ -45,7 +43,7 @@ public class RepositoryPSO {
         }
 
         this.tiempoSalida = tiempoSalida;
-        this.num_almacenes = almacenes.size();
+        
         this.num_dimensions = oficinas.size();
     }
 

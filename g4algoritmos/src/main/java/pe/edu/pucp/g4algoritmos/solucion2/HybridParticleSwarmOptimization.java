@@ -4,12 +4,12 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Random;
 
-import javafx.scene.control.RadioMenuItem;
+
 import pe.edu.pucp.g4algoritmos.model.Camion;
 import pe.edu.pucp.g4algoritmos.model.Oficina;
 import pe.edu.pucp.g4algoritmos.model.Ruta;
 
-import java.text.DecimalFormat;
+
 import java.util.ArrayList;
 import java.util.Date;
 

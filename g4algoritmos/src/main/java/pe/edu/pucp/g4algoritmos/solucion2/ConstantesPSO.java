@@ -1,10 +1,10 @@
 package pe.edu.pucp.g4algoritmos.solucion2;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Collections;
+
 import java.util.Date;
 import java.util.List;
-import java.util.PriorityQueue;
+
 
 import org.javatuples.Triplet;
 
@@ -33,7 +33,7 @@ public class ConstantesPSO {
     public final static double theta = 500.5;
     public final static double lambda = 50000.0;
     public static final double MILI_HORAS = 3.6e-6; //MILI to hours 
-    public static final int MAX_NUM_CAMIONES = 3;
+    public static final int  MAX_NUM_CAMIONES = 3;
 
     //Variable global:
     
