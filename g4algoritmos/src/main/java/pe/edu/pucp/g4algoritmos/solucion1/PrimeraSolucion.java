@@ -175,17 +175,17 @@ public class PrimeraSolucion{
         int cantidadCamionesC = 0;
         
 
-        if(cantidadCamionesA > countCamiones[0]){
+        if(cantidadCamionesA >= countCamiones[0]){
             cantPaquetesSobraA = cantPaquetesSobraA + (cantidadCamionesA - countCamiones[0])*90;
             cantidadCamionesA = countCamiones[0];
             cantidadCamionesB = (int) (cantPaquetesSobraA / 45);
             cantPaquetesSobraB = cantPaquetesSobraA % 45;
             cantPaquetesSobraA = 0;
-            if(cantidadCamionesB > countCamiones[1]){
+            if(cantidadCamionesB >= countCamiones[1]){
                 cantPaquetesSobraB = cantPaquetesSobraB + (cantidadCamionesB - countCamiones[1])*45;
                 cantidadCamionesB = countCamiones[1];
                 cantidadCamionesC = (int) (cantPaquetesSobraB / 30);
-                cantPaquetesSobraB = 0;
+                cantPaquetesSobraB = cantPaquetesSobraB % 30;
                 if(cantidadCamionesC > countCamiones[2]){
                     cantidadCamionesC = countCamiones[2];
                 }
@@ -197,13 +197,13 @@ public class PrimeraSolucion{
         if(cantPaquetesSobraA > 0){
 
             if(cantPaquetesSobraA > 45) cantidadCamionesA++;
-            if(cantPaquetesSobraA > 30 && cantPaquetesSobraA < 45) cantidadCamionesB++;
-            if(cantPaquetesSobraA < 30) cantidadCamionesC++;
+            if(cantPaquetesSobraA > 30 && cantPaquetesSobraA <= 45) cantidadCamionesB++;
+            if(cantPaquetesSobraA <= 30) cantidadCamionesC++;
         }
 
         if(cantPaquetesSobraB > 0){
-            if(cantPaquetesSobraB > 30 && cantPaquetesSobraB < 45) cantidadCamionesB++;
-            if(cantPaquetesSobraB < 30) cantidadCamionesC++;
+            if(cantPaquetesSobraB > 30 && cantPaquetesSobraB <= 45) cantidadCamionesB++;
+            if(cantPaquetesSobraB <= 30) cantidadCamionesC++;
         }
 
         
@@ -657,6 +657,23 @@ public class PrimeraSolucion{
             List<Tramo> tramosAstar = new ArrayList<>();
             int capacidad = listaCamiones.get(i).capacidad();
             boolean puede = true;
+
+            if(capacidadLlevar > 0 && contador == oficinas.size()){
+                capacidad = capacidad - capacidadLlevar;
+                capacidadLlevar = 0;
+                AStarOficina Astar = new AStarOficina(oficinas.get(0), oficinas.get((oficinas.size()-1)));
+                Astar.run();
+                tramosAstar = Astar.getTramosRecorrer();
+                ofic.add(oficinas.get(0));//Se le agrega el almacen
+                tram.add(tramosAstar);
+                ofic.add(oficinas.get(oficinas.size()-1));
+                tram.add(tramosRuta.get((oficinas.size()-2)));
+                rut.setListaOficinas(ofic);
+                rut.setListaTramosPorOficina(tram);
+                rut.setCamion(listaCamiones.get(i));
+                planesDeTransporte.add(rut);
+            }
+
             for(int j=contador; j < oficinas.size(); j++){//Empezamos con 1 el contador porque el 0 es el almacen y no queremos tomarlo
                 ped = Mapa.getListaPedidosPorOficina(oficinas.get(j), pedidos);
                 if(capacidadLlevar > 0){
@@ -667,23 +684,33 @@ public class PrimeraSolucion{
                     tramosAstar = Astar.getTramosRecorrer();
                     ofic.add(oficinas.get(0));//Se le agrega el almacen
                     tram.add(tramosAstar);
+                    ofic.add(oficinas.get(j-1));
+                    tram.add(tramosRuta.get((j-2)));
                 }
-                else{
-                    for(Pedido p: ped){   
-                        if(capacidad > p.getCantidadTotal()){
-                            capacidad = capacidad - p.getCantidadTotal();
-                            
-                        }
-                        else{
-                            puede = false;
-                            capacidadLlevar = capacidadLlevar + p.getCantidadTotal();
-                        }   
+                
+                for(Pedido p: ped){   
+                    if(capacidad > p.getCantidadTotal()){
+                        capacidad = capacidad - p.getCantidadTotal();
+                        
                     }
+                    else{
+                        puede = false;
+                        capacidadLlevar = capacidadLlevar + p.getCantidadTotal();
+                    }   
                 }
                 
                 if(puede == true){
+                    
                     ofic.add(oficinas.get(j));
                     tram.add(tramosRuta.get((j-1)));
+                    contador++;
+                    if(contador == oficinas.size()){//Si ya se recorrieron todas las oficinas y un camion puede ir por todas
+                        tram.add(tramosRuta.get((j)));
+                        rut.setListaOficinas(ofic);
+                        rut.setListaTramosPorOficina(tram);
+                        rut.setCamion(listaCamiones.get(i));
+                        planesDeTransporte.add(rut);
+                    }
                 }
                 else{
                     ofic.add(oficinas.get(j));
@@ -697,17 +724,12 @@ public class PrimeraSolucion{
                     rut.setListaTramosPorOficina(tram);
                     rut.setCamion(listaCamiones.get(i));
                     planesDeTransporte.add(rut);
+                    contador++;
                     break;
                 }
-                contador++;
-                if(contador == oficinas.size()){//Si ya se recorrieron todas las oficinas y un camion puede ir por todas
-                    tram.add(tramosRuta.get((j)));
-                    rut.setListaOficinas(ofic);
-                    rut.setListaTramosPorOficina(tram);
-                    rut.setCamion(listaCamiones.get(i));
-                    planesDeTransporte.add(rut);
-                }
+                
             }
+
         }
 
     }
