@@ -260,8 +260,6 @@ public class SegundaSolucion {
 
                 if (listaOficinas.size() == 0) continue;
 
-                updateListaCamiones();
-
                 Date tiempoSalida = listaOficinas.get(0).tiempoMinimoSalidaCamion();
 
                 for (OficinaPSO oficina : listaOficinas)
@@ -270,7 +268,7 @@ public class SegundaSolucion {
                 HybridParticleSwarmOptimization pso = new HybridParticleSwarmOptimization(listaOficinas, listaCamionesPorAlmacen, listaAlmacenes, tiempoSalida);
                 pso.solve();
                 pso.printOficinasXAlmacen();
-                pso.executeChanges();
+                
                 costoTotal += pso.getBestCost();
                // planesDeTransporte = HybridParticleSwarmOptimization
     
