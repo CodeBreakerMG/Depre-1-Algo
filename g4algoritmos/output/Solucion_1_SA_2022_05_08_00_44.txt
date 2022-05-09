@@ -1,0 +1,510 @@
+Planes de Transporte para la atención de Pedidos
+Cantidad de oficinas:  196
+Cantidad de tramos:   7008
+Cantidad de pedidos:  1278
+Cantidad de camiones:    45
+Cantidad de oficinas a recorrer:    32
+
+Zona: 1
+N° de Pedidos: 171
+
+Zona: 1
+N° de Pedidos: 171
+Cantidad de camiones a utilizar:     2
+Hora y Fecha de Salida: 18:39:00 2022/02/20 
+Lista tiempos: [[021401, -121, 24], [190101, -102, 17], [100801, -100, 33], [100301, -98, 22], [100601, -95, 48], [100501, -95, 7], [150801, -75, 5], [101001, -54, 3], [100201, -25, 10], [120501, 19, 2]]
+
+Lista oficinasxZona antes: 
+PASCO PACHITEA DOS DE MAYO OCROS LEONCIO PRADO HUAMALIES LAURICOCHA HUAURA AMBO JUNIN 
+Lista oficinasxZona despues: 
+OCROS PASCO PACHITEA DOS DE MAYO LEONCIO PRADO HUAMALIES HUAURA LAURICOCHA AMBO JUNIN 
+Lista oficinasxZona despues de agregar almacen: 
+LIMA OCROS PASCO PACHITEA DOS DE MAYO LEONCIO PRADO HUAMALIES HUAURA LAURICOCHA AMBO JUNIN 
+C: LIMA-> -C: HUARAL->  C: HUARAL-> -C: OYON->  C: OYON-> -C: LAURICOCHA->  C: LAURICOCHA-> -C: YAROWILCA->  C: YAROWILCA-> -C: AMBO->  C: AMBO-> -C: LEONCIO PRADO->  C: LEONCIO PRADO-> -C: DOS DE MAYO->  C: DOS DE MAYO-> -C: PACHITEA->  C: PACHITEA-> -C: HUAURA->  C: HUAURA-> -C: CANTA->  C: CANTA-> -C: JUNIN->  C: JUNIN-> -C: YAULI->  C: YAULI-> -C: PASCO->  C: PASCO-> -C: OCROS->  C: OCROS-> -C: HUAMALIES->  C: HUAMALIES-> -C: LIMA->  Lista oficinas: 
+LIMA HUAURA LAURICOCHA HUAMALIES DOS DE MAYO PACHITEA LEONCIO PRADO AMBO JUNIN PASCO OCROS 
+Mejor costo solucion: 6.51579693626882E7
+
+Lista de Tramos Oficina 1: LIMA => HUAURA => 
+Lista de Tramos Oficina 2: HUAURA => LAURICOCHA => 
+Lista de Tramos Oficina 3: LAURICOCHA => HUAMALIES => 
+Lista de Tramos Oficina 4: HUAMALIES => YAROWILCA => YAROWILCA => DOS DE MAYO => 
+Lista de Tramos Oficina 5: DOS DE MAYO => PACHITEA => 
+Lista de Tramos Oficina 6: PACHITEA => LEONCIO PRADO => 
+Lista de Tramos Oficina 7: LEONCIO PRADO => AMBO => 
+Lista de Tramos Oficina 8: AMBO => JUNIN => 
+Lista de Tramos Oficina 9: JUNIN => YAULI => YAULI => PASCO => 
+Lista de Tramos Oficina 10: PASCO => OCROS => 
+Lista de Tramos Oficina 11: OCROS => LIMA => 
+
+Zona: 2
+N° de Pedidos: 84
+
+Zona: 2
+N° de Pedidos: 84
+Cantidad de camiones a utilizar:     1
+Hora y Fecha de Salida: 05:12:00 2022/02/20 
+Lista tiempos: [[120601, -68, 17], [120301, -46, 59], [250101, 32, 8]]
+
+Lista oficinasxZona antes: 
+SATIPO CHANCHAMAYO CORONEL PORTILLO 
+Lista oficinasxZona despues: 
+SATIPO CHANCHAMAYO CORONEL PORTILLO 
+Lista oficinasxZona despues de agregar almacen: 
+LIMA SATIPO CHANCHAMAYO CORONEL PORTILLO 
+C: LIMA-> -C: CHANCHAMAYO->  C: CHANCHAMAYO-> -C: CORONEL PORTILLO->  C: CORONEL PORTILLO-> -C: PUERTO INCA->  C: PUERTO INCA-> -C: OXAPAMPA->  C: OXAPAMPA-> -C: CHANCHAMAYO->  C: CHANCHAMAYO-> -C: SATIPO->  C: SATIPO-> -C: LIMA->  Lista oficinas: 
+LIMA CHANCHAMAYO SATIPO CORONEL PORTILLO 
+Mejor costo solucion: 2.369311197214488E7
+
+Lista de Tramos Oficina 1: LIMA => CHANCHAMAYO => 
+Lista de Tramos Oficina 2: CHANCHAMAYO => SATIPO => 
+Lista de Tramos Oficina 3: SATIPO => OXAPAMPA => OXAPAMPA => PUERTO INCA => PUERTO INCA => CORONEL PORTILLO => 
+Lista de Tramos Oficina 4: CORONEL PORTILLO => LEONCIO PRADO => LEONCIO PRADO => PACHITEA => PACHITEA => DANIEL ALCIDES CARRION => DANIEL ALCIDES CARRION => CAJATAMBO => CAJATAMBO => OYON => OYON => CANTA => CANTA => CALLAO => CALLAO => LIMA => 
+
+Zona: 3
+N° de Pedidos: 83
+
+Zona: 3
+N° de Pedidos: 83
+Cantidad de camiones a utilizar:     1
+Hora y Fecha de Salida: 14:23:00 2022/02/20 
+Lista tiempos: [[110201, -118, 4], [150401, -105, 28], [110501, -97, 12], [120801, -70, 10], [150501, -6, 22], [150701, -1, 4], [150601, 24, 3]]
+
+Lista oficinasxZona antes: 
+CHINCHA CANTA PISCO YAULI CAÃ‘ETE HUAROCHIRI HUARAL 
+Lista oficinasxZona despues: 
+CHINCHA CANTA PISCO YAULI CAÃ‘ETE HUAROCHIRI HUARAL 
+Lista oficinasxZona despues de agregar almacen: 
+LIMA CHINCHA CANTA PISCO YAULI CAÃ‘ETE HUAROCHIRI HUARAL 
+C: LIMA-> -C: HUARAL->  C: HUARAL-> -C: YAULI->  C: YAULI-> -C: HUAROCHIRI->  C: HUAROCHIRI-> -C: PISCO->  C: PISCO-> -C: CAÃ‘ETE->  C: CAÃ‘ETE-> -C: CANTA->  C: CANTA-> -C: JUNIN->  C: JUNIN-> -C: YAULI->  C: YAULI-> -C: CHINCHA->  C: CHINCHA-> -C: LIMA->  Lista oficinas: 
+LIMA HUARAL CANTA YAULI HUAROCHIRI CAÃ‘ETE CHINCHA PISCO 
+Mejor costo solucion: 4.738714363997927E7
+
+Lista de Tramos Oficina 1: LIMA => HUARAL => 
+Lista de Tramos Oficina 2: HUARAL => CALLAO => CALLAO => CANTA => 
+Lista de Tramos Oficina 3: CANTA => JUNIN => JUNIN => YAULI => 
+Lista de Tramos Oficina 4: YAULI => HUAROCHIRI => 
+Lista de Tramos Oficina 5: HUAROCHIRI => CAÃ‘ETE => 
+Lista de Tramos Oficina 6: CAÃ‘ETE => CHINCHA => 
+Lista de Tramos Oficina 7: CHINCHA => PISCO => 
+Lista de Tramos Oficina 8: PISCO => CHINCHA => CHINCHA => CAÃ‘ETE => CAÃ‘ETE => CALLAO => CALLAO => LIMA => 
+
+Zona: 4
+N° de Pedidos: 241
+
+Zona: 4
+N° de Pedidos: 241
+Cantidad de camiones a utilizar:     0
+Hora y Fecha de Salida: 20:50:00 2022/02/20 
+Lista tiempos: [[110401, -133, 37], [090101, -105, 24], [090301, -101, 11], [120901, -87, 3], [120101, -83, 30], [090701, -78, 4], [090401, -38, 60], [051001, -32, 18], [120401, -12, 17], [050201, -5, 4], [030601, 8, 14], [090601, 37, 19]]
+
+Lista oficinasxZona antes: 
+PALPA HUANCAVELICA ANGARAES CHUPACA HUANCAYO TAYACAJA CASTROVIRREYNA VICTOR FAJARDO JAUJA CANGALLO CHINCHEROS HUAYTARA 
+Lista oficinasxZona despues: 
+PALPA HUANCAVELICA ANGARAES CHUPACA HUANCAYO TAYACAJA CASTROVIRREYNA VICTOR FAJARDO JAUJA CANGALLO CHINCHEROS HUAYTARA 
+Lista oficinasxZona despues de agregar almacen: 
+LIMA PALPA HUANCAVELICA ANGARAES CHUPACA HUANCAYO TAYACAJA CASTROVIRREYNA VICTOR FAJARDO JAUJA CANGALLO CHINCHEROS HUAYTARA 
+C: LIMA-> -C: CALLAO->  C: CALLAO-> -C: CAÃ‘ETE->  C: CAÃ‘ETE-> -C: CHINCHA->  C: CHINCHA-> -C: CASTROVIRREYNA->  C: CASTROVIRREYNA-> -C: ANGARAES->  C: ANGARAES-> -C: HUANCAYO->  C: HUANCAYO-> -C: CHINCHEROS->  C: CHINCHEROS-> -C: JAUJA->  C: JAUJA-> -C: HUANCAVELICA->  C: HUANCAVELICA-> -C: PALPA->  C: PALPA-> -C: NASCA->  C: NASCA-> -C: LUCANAS->  C: LUCANAS-> -C: SUCRE->  C: SUCRE-> -C: VICTOR FAJARDO->  C: VICTOR FAJARDO-> -C: CANGALLO->  C: CANGALLO-> -C: CHUPACA->  C: CHUPACA-> -C: HUAYTARA->  C: HUAYTARA-> -C: TAYACAJA->  C: TAYACAJA-> -C: LIMA->  Lista oficinas: 
+LIMA HUANCAVELICA VICTOR FAJARDO CANGALLO CHINCHEROS TAYACAJA HUANCAYO CHUPACA JAUJA CASTROVIRREYNA HUAYTARA ANGARAES PALPA 
+Mejor costo solucion: 7.700528136382681E7
+
+Lista de Tramos Oficina 1: LIMA => HUANCAVELICA => 
+Lista de Tramos Oficina 2: HUANCAVELICA => VICTOR FAJARDO => 
+Lista de Tramos Oficina 3: VICTOR FAJARDO => CANGALLO => 
+Lista de Tramos Oficina 4: CANGALLO => CHINCHEROS => 
+Lista de Tramos Oficina 5: CHINCHEROS => TAYACAJA => 
+Lista de Tramos Oficina 6: TAYACAJA => CHUPACA => CHUPACA => HUANCAYO => 
+Lista de Tramos Oficina 7: HUANCAYO => CHUPACA => 
+Lista de Tramos Oficina 8: CHUPACA => HUANCAYO => HUANCAYO => JAUJA => 
+Lista de Tramos Oficina 9: JAUJA => CASTROVIRREYNA => 
+Lista de Tramos Oficina 10: CASTROVIRREYNA => HUAYTARA => 
+Lista de Tramos Oficina 11: HUAYTARA => ANGARAES => 
+Lista de Tramos Oficina 12: ANGARAES => PALPA => 
+Lista de Tramos Oficina 13: PALPA => ICA => ICA => PISCO => PISCO => CHINCHA => CHINCHA => CAÃ‘ETE => CAÃ‘ETE => CALLAO => CALLAO => LIMA => 
+
+
+PLANES DE TRANSPORTE
+Camion A001
+Lista oficinas: 
+HUAURA LAURICOCHA HUAMALIES DOS DE MAYO PACHITEA 
+Lista de Tramos Oficina 1: LIMA => HUAURA => 
+Lista de Tramos Oficina 2: HUAURA => LAURICOCHA => 
+Lista de Tramos Oficina 3: LAURICOCHA => HUAMALIES => 
+Lista de Tramos Oficina 4: HUAMALIES => YAROWILCA => YAROWILCA => DOS DE MAYO => 
+Lista de Tramos Oficina 5: DOS DE MAYO => PACHITEA => 
+
+
+Camion A002
+Lista oficinas: 
+PACHITEA LEONCIO PRADO AMBO JUNIN PASCO OCROS 
+Lista de Tramos Oficina 1: DOS DE MAYO => PACHITEA => 
+Lista de Tramos Oficina 2: PACHITEA => LEONCIO PRADO => 
+Lista de Tramos Oficina 3: LEONCIO PRADO => AMBO => 
+Lista de Tramos Oficina 4: AMBO => JUNIN => 
+Lista de Tramos Oficina 5: JUNIN => YAULI => YAULI => PASCO => 
+Lista de Tramos Oficina 6: PASCO => OCROS => 
+Lista de Tramos Oficina 7: OCROS => LIMA => 
+
+
+Camion A003
+Lista oficinas: 
+CHANCHAMAYO SATIPO CORONEL PORTILLO 
+Lista de Tramos Oficina 1: LIMA => CHANCHAMAYO => 
+Lista de Tramos Oficina 2: CHANCHAMAYO => SATIPO => 
+Lista de Tramos Oficina 3: SATIPO => OXAPAMPA => OXAPAMPA => PUERTO INCA => PUERTO INCA => CORONEL PORTILLO => 
+Lista de Tramos Oficina 4: CORONEL PORTILLO => LEONCIO PRADO => LEONCIO PRADO => PACHITEA => PACHITEA => DANIEL ALCIDES CARRION => DANIEL ALCIDES CARRION => CAJATAMBO => CAJATAMBO => OYON => OYON => CANTA => CANTA => CALLAO => CALLAO => LIMA => 
+
+
+Camion A004
+Lista oficinas: 
+HUARAL CANTA YAULI HUAROCHIRI CAÃ‘ETE CHINCHA PISCO 
+Lista de Tramos Oficina 1: LIMA => HUARAL => 
+Lista de Tramos Oficina 2: HUARAL => CALLAO => CALLAO => CANTA => 
+Lista de Tramos Oficina 3: CANTA => JUNIN => JUNIN => YAULI => 
+Lista de Tramos Oficina 4: YAULI => HUAROCHIRI => 
+Lista de Tramos Oficina 5: HUAROCHIRI => CAÃ‘ETE => 
+Lista de Tramos Oficina 6: CAÃ‘ETE => CHINCHA => 
+Lista de Tramos Oficina 7: CHINCHA => PISCO => 
+Lista de Tramos Oficina 8: PISCO => CHINCHA => CHINCHA => CAÃ‘ETE => CAÃ‘ETE => CALLAO => CALLAO => LIMA => 
+
+
+El simulated annealing terminó
+LIMA OK      ==========================================================
+Cantidad de oficinas a recorrer:    40
+
+Zona: 1
+N° de Pedidos: 170
+
+Zona: 1
+N° de Pedidos: 170
+Cantidad de camiones a utilizar:     1
+Hora y Fecha de Salida: 21:41:00 2022/02/20 
+Lista tiempos: [[021301, -135, 21], [020401, -115, 64], [021601, -104, 11], [021701, -100, 4], [021801, -90, 35], [021201, -39, 3], [022001, -33, 5], [021101, -11, 19], [020801, -7, 3], [021901, 7, 4], [020601, 24, 1]]
+
+Lista oficinasxZona antes: 
+MARISCAL LUZURIAGA ASUNCION POMABAMBA RECUAY SANTA HUAYLAS YUNGAY HUARMEY CASMA SIHUAS CARHUAZ 
+Lista oficinasxZona despues: 
+MARISCAL LUZURIAGA ASUNCION POMABAMBA RECUAY SANTA HUAYLAS YUNGAY HUARMEY CASMA SIHUAS CARHUAZ 
+Lista oficinasxZona despues de agregar almacen: 
+TRUJILLO MARISCAL LUZURIAGA ASUNCION POMABAMBA RECUAY SANTA HUAYLAS YUNGAY HUARMEY CASMA SIHUAS CARHUAZ 
+C: TRUJILLO-> -C: YUNGAY->  C: YUNGAY-> -C: CASMA->  C: CASMA-> -C: POMABAMBA->  C: POMABAMBA-> -C: ASUNCION->  C: ASUNCION-> -C: CARHUAZ->  C: CARHUAZ-> -C: MARISCAL LUZURIAGA->  C: MARISCAL LUZURIAGA-> -C: SANTA->  C: SANTA-> -C: RECUAY->  C: RECUAY-> -C: SIHUAS->  C: SIHUAS-> -C: CORONGO->  C: CORONGO-> -C: HUAYLAS->  C: HUAYLAS-> -C: RECUAY->  C: RECUAY-> -C: AIJA->  C: AIJA-> -C: HUARMEY->  C: HUARMEY-> -C: CASMA->  C: CASMA-> -C: SANTA->  C: SANTA-> -C: VIRU->  C: VIRU-> -C: TRUJILLO->  Lista oficinas: 
+TRUJILLO SANTA CARHUAZ ASUNCION POMABAMBA HUAYLAS YUNGAY SIHUAS MARISCAL LUZURIAGA RECUAY CASMA HUARMEY 
+Mejor costo solucion: 7.108185277718553E7
+
+Lista de Tramos Oficina 1: TRUJILLO => VIRU => VIRU => SANTA => 
+Lista de Tramos Oficina 2: SANTA => CARHUAZ => 
+Lista de Tramos Oficina 3: CARHUAZ => ASUNCION => 
+Lista de Tramos Oficina 4: ASUNCION => POMABAMBA => 
+Lista de Tramos Oficina 5: POMABAMBA => HUAYLAS => 
+Lista de Tramos Oficina 6: HUAYLAS => ASUNCION => ASUNCION => YUNGAY => 
+Lista de Tramos Oficina 7: YUNGAY => SIHUAS => 
+Lista de Tramos Oficina 8: SIHUAS => MARISCAL LUZURIAGA => 
+Lista de Tramos Oficina 9: MARISCAL LUZURIAGA => RECUAY => 
+Lista de Tramos Oficina 10: RECUAY => HUARAZ => HUARAZ => CASMA => 
+Lista de Tramos Oficina 11: CASMA => HUARMEY => 
+Lista de Tramos Oficina 12: HUARMEY => CASMA => CASMA => SANTA => SANTA => VIRU => VIRU => TRUJILLO => 
+
+Zona: 2
+N° de Pedidos: 22
+
+Zona: 2
+N° de Pedidos: 22
+Cantidad de camiones a utilizar:     1
+Hora y Fecha de Salida: 17:35:00 2022/02/18 
+Lista tiempos: [[100701, -62, 9], [160601, -23, 10], [220701, 72, 3]]
+
+Lista oficinasxZona antes: 
+MARAÃ‘ON UCAYALI PICOTA 
+Lista oficinasxZona despues: 
+MARAÃ‘ON UCAYALI PICOTA 
+Lista oficinasxZona despues de agregar almacen: 
+TRUJILLO MARAÃ‘ON UCAYALI PICOTA 
+C: TRUJILLO-> -C: MARAÃ‘ON->  C: MARAÃ‘ON-> -C: UCAYALI->  C: UCAYALI-> -C: BELLAVISTA->  C: BELLAVISTA-> -C: PICOTA->  C: PICOTA-> -C: BELLAVISTA->  C: BELLAVISTA-> -C: MARISCAL CACERES->  C: MARISCAL CACERES-> -C: BOLIVAR->  C: BOLIVAR-> -C: SANCHEZ CARRION->  C: SANCHEZ CARRION-> -C: JULCAN->  C: JULCAN-> -C: TRUJILLO->  Lista oficinas: 
+TRUJILLO MARAÃ‘ON PICOTA UCAYALI 
+Mejor costo solucion: 2.3691263851920724E7
+
+Lista de Tramos Oficina 1: TRUJILLO => MARAÃ‘ON => 
+Lista de Tramos Oficina 2: MARAÃ‘ON => PICOTA => 
+Lista de Tramos Oficina 3: PICOTA => BELLAVISTA => BELLAVISTA => UCAYALI => 
+Lista de Tramos Oficina 4: UCAYALI => BELLAVISTA => BELLAVISTA => MARISCAL CACERES => MARISCAL CACERES => BOLIVAR => BOLIVAR => SANCHEZ CARRION => SANCHEZ CARRION => JULCAN => JULCAN => TRUJILLO => 
+
+Zona: 3
+N° de Pedidos: 72
+
+Zona: 3
+N° de Pedidos: 72
+Cantidad de camiones a utilizar:     0
+Hora y Fecha de Salida: 06:32:00 2022/02/20 
+Lista tiempos: [[130501, -115, 8], [060201, -76, 17], [060301, -50, 19], [130801, -47, 6], [060101, -28, 4], [061001, 11, 9], [061101, 48, 9]]
+
+Lista oficinasxZona antes: 
+JULCAN CAJABAMBA CELENDIN CAJAMARCA PATAZ SAN MARCOS SAN MIGUEL 
+Lista oficinasxZona despues: 
+JULCAN CAJABAMBA CELENDIN PATAZ CAJAMARCA SAN MARCOS SAN MIGUEL 
+Lista oficinasxZona despues de agregar almacen: 
+TRUJILLO JULCAN CAJABAMBA CELENDIN PATAZ CAJAMARCA SAN MARCOS SAN MIGUEL 
+C: TRUJILLO-> -C: CELENDIN->  C: CELENDIN-> -C: PATAZ->  C: PATAZ-> -C: CAJAMARCA->  C: CAJAMARCA-> -C: CAJABAMBA->  C: CAJABAMBA-> -C: JULCAN->  C: JULCAN-> -C: SAN MIGUEL->  C: SAN MIGUEL-> -C: CAJAMARCA->  C: CAJAMARCA-> -C: SAN MARCOS->  C: SAN MARCOS-> -C: CONTUMAZA->  C: CONTUMAZA-> -C: ASCOPE->  C: ASCOPE-> -C: TRUJILLO->  Lista oficinas: 
+TRUJILLO JULCAN CAJABAMBA CAJAMARCA SAN MARCOS SAN MIGUEL CELENDIN PATAZ 
+Mejor costo solucion: 4.738632112787473E7
+
+Lista de Tramos Oficina 1: TRUJILLO => JULCAN => 
+Lista de Tramos Oficina 2: JULCAN => CAJABAMBA => 
+Lista de Tramos Oficina 3: CAJABAMBA => CAJAMARCA => 
+Lista de Tramos Oficina 4: CAJAMARCA => SAN MARCOS => 
+Lista de Tramos Oficina 5: SAN MARCOS => CAJAMARCA => CAJAMARCA => SAN MIGUEL => 
+Lista de Tramos Oficina 6: SAN MIGUEL => SAN PABLO => SAN PABLO => CELENDIN => 
+Lista de Tramos Oficina 7: CELENDIN => PATAZ => 
+Lista de Tramos Oficina 8: PATAZ => TRUJILLO => 
+
+Zona: 4
+N° de Pedidos: 120
+
+Zona: 4
+N° de Pedidos: 120
+Cantidad de camiones a utilizar:     0
+Hora y Fecha de Salida: 21:18:00 2022/02/20 
+Lista tiempos: [[240101, -107, 11], [240301, -105, 4], [140301, -103, 5], [061301, -93, 14], [140101, -77, 11], [200501, -66, 10], [010101, -29, 12], [240201, -28, 4], [200201, -24, 9], [200801, -24, 4], [200601, -8, 10], [140201, -7, 4], [010201, -5, 3], [060701, -1, 8], [010301, 23, 6], [200401, 24, 5]]
+
+Lista oficinasxZona antes: 
+SANTA CRUZ TUMBES ZARUMILLA LAMBAYEQUE CHACHAPOYAS CHICLAYO PAITA BAGUA CONTRALMIRANTE VILLAR HUALGAYOC BONGARA AYABACA SECHURA SULLANA FERREÃ‘AFE MORROPON 
+Lista oficinasxZona despues: 
+TUMBES ZARUMILLA LAMBAYEQUE SANTA CRUZ CHICLAYO PAITA CHACHAPOYAS CONTRALMIRANTE VILLAR AYABACA SECHURA SULLANA FERREÃ‘AFE BAGUA HUALGAYOC BONGARA MORROPON 
+Lista oficinasxZona despues de agregar almacen: 
+TRUJILLO TUMBES ZARUMILLA LAMBAYEQUE SANTA CRUZ CHICLAYO PAITA CHACHAPOYAS CONTRALMIRANTE VILLAR AYABACA SECHURA SULLANA FERREÃ‘AFE BAGUA HUALGAYOC BONGARA MORROPON 
+C: TRUJILLO-> -C: ASCOPE->  C: ASCOPE-> -C: PACASMAYO->  C: PACASMAYO-> -C: CHEPEN->  C: CHEPEN-> -C: FERREÃ‘AFE->  C: FERREÃ‘AFE-> -C: HUANCABAMBA->  C: HUANCABAMBA-> -C: AYABACA->  C: AYABACA-> -C: CHACHAPOYAS->  C: CHACHAPOYAS-> -C: SANTA CRUZ->  C: SANTA CRUZ-> -C: CHICLAYO->  C: CHICLAYO-> -C: FERREÃ‘AFE->  C: FERREÃ‘AFE-> -C: PAITA->  C: PAITA-> -C: ZARUMILLA->  C: ZARUMILLA-> -C: BAGUA->  C: BAGUA-> -C: BONGARA->  C: BONGARA-> -C: LUYA->  C: LUYA-> -C: HUALGAYOC->  C: HUALGAYOC-> -C: SULLANA->  C: SULLANA-> -C: CONTRALMIRANTE VILLAR->  C: CONTRALMIRANTE VILLAR-> -C: SULLANA->  C: SULLANA-> -C: PIURA->  C: PIURA-> -C: FERREÃ‘AFE->  C: FERREÃ‘AFE-> -C: LAMBAYEQUE->  C: LAMBAYEQUE-> -C: SECHURA->  C: SECHURA-> -C: PIURA->  C: PIURA-> -C: SULLANA->  C: SULLANA-> -C: CONTRALMIRANTE VILLAR->  C: CONTRALMIRANTE VILLAR-> -C: TUMBES->  C: TUMBES-> -C: MORROPON->  C: MORROPON-> -C: SECHURA->  C: SECHURA-> -C: LAMBAYEQUE->  C: LAMBAYEQUE-> -C: CHEPEN->  C: CHEPEN-> -C: PACASMAYO->  C: PACASMAYO-> -C: ASCOPE->  C: ASCOPE-> -C: TRUJILLO->  Lista oficinas: 
+TRUJILLO FERREÃ‘AFE LAMBAYEQUE SANTA CRUZ HUALGAYOC CHACHAPOYAS BONGARA BAGUA SULLANA SECHURA PAITA MORROPON AYABACA TUMBES ZARUMILLA CONTRALMIRANTE VILLAR CHICLAYO 
+Mejor costo solucion: 1.006993328294086E8
+
+Lista de Tramos Oficina 1: TRUJILLO => FERREÃ‘AFE => 
+Lista de Tramos Oficina 2: FERREÃ‘AFE => LAMBAYEQUE => 
+Lista de Tramos Oficina 3: LAMBAYEQUE => SANTA CRUZ => 
+Lista de Tramos Oficina 4: SANTA CRUZ => HUALGAYOC => 
+Lista de Tramos Oficina 5: HUALGAYOC => LUYA => LUYA => CHACHAPOYAS => 
+Lista de Tramos Oficina 6: CHACHAPOYAS => LUYA => LUYA => BONGARA => 
+Lista de Tramos Oficina 7: BONGARA => BAGUA => 
+Lista de Tramos Oficina 8: BAGUA => SULLANA => 
+Lista de Tramos Oficina 9: SULLANA => SECHURA => 
+Lista de Tramos Oficina 10: SECHURA => PAITA => 
+Lista de Tramos Oficina 11: PAITA => SULLANA => SULLANA => MORROPON => 
+Lista de Tramos Oficina 12: MORROPON => HUANCABAMBA => HUANCABAMBA => AYABACA => 
+Lista de Tramos Oficina 13: AYABACA => TUMBES => 
+Lista de Tramos Oficina 14: TUMBES => ZARUMILLA => 
+Lista de Tramos Oficina 15: ZARUMILLA => CONTRALMIRANTE VILLAR => 
+Lista de Tramos Oficina 16: CONTRALMIRANTE VILLAR => SULLANA => SULLANA => PIURA => PIURA => FERREÃ‘AFE => FERREÃ‘AFE => CHICLAYO => 
+Lista de Tramos Oficina 17: CHICLAYO => LAMBAYEQUE => LAMBAYEQUE => CHEPEN => CHEPEN => PACASMAYO => PACASMAYO => ASCOPE => ASCOPE => TRUJILLO => 
+
+Zona: 5
+N° de Pedidos: 11
+
+Zona: 5
+N° de Pedidos: 11
+Cantidad de camiones a utilizar:     1
+Hora y Fecha de Salida: 17:17:00 2022/02/18 
+Lista tiempos: [[160701, -37, 3], [220901, 39, 3], [160101, 72, 5]]
+
+Lista oficinasxZona antes: 
+DATEM DEL MARAÃ‘ON SAN MARTIN MAYNAS 
+Lista oficinasxZona despues: 
+DATEM DEL MARAÃ‘ON SAN MARTIN MAYNAS 
+Lista oficinasxZona despues de agregar almacen: 
+TRUJILLO DATEM DEL MARAÃ‘ON SAN MARTIN MAYNAS 
+C: TRUJILLO-> -C: JULCAN->  C: JULCAN-> -C: SANCHEZ CARRION->  C: SANCHEZ CARRION-> -C: BOLIVAR->  C: BOLIVAR-> -C: HUALLAGA->  C: HUALLAGA-> -C: EL DORADO->  C: EL DORADO-> -C: SAN MARTIN->  C: SAN MARTIN-> -C: ALTO AMAZONAS->  C: ALTO AMAZONAS-> -C: LORETO->  C: LORETO-> -C: MAYNAS->  C: MAYNAS-> -C: LORETO->  C: LORETO-> -C: ALTO AMAZONAS->  C: ALTO AMAZONAS-> -C: DATEM DEL MARAÃ‘ON->  C: DATEM DEL MARAÃ‘ON-> -C: MOYOBAMBA->  C: MOYOBAMBA-> -C: RODRIGUEZ DE MENDOZA->  C: RODRIGUEZ DE MENDOZA-> -C: BOLIVAR->  C: BOLIVAR-> -C: SANCHEZ CARRION->  C: SANCHEZ CARRION-> -C: JULCAN->  C: JULCAN-> -C: TRUJILLO->  Lista oficinas: 
+TRUJILLO SAN MARTIN DATEM DEL MARAÃ‘ON MAYNAS 
+Mejor costo solucion: 2.369126916697725E7
+
+Lista de Tramos Oficina 1: TRUJILLO => JULCAN => JULCAN => SANCHEZ CARRION => SANCHEZ CARRION => BOLIVAR => BOLIVAR => HUALLAGA => HUALLAGA => EL DORADO => EL DORADO => SAN MARTIN => 
+Lista de Tramos Oficina 2: SAN MARTIN => ALTO AMAZONAS => ALTO AMAZONAS => DATEM DEL MARAÃ‘ON => 
+Lista de Tramos Oficina 3: DATEM DEL MARAÃ‘ON => ALTO AMAZONAS => ALTO AMAZONAS => LORETO => LORETO => MAYNAS => 
+Lista de Tramos Oficina 4: MAYNAS => REQUENA => REQUENA => UCAYALI => UCAYALI => BELLAVISTA => BELLAVISTA => MARISCAL CACERES => MARISCAL CACERES => BOLIVAR => BOLIVAR => SANCHEZ CARRION => SANCHEZ CARRION => JULCAN => JULCAN => TRUJILLO => 
+
+Zona: 6
+N° de Pedidos: 0
+
+Zona: 6
+N° de Pedidos: 0
+Cantidad de camiones a utilizar:     0
+
+Zona: 7
+N° de Pedidos: 0
+
+Zona: 7
+N° de Pedidos: 0
+Cantidad de camiones a utilizar:     0
+
+
+PLANES DE TRANSPORTE
+Camion A005
+Lista oficinas: 
+SANTA CARHUAZ 
+Lista de Tramos Oficina 1: TRUJILLO => VIRU => VIRU => SANTA => 
+Lista de Tramos Oficina 2: SANTA => CARHUAZ => 
+
+
+Camion C011
+Lista oficinas: 
+MARAÃ‘ON PICOTA UCAYALI 
+Lista de Tramos Oficina 1: TRUJILLO => MARAÃ‘ON => 
+Lista de Tramos Oficina 2: MARAÃ‘ON => PICOTA => 
+Lista de Tramos Oficina 3: PICOTA => BELLAVISTA => BELLAVISTA => UCAYALI => 
+Lista de Tramos Oficina 4: UCAYALI => BELLAVISTA => BELLAVISTA => MARISCAL CACERES => MARISCAL CACERES => BOLIVAR => BOLIVAR => SANCHEZ CARRION => SANCHEZ CARRION => JULCAN => JULCAN => TRUJILLO => 
+
+
+Camion C012
+Lista oficinas: 
+SAN MARTIN DATEM DEL MARAÃ‘ON MAYNAS 
+Lista de Tramos Oficina 1: TRUJILLO => JULCAN => JULCAN => SANCHEZ CARRION => SANCHEZ CARRION => BOLIVAR => BOLIVAR => HUALLAGA => HUALLAGA => EL DORADO => EL DORADO => SAN MARTIN => 
+Lista de Tramos Oficina 2: SAN MARTIN => ALTO AMAZONAS => ALTO AMAZONAS => DATEM DEL MARAÃ‘ON => 
+Lista de Tramos Oficina 3: DATEM DEL MARAÃ‘ON => ALTO AMAZONAS => ALTO AMAZONAS => LORETO => LORETO => MAYNAS => 
+Lista de Tramos Oficina 4: MAYNAS => REQUENA => REQUENA => UCAYALI => UCAYALI => BELLAVISTA => BELLAVISTA => MARISCAL CACERES => MARISCAL CACERES => BOLIVAR => BOLIVAR => SANCHEZ CARRION => SANCHEZ CARRION => JULCAN => JULCAN => TRUJILLO => 
+
+
+El simulated annealing terminó
+TRUJILLO OK  ==========================================================
+Cantidad de oficinas a recorrer:    30
+
+Zona: 1
+N° de Pedidos: 20
+
+Zona: 1
+N° de Pedidos: 20
+Cantidad de camiones a utilizar:     1
+Hora y Fecha de Salida: 14:32:00 2022/02/19 
+Lista tiempos: [[080601, 25, 4], [170301, 46, 10], [210301, 48, 6]]
+
+Lista oficinasxZona antes: 
+TAHUAMANU CANCHIS CARABAYA 
+Lista oficinasxZona despues: 
+CANCHIS TAHUAMANU CARABAYA 
+Lista oficinasxZona despues de agregar almacen: 
+AREQUIPA CANCHIS TAHUAMANU CARABAYA 
+C: AREQUIPA-> -C: CAYLLOMA->  C: CAYLLOMA-> -C: ESPINAR->  C: ESPINAR-> -C: CANCHIS->  C: CANCHIS-> -C: QUISPICANCHI->  C: QUISPICANCHI-> -C: PAUCARTAMBO->  C: PAUCARTAMBO-> -C: MANU->  C: MANU-> -C: TAMBOPATA->  C: TAMBOPATA-> -C: TAHUAMANU->  C: TAHUAMANU-> -C: TAMBOPATA->  C: TAMBOPATA-> -C: MANU->  C: MANU-> -C: PAUCARTAMBO->  C: PAUCARTAMBO-> -C: QUISPICANCHI->  C: QUISPICANCHI-> -C: ACOMAYO->  C: ACOMAYO-> -C: CANAS->  C: CANAS-> -C: CANCHIS->  C: CANCHIS-> -C: CARABAYA->  C: CARABAYA-> -C: MELGAR->  C: MELGAR-> -C: ESPINAR->  C: ESPINAR-> -C: CAYLLOMA->  C: CAYLLOMA-> -C: AREQUIPA->  Lista oficinas: 
+AREQUIPA CANCHIS CARABAYA TAHUAMANU 
+Mejor costo solucion: 2.369235804341974E7
+
+Lista de Tramos Oficina 1: AREQUIPA => CANCHIS => 
+Lista de Tramos Oficina 2: CANCHIS => CARABAYA => 
+Lista de Tramos Oficina 3: CARABAYA => TAMBOPATA => TAMBOPATA => TAHUAMANU => 
+Lista de Tramos Oficina 4: TAHUAMANU => TAMBOPATA => TAMBOPATA => SANDIA => SANDIA => SAN ANTONIO DE PUTINA => SAN ANTONIO DE PUTINA => HUANCANE => HUANCANE => SAN ROMAN => SAN ROMAN => LAMPA => LAMPA => CAYLLOMA => CAYLLOMA => AREQUIPA => 
+
+Zona: 2
+N° de Pedidos: 54
+
+Zona: 2
+N° de Pedidos: 54
+Cantidad de camiones a utilizar:     1
+Hora y Fecha de Salida: 20:27:00 2022/02/20 
+Lista tiempos: [[040601, -131, 33], [040501, -130, 14], [040701, -125, 3], [040301, 24, 4]]
+
+Lista oficinasxZona antes: 
+CONDESUYOS CAYLLOMA ISLAY CARAVELI 
+Lista oficinasxZona despues: 
+CONDESUYOS CAYLLOMA ISLAY CARAVELI 
+Lista oficinasxZona despues de agregar almacen: 
+AREQUIPA CONDESUYOS CAYLLOMA ISLAY CARAVELI 
+C: AREQUIPA-> -C: CARAVELI->  C: CARAVELI-> -C: CAYLLOMA->  C: CAYLLOMA-> -C: CASTILLA->  C: CASTILLA-> -C: CONDESUYOS->  C: CONDESUYOS-> -C: CASTILLA->  C: CASTILLA-> -C: ISLAY->  C: ISLAY-> -C: GENERAL SANCHEZ CERRO->  C: GENERAL SANCHEZ CERRO-> -C: AREQUIPA->  Lista oficinas: 
+AREQUIPA CAYLLOMA CONDESUYOS CARAVELI ISLAY 
+Mejor costo solucion: 2.96173484502366E7
+
+Lista de Tramos Oficina 1: AREQUIPA => CAYLLOMA => 
+Lista de Tramos Oficina 2: CAYLLOMA => CASTILLA => CASTILLA => CONDESUYOS => 
+Lista de Tramos Oficina 3: CONDESUYOS => CARAVELI => 
+Lista de Tramos Oficina 4: CARAVELI => ISLAY => 
+Lista de Tramos Oficina 5: ISLAY => GENERAL SANCHEZ CERRO => GENERAL SANCHEZ CERRO => AREQUIPA => 
+
+Zona: 3
+N° de Pedidos: 110
+
+Zona: 3
+N° de Pedidos: 110
+Cantidad de camiones a utilizar:     1
+Hora y Fecha de Salida: 14:06:00 2022/02/20 
+Lista tiempos: [[230101, -133, 5], [230301, -93, 7], [210401, -92, 4], [210901, -91, 3], [210701, -90, 8], [230401, -75, 19], [210501, -23, 5], [210201, -9, 32], [211301, -7, 11], [180301, 22, 16]]
+
+Lista oficinasxZona antes: 
+TACNA CHUCUITO MOHO LAMPA JORGE BASADRE TARATA EL COLLAO AZANGARO YUNGUYO ILO 
+Lista oficinasxZona despues: 
+TACNA JORGE BASADRE CHUCUITO MOHO LAMPA TARATA EL COLLAO AZANGARO YUNGUYO ILO 
+Lista oficinasxZona despues de agregar almacen: 
+AREQUIPA TACNA JORGE BASADRE CHUCUITO MOHO LAMPA TARATA EL COLLAO AZANGARO YUNGUYO ILO 
+C: AREQUIPA-> -C: LAMPA->  C: LAMPA-> -C: YUNGUYO->  C: YUNGUYO-> -C: ILO->  C: ILO-> -C: TACNA->  C: TACNA-> -C: JORGE BASADRE->  C: JORGE BASADRE-> -C: TARATA->  C: TARATA-> -C: CHUCUITO->  C: CHUCUITO-> -C: YUNGUYO->  C: YUNGUYO-> -C: EL COLLAO->  C: EL COLLAO-> -C: YUNGUYO->  C: YUNGUYO-> -C: CHUCUITO->  C: CHUCUITO-> -C: TARATA->  C: TARATA-> -C: AZANGARO->  C: AZANGARO-> -C: LAMPA->  C: LAMPA-> -C: CAYLLOMA->  C: CAYLLOMA-> -C: AREQUIPA->  C: AREQUIPA-> -C: GENERAL SANCHEZ CERRO->  C: GENERAL SANCHEZ CERRO-> -C: MARISCAL NIETO->  C: MARISCAL NIETO-> -C: JORGE BASADRE->  C: JORGE BASADRE-> -C: MOHO->  C: MOHO-> -C: HUANCANE->  C: HUANCANE-> -C: SAN ROMAN->  C: SAN ROMAN-> -C: LAMPA->  C: LAMPA-> -C: CAYLLOMA->  C: CAYLLOMA-> -C: AREQUIPA->  Lista oficinas: 
+AREQUIPA LAMPA AZANGARO MOHO YUNGUYO CHUCUITO JORGE BASADRE TACNA ILO TARATA EL COLLAO 
+Mejor costo solucion: 6.5157337328952484E7
+
+Lista de Tramos Oficina 1: AREQUIPA => LAMPA => 
+Lista de Tramos Oficina 2: LAMPA => AZANGARO => 
+Lista de Tramos Oficina 3: AZANGARO => MOHO => 
+Lista de Tramos Oficina 4: MOHO => YUNGUYO => 
+Lista de Tramos Oficina 5: YUNGUYO => CHUCUITO => 
+Lista de Tramos Oficina 6: CHUCUITO => JORGE BASADRE => 
+Lista de Tramos Oficina 7: JORGE BASADRE => TACNA => 
+Lista de Tramos Oficina 8: TACNA => ILO => 
+Lista de Tramos Oficina 9: ILO => TARATA => 
+Lista de Tramos Oficina 10: TARATA => EL COLLAO => 
+Lista de Tramos Oficina 11: EL COLLAO => AREQUIPA => 
+
+Zona: 4
+N° de Pedidos: 120
+
+Zona: 4
+N° de Pedidos: 120
+Cantidad de camiones a utilizar:     0
+Hora y Fecha de Salida: 21:35:00 2022/02/20 
+Lista tiempos: [[030501, -115, 14], [081001, -105, 10], [030401, -86, 28], [030701, -82, 9], [080301, -35, 9], [080901, -34, 7], [030301, -29, 9], [030101, -7, 4], [080101, -5, 3], [080701, 19, 14], [081101, 42, 6], [080201, 46, 4], [050901, 48, 3]]
+
+Lista oficinasxZona antes: 
+COTABAMBAS PARURO AYMARAES GRAU ANTA LA CONVENCION ANTABAMBA ABANCAY CUSCO CHUMBIVILCAS PAUCARTAMBO ACOMAYO SUCRE 
+Lista oficinasxZona despues: 
+COTABAMBAS PARURO AYMARAES GRAU ANTA LA CONVENCION ANTABAMBA ABANCAY CUSCO CHUMBIVILCAS PAUCARTAMBO ACOMAYO SUCRE 
+Lista oficinasxZona despues de agregar almacen: 
+AREQUIPA COTABAMBAS PARURO AYMARAES GRAU ANTA LA CONVENCION ANTABAMBA ABANCAY CUSCO CHUMBIVILCAS PAUCARTAMBO ACOMAYO SUCRE 
+C: AREQUIPA-> -C: ACOMAYO->  C: ACOMAYO-> -C: SUCRE->  C: SUCRE-> -C: ANDAHUAYLAS->  C: ANDAHUAYLAS-> -C: ABANCAY->  C: ABANCAY-> -C: URUBAMBA->  C: URUBAMBA-> -C: ANTA->  C: ANTA-> -C: PARURO->  C: PARURO-> -C: COTABAMBAS->  C: COTABAMBAS-> -C: PAUCARTAMBO->  C: PAUCARTAMBO-> -C: ANTA->  C: ANTA-> -C: CUSCO->  C: CUSCO-> -C: CHUMBIVILCAS->  C: CHUMBIVILCAS-> -C: GRAU->  C: GRAU-> -C: ANTABAMBA->  C: ANTABAMBA-> -C: ABANCAY->  C: ABANCAY-> -C: URUBAMBA->  C: URUBAMBA-> -C: LA CONVENCION->  C: LA CONVENCION-> -C: AYMARAES->  C: AYMARAES-> -C: AREQUIPA->  Lista oficinas: 
+AREQUIPA GRAU ABANCAY PARURO ACOMAYO PAUCARTAMBO ANTA CUSCO COTABAMBAS CHUMBIVILCAS ANTABAMBA AYMARAES SUCRE LA CONVENCION 
+Mejor costo solucion: 8.292889428411321E7
+
+Lista de Tramos Oficina 1: AREQUIPA => GRAU => 
+Lista de Tramos Oficina 2: GRAU => ABANCAY => 
+Lista de Tramos Oficina 3: ABANCAY => PARURO => 
+Lista de Tramos Oficina 4: PARURO => ACOMAYO => 
+Lista de Tramos Oficina 5: ACOMAYO => QUISPICANCHI => QUISPICANCHI => PAUCARTAMBO => 
+Lista de Tramos Oficina 6: PAUCARTAMBO => ANTA => 
+Lista de Tramos Oficina 7: ANTA => CUSCO => 
+Lista de Tramos Oficina 8: CUSCO => COTABAMBAS => 
+Lista de Tramos Oficina 9: COTABAMBAS => CHUMBIVILCAS => 
+Lista de Tramos Oficina 10: CHUMBIVILCAS => ANTABAMBA => 
+Lista de Tramos Oficina 11: ANTABAMBA => GRAU => GRAU => AYMARAES => 
+Lista de Tramos Oficina 12: AYMARAES => SUCRE => 
+Lista de Tramos Oficina 13: SUCRE => LA CONVENCION => 
+Lista de Tramos Oficina 14: LA CONVENCION => URUBAMBA => URUBAMBA => ANTA => ANTA => CUSCO => CUSCO => PARURO => PARURO => ACOMAYO => ACOMAYO => CANAS => CANAS => CANCHIS => CANCHIS => ESPINAR => ESPINAR => CAYLLOMA => CAYLLOMA => AREQUIPA => 
+
+
+PLANES DE TRANSPORTE
+Camion C017
+Lista oficinas: 
+CANCHIS CARABAYA TAHUAMANU 
+Lista de Tramos Oficina 1: AREQUIPA => CANCHIS => 
+Lista de Tramos Oficina 2: CANCHIS => CARABAYA => 
+Lista de Tramos Oficina 3: CARABAYA => TAMBOPATA => TAMBOPATA => TAHUAMANU => 
+Lista de Tramos Oficina 4: TAHUAMANU => TAMBOPATA => TAMBOPATA => SANDIA => SANDIA => SAN ANTONIO DE PUTINA => SAN ANTONIO DE PUTINA => HUANCANE => HUANCANE => SAN ROMAN => SAN ROMAN => LAMPA => LAMPA => CAYLLOMA => CAYLLOMA => AREQUIPA => 
+
+
+Camion A006
+Lista oficinas: 
+CAYLLOMA CONDESUYOS CARAVELI ISLAY 
+Lista de Tramos Oficina 1: AREQUIPA => CAYLLOMA => 
+Lista de Tramos Oficina 2: CAYLLOMA => CASTILLA => CASTILLA => CONDESUYOS => 
+Lista de Tramos Oficina 3: CONDESUYOS => CARAVELI => 
+Lista de Tramos Oficina 4: CARAVELI => ISLAY => 
+Lista de Tramos Oficina 5: ISLAY => GENERAL SANCHEZ CERRO => GENERAL SANCHEZ CERRO => AREQUIPA => 
+
+
+Camion C018
+Lista oficinas: 
+LAMPA 
+Lista de Tramos Oficina 1: AREQUIPA => LAMPA => 
+
+
+El simulated annealing terminó
+AREQUIPA OK  ==========================================================
+==========================================================
+
+
+==========================================================

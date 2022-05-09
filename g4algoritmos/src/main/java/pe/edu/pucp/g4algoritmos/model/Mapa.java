@@ -163,11 +163,11 @@ public class Mapa {
         for (int i = 0; i < listaCamiones.size(); i++){
             if (listaCamiones.get(i).getAlmacen().getCodigo().equals(almacen.getCodigo()))
             {
-                if (listaCamiones.get(i).getTipo().getCodigo() == 'A')
+                if (listaCamiones.get(i).getTipo().getCodigo() == 'A' && listaCamiones.get(i).getEstado() == 1)
                     counter[0]++; 
-                else if (listaCamiones.get(i).getTipo().getCodigo() == 'B')
+                if (listaCamiones.get(i).getTipo().getCodigo() == 'B' && listaCamiones.get(i).getEstado() == 1)
                     counter[1]++; 
-                else 
+                if (listaCamiones.get(i).getTipo().getCodigo() == 'C' && listaCamiones.get(i).getEstado() == 1)
                     counter[2]++; 
             }
         }
