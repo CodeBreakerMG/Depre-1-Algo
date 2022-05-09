@@ -362,7 +362,7 @@ public class PrimeraSolucion{
             listaCamiones = seleccionarCam(listaPedidosPorZona.get(i));
             writer.println(String.format("Cantidad de camiones a utilizar:  %4d", listaCamiones.size()));
             for(Camion c: listaCamiones){
-                System.out.println(c.getCodigo() + " " + c.capacidad());
+                writer.println(c.getCodigo() + " " + c.capacidad());
             }
             System.out.println();
 
@@ -400,7 +400,7 @@ public class PrimeraSolucion{
                 }
                 writer.println("");*/
 
-                SimulatedAnnealing sa = new SimulatedAnnealing(listaOficinasXZona.get(i), listaTiempos, tiempoSalida);
+                SimulatedAnnealing sa = new SimulatedAnnealing(listaOficinasXZona.get(i), listaTiempos, 0, fechaSalida);
                 sa.simulate(writer);
                 listaOficinasResultado = sa.getBestListaOficina();
 
@@ -410,7 +410,7 @@ public class PrimeraSolucion{
                 }
 
                 writer.println("");
-                writer.println("Mejor costo solucion: " + sa.getBestCosto());
+                writer.println(String.format("Mejor costo solucion: %.2f horas",sa.getBestCosto()));
                 
                 listaTramosXOficinaResultado = sa.getBestTramosXOficina();
                 writer.println("");
@@ -472,12 +472,12 @@ public class PrimeraSolucion{
             for(List<Tramo> listTra : rut.getListaTramosPorOficina()){
                 costoCamion = costoCamion + rut.calcularCostoTotal(listTra);
             }
-            writer.println("Costo: " + costoCamion);
+            writer.println(String.format("Costo: %4.2f horas", costoCamion));
             writer.println("");
             costoTotal = costoTotal + costoCamion;
         }
         writer.println("");
-        writer.println("Costo TOTAL: " + costoTotal);
+        writer.println(String.format("Costo TOTAL: %4.2f horas", costoTotal));
 
         writer.println("El simulated annealing terminó");
     }

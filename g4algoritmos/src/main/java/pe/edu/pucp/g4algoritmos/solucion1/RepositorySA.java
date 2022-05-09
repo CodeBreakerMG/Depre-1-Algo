@@ -2,6 +2,7 @@ package pe.edu.pucp.g4algoritmos.solucion1;
 
 
 import java.util.List;
+import java.util.Date;
 
 import org.javatuples.Triplet;
 
@@ -12,11 +13,12 @@ public class RepositorySA {
     private List<Oficina> cities;
     private List<Triplet<String, Long, Integer>> listaTiempos ;
     private double tiempoSalida;
-
-    public RepositorySA(List<Oficina> cities,  List<Triplet<String, Long, Integer>> listaTiempos, long tiempoSalida) {
+    public RepositorySA(List<Oficina> cities,  List<Triplet<String, Long, Integer>> listaTiempos, long tiempoSalida, Date fechaSalida) {
+    //public RepositorySA(List<Oficina> cities,  List<Triplet<String, Long, Integer>> listaTiempos, long tiempoSalida) {
         this.cities = cities;
         this.listaTiempos = listaTiempos;
-        this.tiempoSalida = ConstantesSA.MILI_HORAS *  tiempoSalida;
+        this.tiempoSalida = 0;
+        //this.tiempoSalida = ConstantesSA.MILI_HORAS *  tiempoSalida;
     }
 
     public Oficina getOficina(int index){
@@ -48,7 +50,9 @@ public class RepositorySA {
 
     public double getTiempoMaximoOficina(Oficina oficina){
         /*Devuelve el tiempo promedio de los pedidos de la oficina*/
-        return listaTiempos.get(cities.indexOf(oficina)).getValue1() * ConstantesSA.MILI_HORAS;
+        //QUITAREMOS LA CONSTANTE, TODO EN HORAS
+        return listaTiempos.get(cities.indexOf(oficina)).getValue1();
+        //return listaTiempos.get(cities.indexOf(oficina)).getValue1() * ConstantesSA.MILI_HORAS;
     }
 
     public int getNumeroPedidosOficina(Oficina oficina){

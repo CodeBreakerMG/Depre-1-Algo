@@ -3,6 +3,8 @@ package pe.edu.pucp.g4algoritmos.solucion1;
 import java.util.ArrayList;
 import java.util.List;
 import java.io.PrintWriter;
+import java.util.Date;
+
 
 import org.javatuples.Triplet;
 
@@ -18,9 +20,9 @@ public class SimulatedAnnealing {
     private RepositorySA repository;
     
     
-    public SimulatedAnnealing(List<Oficina> oficinas,  List<Triplet<String, Long, Integer>> listaTiempos, long tiempoInicio ){
+    public SimulatedAnnealing(List<Oficina> oficinas,  List<Triplet<String, Long, Integer>> listaTiempos, long tiempoInicio, Date fechaInicio ){
         
-        this.repository = new RepositorySA(oficinas, listaTiempos, tiempoInicio);
+        this.repository = new RepositorySA(oficinas, listaTiempos, tiempoInicio, fechaInicio);
         
     }
     

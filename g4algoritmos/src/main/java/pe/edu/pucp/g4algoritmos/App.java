@@ -40,7 +40,7 @@ public class App {
 		try{
 			double costo = 0.0;
 			/*1. Preparacion del archivo OUTPUT:*/
-			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("_yyyy_MM_dd_HH_mm");  
+			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("_yyyy_MM_dd_HH_mm_ss");  
             LocalDateTime now = LocalDateTime.now();  
             
             String filename = "output\\Solucion_1_SA" + dtf.format(now) + ".txt";
