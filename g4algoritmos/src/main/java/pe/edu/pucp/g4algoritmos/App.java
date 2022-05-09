@@ -55,7 +55,7 @@ public class App {
             Mapa.cargarCamiones(System.getProperty("user.dir")+sep+"data"+sep+"inf226.camiones.txt");
 			
 			Mapa.cargarTramos(System.getProperty("user.dir")+sep+"data"+sep+"inf226.tramos.v.2.0.txt");
-			Mapa.cargarBloqueos(System.getProperty("user.dir")+sep+"data"+sep+"inf226.bloqueo.05.txt");
+			Mapa.cargarBloqueos(20, System.getProperty("user.dir")+sep+"data"+sep+"inf226.bloqueo.05.txt");
 			Mapa.cargarPedidos(System.getProperty("user.dir")+sep+"data"+sep+"inf226.ventas202205temp.txt");
 			
 

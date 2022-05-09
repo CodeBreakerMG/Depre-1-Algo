@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -326,13 +327,39 @@ public class Mapa {
         hashMapPedidosAlmacen.put(getOficinaByCodigo("040101"), lista_pedidos_Arequipa);
     }
 
-    public static void cargarBloqueos(String... rutas) {
+    public static void cargarBloqueos(int numMaxBloqueos, String... rutas) {
         for (String ruta : rutas) {
             List<Bloqueo> lista_bloq = LoadData.leerBloqueos(ruta);
             if(lista_bloq != null) {
                 listaBloqueos.addAll(lista_bloq);
             }
         }
+
+        List<Bloqueo> bloqueosUtilizados = new ArrayList<>();
+        bloqueosUtilizados.addAll(listaBloqueos);
+        Collections.shuffle(bloqueosUtilizados);
+        if(numMaxBloqueos > bloqueosUtilizados.size())
+            numMaxBloqueos = bloqueosUtilizados.size();
+        for(int i=0; i<numMaxBloqueos; i++){
+            efectuarBloqueo(bloqueosUtilizados.get(i));
+        }
+    }
+
+    public static void efectuarBloqueo(Bloqueo bloqueo){
+        String codCiudad1 = bloqueo.getTramo().getCiudadInicio().getCodigo();
+        String codCiudad2 = bloqueo.getTramo().getCiudadFin().getCodigo();
+
+        Tramo tramo1 = getTramoByOficinas(codCiudad1, codCiudad2);
+        Tramo tramo2 = getTramoByOficinas(codCiudad2, codCiudad1);
+
+        int idx_tramo1 = listaTramos.indexOf(tramo1);
+        int idx_tramo2 = listaTramos.indexOf(tramo2);
+
+        tramo1.bloquear();
+        tramo2.bloquear();
+
+        listaTramos.set(idx_tramo1, tramo1);
+        listaTramos.set(idx_tramo2, tramo2);
     }
 
     public static int tramosSinOficinaInicial(){
