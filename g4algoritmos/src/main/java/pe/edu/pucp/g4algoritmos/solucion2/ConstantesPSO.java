@@ -22,10 +22,10 @@ public class ConstantesPSO {
     public final static int MAX_ITERATIONS = 1000;
     
 */
-    public final static int NUM_PARTICLES = 10;
-    public final static int MAX_ITERATIONS = 100;
+    public final static int NUM_PARTICLES = 50;
+    public final static int MAX_ITERATIONS = 500;
 
-    public final static double w = 0.3; //Inertia Weight 
+    public final static double w = 0.5; //Inertia Weight 
     public final static double c1 = 1.49; //Cognitive Weight / Local
     public final static double c2 = 1.49; //Social Weight / Global
 
@@ -142,7 +142,7 @@ public class ConstantesPSO {
         }
         
 
-        return (ds + theta * tv + lambda * lv);
+        return (ds + theta * 0 + lambda * 0);
     }
 
 
@@ -226,10 +226,10 @@ public class ConstantesPSO {
                 destinationOficina = listaOficinas.get(0);
             
             //CON A*:
-            tiempoLlegadaOficinaDestino += fromOficina.costToExact(destinationOficina);
+            //tiempoLlegadaOficinaDestino += fromOficina.costToExact(destinationOficina);
 
             //Sin A*:
-            //tiempoLlegadaOficinaDestino += fromOficina.costToApprox(destinationOficina);
+            tiempoLlegadaOficinaDestino += fromOficina.costToApprox(destinationOficina);
 
             costo += tiempoLlegadaOficinaDestino;
 
