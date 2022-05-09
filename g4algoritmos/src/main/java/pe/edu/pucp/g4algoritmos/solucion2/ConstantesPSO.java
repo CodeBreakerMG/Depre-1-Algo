@@ -226,10 +226,10 @@ public class ConstantesPSO {
                 destinationOficina = listaOficinas.get(0);
             
             //CON A*:
-            //tiempoLlegadaOficinaDestino += fromOficina.costToExact(destinationOficina);
+            tiempoLlegadaOficinaDestino += fromOficina.costToExact(destinationOficina);
 
             //Sin A*:
-            tiempoLlegadaOficinaDestino += fromOficina.costToApprox(destinationOficina);
+            //tiempoLlegadaOficinaDestino += fromOficina.costToApprox(destinationOficina);
 
             costo += tiempoLlegadaOficinaDestino;
 
