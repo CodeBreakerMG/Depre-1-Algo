@@ -31,7 +31,7 @@ public class ConstantesPSO {
     public final static double theta = 500.5;
     public final static double lambda = 50000.0;
     public static final double MILI_HORAS = 3.6e-6; //MILI to hours 
-    public static final int MAX_NUM_CAMIONES = 200;
+    public static final int MAX_NUM_CAMIONES = 3;
 
     //Variable global:
     

@@ -49,6 +49,24 @@ public class Particle {
         }
     }
 
+    
+    public Particle(List<OficinaPSO>listOficinas, List<Double> positions, List<Double> velocity) {
+
+        this.currentPosition = new ArrayList<>();
+        this.costo = 0;
+        this.velocity = new ArrayList<>();
+        this.bestPosition = new ArrayList<>();
+
+        List<Double> vehicles = getBestVehicles(currentPosition);
+
+        for (int i = 0; i < listOficinas.size(); i++ ){
+            Position pos = new Position(listOficinas.get(i), positions.get(i), vehicles.get(i));
+            this.currentPosition.add(pos);
+            this.bestPosition.add(pos);
+            this.velocity.add(velocity.get(i));
+        }
+    }
+
     public void checkBestSolution(double[] globalBestSolution){
         //We are trying to find the MINIMUM, hence, the best has to be smaller
         //if (ConstantesPSO.f(this.bestPosition) < ConstantesPSO.f(globalBestSolution))
@@ -124,6 +142,10 @@ public class Particle {
 
     public void setCosto(double costo) {
         this.costo = costo;
+    }
+
+    private List<Double> getBestVehicles(List<Position> positions){
+        return null;
     }
 
     @Override

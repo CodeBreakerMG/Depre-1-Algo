@@ -9,6 +9,7 @@ import java.time.format.DateTimeFormatter;
 import pe.edu.pucp.g4algoritmos.model.Mapa;
 import pe.edu.pucp.g4algoritmos.pso.PSOMain;
 import pe.edu.pucp.g4algoritmos.solucion1.PrimeraSolucion;
+
 import pe.edu.pucp.g4algoritmos.solucion2.SegundaSolucion;
 
 import java.io.File;
@@ -31,7 +32,7 @@ public class App {
 	
     public static void main( String[] args ){
 
-		if (args.length  >= 0){
+		if (args.length >= 0){
 			Solucion2PSO();
 			return;
 		}
@@ -120,7 +121,7 @@ public class App {
 		try{
 			/*1. Preparacion del archivo OUTPUT:*/
 
-			/*
+			
 			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("_yyyy_MM_dd_HH_mm");  
             LocalDateTime now = LocalDateTime.now();  
             
@@ -129,7 +130,7 @@ public class App {
 
             
             writer.println("Solucion de PSO");
-			*/
+			
 
 			/*2. cargar la data al maestro MAPA*/
 			final String sep = File.separator;
@@ -152,7 +153,7 @@ public class App {
 			/*Ejecución PSO*/
 
 			SegundaSolucion solPSO = new SegundaSolucion();
-			long runTime = solPSO.inicializar(Mapa.listaPedidos);
+			long runTime = solPSO.inicializar(Mapa.listaPedidos, writer);
 
 			
 			/*

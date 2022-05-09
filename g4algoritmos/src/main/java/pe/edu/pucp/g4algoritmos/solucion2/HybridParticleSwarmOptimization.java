@@ -157,12 +157,13 @@ public class HybridParticleSwarmOptimization {
                 if (potentialBest < globalBestCost){
                     setGlobalBestPositions(actualParticle.getBestPositions());
                     globalBestCost = potentialBest;
-                    System.out.println("Best So far: " + globalBestCost);
+                    //System.out.println("Best So far: " + globalBestCost);
                 }   
             }
             epochs++;
             if (epochs % (ConstantesPSO.MAX_ITERATIONS / 10) == 0)
-                System.out.println("EPOCHS = " + epochs);
+                System.out.println("Best So far: " + globalBestCost);
+            
         }
     }
 
@@ -191,7 +192,7 @@ public class HybridParticleSwarmOptimization {
         return newLocations;
     }
 
-    private List<Double>  initializeVelocities(){
+    private List<Double> initializeVelocities(){
 
         List<Double> newVelocities = new ArrayList<>();
 
@@ -229,6 +230,34 @@ public class HybridParticleSwarmOptimization {
 
     public double fitnessFunction(List<Position> positions){
         return ConstantesPSO.f(positions, num_almacenes, repository);
+    }
+
+    public double getBestCost(){
+        return fitnessFunction(globalBestSolution);
+    }
+
+    public void executeChanges(){
+        /*Función para ejecutar cambios al sistema, osea ejecutará bloqueo de camiones utilizados*/
+
+        List<List<Position>> positionsByDepot = new ArrayList<>(); //DEPOT == almacen
+
+        for (int i = 0; i < num_almacenes; i++){
+            List<Position> listPositions = new ArrayList<>();
+            for (Position p : globalBestSolution){
+                if ( i <= p.getDepot()  && p.getDepot() < i + 1){
+                    listPositions.add(p);
+                }
+            }
+            positionsByDepot.add(listPositions);
+        }
+        List<Camion> camionesSeleccionados = new ArrayList<>();
+        for (int i = 0; i < num_almacenes; i++){
+            camionesSeleccionados.addAll(ConstantesPSO.camionesSeleccionadosAlmacen(positionsByDepot.get(i), i, this.repository));
+        }
+
+        for (Camion c : camionesSeleccionados)
+            c.setEstado(2);
+        
     }
 
     public void printOficinasXAlmacen(){

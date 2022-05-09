@@ -118,6 +118,14 @@ public class OficinaPSO {
         this.q += q;
     }
 
+    public double getX(){
+        return this.oficina.getCoordX();
+    }
+
+    public double getY(){
+        return this.oficina.getCoordY();
+    }
+
     public double costToApprox(OficinaPSO destination){
         //Unit of cost: time (hours)
         //Doesn't use ASTAR
