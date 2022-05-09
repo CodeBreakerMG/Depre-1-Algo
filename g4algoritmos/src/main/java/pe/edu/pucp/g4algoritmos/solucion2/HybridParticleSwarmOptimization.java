@@ -7,6 +7,7 @@ import java.util.Random;
 import javafx.scene.control.RadioMenuItem;
 import pe.edu.pucp.g4algoritmos.model.Camion;
 import pe.edu.pucp.g4algoritmos.model.Oficina;
+import pe.edu.pucp.g4algoritmos.model.Ruta;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -161,8 +162,8 @@ public class HybridParticleSwarmOptimization {
                 }   
             }
             epochs++;
-            if (epochs % (ConstantesPSO.MAX_ITERATIONS / 10) == 0)
-                System.out.println("Best So far: " + globalBestCost);
+            //if (epochs % (ConstantesPSO.MAX_ITERATIONS / 10) == 0)
+             //   System.out.println("Best So far: " + globalBestCost);
             
         }
     }
@@ -313,6 +314,10 @@ public class HybridParticleSwarmOptimization {
           //  i++;
         }*/
         System.out.println("Global Best Cost: " + fitnessFunction(globalBestSolution));
+    }
+
+    public List<Ruta> planesDeTransporte(){
+        return ConstantesPSO.generarPlanesDeTransporte(repository, globalBestSolution);
     }
 }
 

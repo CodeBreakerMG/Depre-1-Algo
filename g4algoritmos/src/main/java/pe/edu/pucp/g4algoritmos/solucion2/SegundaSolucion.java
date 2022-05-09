@@ -68,9 +68,9 @@ public class SegundaSolucion {
 
             /*III. Generación de la solución: PSO*/
             LocalDateTime startTime  = LocalDateTime.now();
-            particleSwarmOptimization();
+            particleSwarmOptimization(writer);
             LocalDateTime endTime = LocalDateTime.now();
-
+            printPlanesTransporte(writer, this.planesDeTransporte);
             return ChronoUnit.SECONDS.between(startTime, endTime);
             
         }
@@ -252,7 +252,7 @@ public class SegundaSolucion {
 
 
         /*7. Llamar al PSO. Determinar lista de oficinas de los pedidos*/ 
-        private double particleSwarmOptimization(){
+        private double particleSwarmOptimization(PrintWriter writer){
 
             double costoTotal = 0.0;
 
@@ -267,13 +267,15 @@ public class SegundaSolucion {
     
                 HybridParticleSwarmOptimization pso = new HybridParticleSwarmOptimization(listaOficinas, listaCamionesPorAlmacen, listaAlmacenes, tiempoSalida);
                 pso.solve();
-                pso.printOficinasXAlmacen();
+                //pso.printOficinasXAlmacen();
                 
                 costoTotal += pso.getBestCost();
-               // planesDeTransporte = HybridParticleSwarmOptimization
+                this.planesDeTransporte.addAll(pso.planesDeTransporte());
     
             }
             System.out.println("Se termino el PSO con exito. \nCosto de la Solución: " + costoTotal );
+            writer.println("Costo de la Solucion " + costoTotal);
+
 
             return costoTotal;
 
@@ -390,6 +392,56 @@ public class SegundaSolucion {
             SimpleDateFormat f = new SimpleDateFormat("HH:mm:ss yyyy/MM/dd ");
             String cadena= f.format(fecha);
             return cadena; 
+        }
+
+        public static void printPlanesTransporte(PrintWriter writer, List<Ruta> planesDeTransporte){
+
+            double costoTotal = 0.0;
+            writer.println("======================================================================");
+            writer.println("Plan De Transportes:");
+            
+            for(Ruta rut: planesDeTransporte){
+
+                writer.println("======================================================================");
+                writer.println("======================================================================");
+                writer.println("Almacen : " + rut.getListaOficinas().get(0));
+                writer.println("Camion " + rut.getCamion().getCodigo());
+                writer.println("Lista oficinas: ");
+                for(int w=0; w<rut.getListaOficinas().size();w++){
+                    writer.print(rut.getListaOficinas().get(w).getProvincia() + " ");
+                }
+                writer.println("");
+                int contadores = 0;
+                for(List<Tramo> listTra : rut.getListaTramosPorOficina()){
+                    contadores++;
+                    writer.print("Lista de Tramos Oficina " + contadores + ": ");
+                    for(Tramo t: listTra){
+                        writer.print(t.getCiudadInicio().getProvincia() + " => " + t.getCiudadFin().getProvincia() + " => ");
+                    }
+                    writer.println("");
+                }
+                writer.println("");
+                writer.println("");
+            }
+            writer.println("");
+            writer.println("");
+            writer.println("COSTO TOTAL CADA RUTA DE UN CAMION");
+            for(Ruta rut: planesDeTransporte){
+                double costoCamion = 0.0;
+                writer.println("Camion: " + rut.getCamion().getCodigo());
+                for(List<Tramo> listTra : rut.getListaTramosPorOficina()){
+                    costoCamion = costoCamion + rut.calcularCostoTotal(listTra);
+                }
+                writer.println("Carga: " + (int)rut.getCargaTotal() + " paquetes.");
+                writer.println("Costo: " + costoCamion);
+                writer.println("");
+
+                costoTotal = costoTotal + costoCamion;
+            }
+            writer.println("");
+            writer.println("Costo TOTAL: " + costoTotal);
+    
+            
         }
 
 }

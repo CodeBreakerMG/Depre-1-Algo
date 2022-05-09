@@ -10,6 +10,7 @@ import java.util.Date;
 import pe.edu.pucp.g4algoritmos.model.Mapa;
 import pe.edu.pucp.g4algoritmos.model.Oficina;
 import pe.edu.pucp.g4algoritmos.model.Pedido;
+import pe.edu.pucp.g4algoritmos.model.Tramo;
 
 public class OficinaPSO {
 
@@ -139,6 +140,10 @@ public class OficinaPSO {
         //USES ASTAR
         double cost = this.oficina.costoHasta(destination.oficina);
         return cost;
+    }
+
+    public List<Tramo> getTramosTo(OficinaPSO destination){
+        return  this.oficina.recorridoHasta(destination.oficina);
     }
 
     @Override

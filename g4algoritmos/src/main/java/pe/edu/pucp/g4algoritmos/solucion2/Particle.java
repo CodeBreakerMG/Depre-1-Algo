@@ -148,11 +148,14 @@ public class Particle {
         return null;
     }
 
+    
+
     @Override
     public String toString() {
         return "Particle [bestPosition=" + bestPosition + ", costo=" + costo + ", currentPosition=" + currentPosition
                 + ", velocity=" + velocity + "]";
     }
+
 
 
     

@@ -2,8 +2,12 @@ package pe.edu.pucp.g4algoritmos.solucion2;
 
 
 import pe.edu.pucp.g4algoritmos.model.Camion;
+
 import pe.edu.pucp.g4algoritmos.model.Oficina;
+
+
 import java.util.Date;
+
 import java.util.Random;
 
 
@@ -107,7 +111,7 @@ public class Position {
         return  this.camionNumber = randomAlmacen + (randomNum / 100);
     }
 
-    
+
     @Override
     public String toString() {
         return oficina + ", posicion=" + randomPosition + ", ";

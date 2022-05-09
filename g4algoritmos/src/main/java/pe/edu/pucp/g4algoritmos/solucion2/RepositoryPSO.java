@@ -99,7 +99,7 @@ public class RepositoryPSO {
     }
  
     public int getNumAlmacenes() {
-        return num_almacenes;
+        return almacenes.size();
     }
 
     public Date getTiempoSalida() {

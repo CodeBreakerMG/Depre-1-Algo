@@ -11,6 +11,8 @@ import org.javatuples.Triplet;
 import pe.edu.pucp.g4algoritmos.model.AuxiliaryFunctions;
 import pe.edu.pucp.g4algoritmos.model.Camion;
 import pe.edu.pucp.g4algoritmos.model.Oficina;
+import pe.edu.pucp.g4algoritmos.model.Pedido;
+import pe.edu.pucp.g4algoritmos.model.Ruta;
 import pe.edu.pucp.g4algoritmos.model.Tramo;
 
 public class ConstantesPSO {
@@ -21,7 +23,7 @@ public class ConstantesPSO {
     
 */
     public final static int NUM_PARTICLES = 10;
-    public final static int MAX_ITERATIONS = 1000;
+    public final static int MAX_ITERATIONS = 100;
 
     public final static double w = 0.3; //Inertia Weight 
     public final static double c1 = 1.49; //Cognitive Weight / Local
@@ -274,4 +276,145 @@ public class ConstantesPSO {
             i++;
         }
     }
+
+    public static List<Ruta> generarPlanesDeTransporte(RepositoryPSO repository, List<Position> positions){
+        List<Ruta> listRutas = new ArrayList<>();
+
+        List<List<Position>> positionsByDepot = new ArrayList<>();
+        
+        for (int i = 0; i < repository.getNumAlmacenes(); i++){
+            List<Position> listPositions = new ArrayList<>();
+            for (Position p : positions){
+                if ( i <= p.getDepot()  && p.getDepot() < i + 1){
+                    listPositions.add(p);
+                }
+            }
+            positionsByDepot.add(listPositions);
+        }
+
+        
+        for (int i = 0; i < repository.getNumAlmacenes(); i++){
+
+            /*Obtaining costs through function, can use A* */
+
+            /*Por camion: */
+
+            List<List<OficinaPSO>> oficinasPorCamion = new ArrayList<>();
+            List<Integer> listaDeCamionesInteger = new ArrayList<>(); //Camion INDEX del cual se operara (indice en Position)
+
+            /*1.1 Contabilizacion de camiones del almacen*/
+            
+            for (Position p: positions){
+                
+                if (listaDeCamionesInteger.contains(p.getVehiclePosition()) == false){
+                    listaDeCamionesInteger.add(p.getVehiclePosition());
+                }
+            }
+    
+            /*1.2 Asignación*/
+            for (int indexCamion : listaDeCamionesInteger){
+                List<OficinaPSO> oficinas = new ArrayList<>();
+                for (Position p: positions){
+                    if (p.getVehiclePosition() == indexCamion){
+                        oficinas.add(p.getOficinaPSO());
+                    }
+                }    
+                oficinasPorCamion.add(oficinas);
+            } 
+
+            for (int j = 0; j < listaDeCamionesInteger.size();j++){
+                
+                Triplet<List<Date>, Double, List<List<Tramo>>> outputValues = calcularRutasPlanDeTransporte(oficinasPorCamion.get(j), repository.getAlmacen(i));
+                Ruta ruta = new Ruta();
+                
+                ruta.setFechaEstimadaLlegadaOficinas(outputValues.getValue0());
+                
+                ruta.setListaTramosPorOficina(outputValues.getValue2());
+                ruta.setCamion(repository.getCamion(i, listaDeCamionesInteger.get(j)));
+                
+                
+                List<Oficina> oficinas = new ArrayList<>();
+                List<Pedido> pedidos = new ArrayList<>();
+                oficinas.add(repository.getAlmacen(i));
+                for (OficinaPSO ofi : oficinasPorCamion.get(j)){
+                    oficinas.add(ofi.getOficina());
+                    pedidos.addAll(ofi.getPedidos());
+                }
+                ruta.setListaOficinas(oficinas);
+                ruta.setListaPedidos(pedidos);
+                ruta.setEstado(1);
+                Date tiempo_salida = AuxiliaryFunctions.setDateWithTime("2010-12-31 00:00:00");
+
+                double carga = 0;
+                for (OficinaPSO o : oficinasPorCamion.get(j)){
+                    tiempo_salida = AuxiliaryFunctions.maximumDate(tiempo_salida, o.tiempoMinimoSalidaCamion());
+                    carga+= o.getQ();
+                }
+                ruta.setFechaHoraInicio(tiempo_salida);
+                ruta.setCargaTotal(carga);
+                ruta.setCosto(outputValues.getValue1());
+
+
+
+                listRutas.add(ruta);
+            }
+        
+        }
+
+        return listRutas;
+    }
+
+       public static Triplet<List<Date>, Double, List<List<Tramo>> >  calcularRutasPlanDeTransporte(List<OficinaPSO> listaOficinas, Oficina almacen) {
+
+        double costo = 0.0; //Costo de la ruta actual EN HORAS. CONSTANTE DE ESTA CLASE
+        
+        List<List<Tramo>> listaTramosPorOficina = new ArrayList<>();
+        List<Date> tiempoLlegadaPorOficina = new ArrayList<>(); //Tiempos de Llegada por Oficina de oficina i a j, 
+        Date tiempo_salida = AuxiliaryFunctions.setDateWithTime("2010-12-31 00:00:00");
+
+        for (OficinaPSO o : listaOficinas)
+            tiempo_salida = AuxiliaryFunctions.maximumDate(tiempo_salida, o.tiempoMinimoSalidaCamion());
+
+        listaOficinas.add(0, new OficinaPSO(almacen)); //Almacén como ciudad 0.
+
+        for (int index = 0; index < listaOficinas.size(); ++index){
+            
+            double tiempoLlegadaOficinaDestino = 0.0;
+            //Mismo Loop utilizado que en SingleTour.calcularTramos
+            OficinaPSO fromOficina = listaOficinas.get(index);
+            OficinaPSO destinationOficina = null;
+
+            
+            /*CALCULO DEL COSTO (TIEMPO) y tramos*/
+            if(index + 1 < listaOficinas.size())
+                destinationOficina = listaOficinas.get(index + 1);
+            else
+                destinationOficina = listaOficinas.get(0);
+            
+            //CON A*:
+            List<Tramo> tramos = fromOficina.getTramosTo(destinationOficina);
+            for (Tramo t: tramos)
+                tiempoLlegadaOficinaDestino += t.getCosto();
+ 
+
+            costo += tiempoLlegadaOficinaDestino;
+
+            if (index == 0){
+                Date tiempoParcial = tiempo_salida;
+                tiempoParcial = AuxiliaryFunctions.addHoursToJavaUtilDate(tiempoParcial, tiempoLlegadaOficinaDestino);
+                tiempoLlegadaPorOficina.add(tiempoParcial);
+            }
+            else {
+                Date tiempoParcial = AuxiliaryFunctions.addHoursToJavaUtilDate(tiempoLlegadaPorOficina.get(index - 1), tiempoLlegadaOficinaDestino);
+                if(index + 1 < listaOficinas.size())
+                    tiempoLlegadaPorOficina.add(tiempoParcial);
+            }
+
+            listaTramosPorOficina.add(tramos);
+            
+        }
+        
+        return new Triplet<List<Date>,Double,List<List<Tramo>>>(tiempoLlegadaPorOficina, costo, listaTramosPorOficina);
+    }
+    
 }
