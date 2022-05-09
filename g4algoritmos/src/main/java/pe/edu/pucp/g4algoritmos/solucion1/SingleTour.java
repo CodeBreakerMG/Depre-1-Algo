@@ -92,7 +92,6 @@ public class SingleTour {
 
     public double calcularCostoTotal(RepositorySA repository){
 
-
         tiemposLlegadaOficinas = new ArrayList<>();
         double tiempoTotal = 0.0;
         for (int index = 0; index < ciudadesPedido.size(); index++){
@@ -102,8 +101,12 @@ public class SingleTour {
                 tiempo += tramo.getCosto();
 
             /*MODIFICAR PARA CUANDO SE REALICEN MANTENIMIENTOS*/
+            //Ajustar aquí
+
             tiempo += (index == 0) ? repository.getTiempoSalida() : tiemposLlegadaOficinas.get(index - 1); 
             tiemposLlegadaOficinas.add(tiempo);
+            //Cambio para costo total correcto
+            //
             tiempoTotal += tiempo;
         }         
         return tiempoTotal;
