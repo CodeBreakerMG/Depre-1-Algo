@@ -20,12 +20,14 @@ public class Ruta {
     private List<Tramo>  listaTramos;
     private List<List<Tramo>>  listaTramosPorOficina = new ArrayList<>();
     private List<Oficina> listaOficinas = new ArrayList<>();
+    private List<Date> fechaEstimadaLlegadaOficinas = new ArrayList<>();
 
     private int tramoActual;  //Indice el cual indica el tramo en el que se encuentra. 
 
     private double costoTotal;	//HORAS. CostoTotal de la ruta, la variable es tiempo, aparentemente
     private double costoAcumulado;	//HORAS. //Costo de la ruta hasta la actualidad
 
+    private double cargaTotal; //Carga Total 
     
     private int estado;	//1: Planificada, 2: En curso, anulada, cancelada, Completada
 
@@ -69,7 +71,24 @@ public class Ruta {
             this.costoTotal += tramo.getPesoTiempo();
         return this.costoTotal;
     }
+
+
+    public void setCosto(double c){
+        this.costoTotal = c;
+    }
+
+    public double getCosto(){
+        return this.costoTotal;
+    }
     
+    public double getCargaTotal() {
+        return cargaTotal;
+    }
+
+    public void setCargaTotal(double cargaTotal) {
+        this.cargaTotal = cargaTotal;
+    }
+
     public double calcularCostoTotal(List<Tramo> tram){
         this.costoTotal = 0;
         for (Tramo tramo : tram)
@@ -111,6 +130,14 @@ public class Ruta {
 
     public Date getFechaHoraInicio() {
         return fechaHoraInicio;
+    }
+
+    public List<Date> getFechaEstimadaLlegadaOficinas() {
+        return fechaEstimadaLlegadaOficinas;
+    }
+
+    public void setFechaEstimadaLlegadaOficinas(List<Date> fechaEstimadaLlegadaOficinas) {
+        this.fechaEstimadaLlegadaOficinas = fechaEstimadaLlegadaOficinas;
     }
 
     public void setFechaHoraInicio(Date fechaHoraInicio) {

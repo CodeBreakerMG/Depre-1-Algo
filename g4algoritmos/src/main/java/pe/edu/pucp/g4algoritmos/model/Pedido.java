@@ -27,6 +27,7 @@ public class Pedido {
     public Pedido(String codigo,  int cantidadTotal, Date fechaHoraPedido, Date fechaHoraLimite, String codOficina, String codCliente, String codPedidoUnitario) {
         this.codigo = codigo;
         this.cantidadTotal = cantidadTotal;
+        this.cantidadActual = cantidadTotal;
         this.fechaHoraPedido = fechaHoraPedido;
         this.fechaHoraLimite = fechaHoraLimite;
         this.oficina = Mapa.getOficinaByCodigo(codOficina);

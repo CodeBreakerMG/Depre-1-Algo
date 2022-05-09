@@ -2,11 +2,15 @@ package pe.edu.pucp.g4algoritmos.solucion2;
 
 import java.util.List;
 
+import org.locationtech.jts.algorithm.Distance;
+
 import java.util.ArrayList;
 import java.util.Date;
 
+import pe.edu.pucp.g4algoritmos.model.Mapa;
 import pe.edu.pucp.g4algoritmos.model.Oficina;
 import pe.edu.pucp.g4algoritmos.model.Pedido;
+import pe.edu.pucp.g4algoritmos.model.Tramo;
 
 public class OficinaPSO {
 
@@ -113,6 +117,33 @@ public class OficinaPSO {
 
     public void addPaquetes(int q){
         this.q += q;
+    }
+
+    public double getX(){
+        return this.oficina.getCoordX();
+    }
+
+    public double getY(){
+        return this.oficina.getCoordY();
+    }
+
+    public double costToApprox(OficinaPSO destination){
+        //Unit of cost: time (hours)
+        //Doesn't use ASTAR
+        double distance = Mapa.calcularDistancia(this.oficina, destination.oficina);
+        double velocity = Mapa.getVelocidadByOficinas(this.oficina, destination.oficina);
+        return (distance / velocity);
+    }
+
+    public double costToExact(OficinaPSO destination){
+        //Unit of cost: time (hours)
+        //USES ASTAR
+        double cost = this.oficina.costoHasta(destination.oficina);
+        return cost;
+    }
+
+    public List<Tramo> getTramosTo(OficinaPSO destination){
+        return  this.oficina.recorridoHasta(destination.oficina);
     }
 
     @Override

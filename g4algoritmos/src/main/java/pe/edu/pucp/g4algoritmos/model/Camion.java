@@ -58,6 +58,10 @@ public class Camion {
         return tipo;
     }
 
+    public char tipo() {
+        return tipo.getCodigo();
+    }
+
 
     public void setTipo(TipoCamion tipo) {
         this.tipo = tipo;

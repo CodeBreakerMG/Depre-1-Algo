@@ -258,6 +258,27 @@ public class Oficina {
         
     }
     
+    public double costoHasta(Oficina destino){
+        
+        //Devuelve el COSTO del recorridos
+        //LabelValue<Double,List<Tramo>> listaYCosto = new LabelValue<Double,List<Tramo>>(label, value)
+
+        
+
+        
+        Tramo tramo = Mapa.getTramoByOficinas(this.getCodigo(), destino.getCodigo()) ;
+        if ( tramo != null && tramo.estaBloqueado() == false){
+            return tramo.getCosto();
+        }
+
+        double costo;
+        AStarOficina Astar = new AStarOficina(this, destino);
+        Astar.run();
+        costo = Astar.getCost();
+
+        return costo;
+
+    }
 
     @Override
     public String toString() {

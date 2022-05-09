@@ -9,6 +9,7 @@ import java.time.format.DateTimeFormatter;
 import pe.edu.pucp.g4algoritmos.model.Mapa;
 import pe.edu.pucp.g4algoritmos.pso.PSOMain;
 import pe.edu.pucp.g4algoritmos.solucion1.PrimeraSolucion;
+
 import pe.edu.pucp.g4algoritmos.solucion2.SegundaSolucion;
 
 import java.io.File;
@@ -30,6 +31,11 @@ DESDE ESTE FILE SE TIENE QUE EJECUTAR TO DO.
 public class App {
 	
     public static void main( String[] args ){
+
+		if (args.length >= 0){
+			Solucion2PSO();
+			return;
+		}
 
 		try{
 			double costo = 0.0;
@@ -55,7 +61,7 @@ public class App {
             Mapa.cargarCamiones(System.getProperty("user.dir")+sep+"data"+sep+"inf226.camiones.txt");
 			
 			Mapa.cargarTramos(System.getProperty("user.dir")+sep+"data"+sep+"inf226.tramos.v.2.0.txt");
-			Mapa.cargarBloqueos(System.getProperty("user.dir")+sep+"data"+sep+"inf226.bloqueo.05.txt");
+			Mapa.cargarBloqueos(20, System.getProperty("user.dir")+sep+"data"+sep+"inf226.bloqueo.05.txt");
 			Mapa.cargarPedidos(System.getProperty("user.dir")+sep+"data"+sep+"inf226.ventas202205temp.txt");
 			
 
@@ -109,4 +115,61 @@ public class App {
             e.printStackTrace();
         }
     }
+
+	public static void Solucion2PSO(){
+
+		try{
+			/*1. Preparacion del archivo OUTPUT:*/
+
+			
+			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("_yyyy_MM_dd_HH_mm");  
+            LocalDateTime now = LocalDateTime.now();  
+            
+            String filename = "output\\Solucion_2_PSO" + dtf.format(now) + ".txt";
+            PrintWriter writer = new PrintWriter(filename, "UTF-8");
+
+            
+            writer.println("Solucion de PSO");
+			
+
+			/*2. cargar la data al maestro MAPA*/
+			final String sep = File.separator;
+			Mapa.cargarAlmacenesYOficinas(System.getProperty("user.dir")+sep+"data"+sep+"inf226.oficinas.txt");
+		   
+            Mapa.cargarCamiones(System.getProperty("user.dir")+sep+"data"+sep+"inf226.camiones.txt");
+			
+			Mapa.cargarTramos(System.getProperty("user.dir")+sep+"data"+sep+"inf226.tramos.v.2.0.txt");
+			Mapa.cargarPedidos(System.getProperty("user.dir")+sep+"data"+sep+"inf226.ventas202202.txt");
+
+			Mapa.setTramosToOficinas();
+			Mapa.setTramosToAlmacenes();
+
+			/*
+			writer.println(String.format("Cantidad de oficinas: %4d", Mapa.listaOficinas.size() + Mapa.listaAlmacenes.size()));
+			writer.println(String.format("Cantidad de tramos:   %4d", Mapa.listaTramos.size()));
+			writer.println(String.format("Cantidad de pedidos:  %4d", Mapa.listaPedidos.size()));
+			writer.println(String.format("Cantidad de camiones:  %4d", Mapa.listaCamiones.size()));
+			*/
+			/*Ejecución PSO*/
+
+			SegundaSolucion solPSO = new SegundaSolucion();
+			long runTime = solPSO.inicializar(Mapa.listaPedidos, writer);
+
+			
+			/*
+			writer.println("==========================================================");
+			writer.println("");
+			writer.println("");
+			writer.println("==========================================================");
+
+            writer.close();
+			*/
+            System.out.println("Se ejecutó la segunda solución con éxito.");
+			System.out.println("Tiempo de Ejecución (en segundos): " + runTime);
+		   
+	   }
+		catch (Exception e) {
+            e.printStackTrace();
+        }
+	}
 }
