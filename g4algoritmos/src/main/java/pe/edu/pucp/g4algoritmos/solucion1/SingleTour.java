@@ -55,9 +55,9 @@ public class SingleTour {
             List<Tramo> tramosParciales = fromOficina.recorridoHasta(destinationOficina);
             double tiempoLlegada = 0.0;
 
-            for (Tramo t : tramosParciales){
+            /*for (Tramo t : tramosParciales){
                 writer.print(t.getCiudadInicio() + "-" + t.getCiudadFin() + " ");
-            }
+            }*/
             
             for (Tramo tramo : tramosParciales)
                 tiempoLlegada += tramo.getCosto();
