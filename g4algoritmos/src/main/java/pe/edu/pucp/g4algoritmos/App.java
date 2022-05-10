@@ -43,7 +43,7 @@ public class App {
 			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("_yyyy_MM_dd_HH_mm_ss");  
             LocalDateTime now = LocalDateTime.now();  
             
-            String filename = "output\\Solucion_1_SA_30p_N" + dtf.format(now) + ".txt";
+            String filename = "output\\Solucion_1_SA_140p_NB" + dtf.format(now) + ".txt";
             PrintWriter writer = new PrintWriter(filename, "UTF-8");
 
             
