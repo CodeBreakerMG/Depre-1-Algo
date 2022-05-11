@@ -32,7 +32,7 @@ public class App {
 	
     public static void main( String[] args ){
 
-		if (args.length >= 0){
+		if (args.length >= 5){
 			Solucion2PSO();
 			return;
 		}
@@ -43,7 +43,7 @@ public class App {
 			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("_yyyy_MM_dd_HH_mm_ss");  
             LocalDateTime now = LocalDateTime.now();  
             
-            String filename = "output\\Solucion_1_SA_30p_N" + dtf.format(now) + ".txt";
+            String filename = "output\\Solucion_1_SA_140p_NB" + dtf.format(now) + ".txt";
             PrintWriter writer = new PrintWriter(filename, "UTF-8");
 
             
@@ -61,8 +61,8 @@ public class App {
             Mapa.cargarCamiones(System.getProperty("user.dir")+sep+"data"+sep+"inf226.camiones.txt");
 			
 			Mapa.cargarTramos(System.getProperty("user.dir")+sep+"data"+sep+"inf226.tramos.v.2.0.txt");
-			Mapa.cargarBloqueos(0, System.getProperty("user.dir")+sep+"data"+sep+"inf226.bloqueo.05.txt");
-			Mapa.cargarPedidos(System.getProperty("user.dir")+sep+"data"+sep+"inf226.ventas202205.temp.5.txt");
+			Mapa.cargarBloqueos(1000, System.getProperty("user.dir")+sep+"data"+sep+"inf226.bloqueo.05.txt");
+			Mapa.cargarPedidos(System.getProperty("user.dir")+sep+"data"+sep+"inf226.ventas202205.temp.14.txt");
 			
 
 			/*
@@ -109,9 +109,7 @@ public class App {
 
             writer.close();
             System.out.println("Se ejecutó la primera solución con éxito.");
-			System.out.println("");
-			System.out.println("El costo total del algoritmo Simulated Annealing : " + costo);
-			
+		   
 	   }
 		catch (Exception e) {
             e.printStackTrace();
@@ -140,8 +138,8 @@ public class App {
 		   
             Mapa.cargarCamiones(System.getProperty("user.dir")+sep+"data"+sep+"inf226.camiones.txt");
 			Mapa.cargarTramos(System.getProperty("user.dir")+sep+"data"+sep+"inf226.tramos.v.2.0.txt");
-			Mapa.cargarBloqueos(0, System.getProperty("user.dir")+sep+"data"+sep+"inf226.bloqueo.05.txt");
-			Mapa.cargarPedidos(System.getProperty("user.dir")+sep+"data"+sep+"inf226.ventas202205.temp.5.txt");
+			Mapa.cargarBloqueos(1000, System.getProperty("user.dir")+sep+"data"+sep+"inf226.bloqueo.05.txt");
+			Mapa.cargarPedidos(System.getProperty("user.dir")+sep+"data"+sep+"inf226.ventas202205temp.txt");
 
 			Mapa.setTramosToOficinas();
 			Mapa.setTramosToAlmacenes();
