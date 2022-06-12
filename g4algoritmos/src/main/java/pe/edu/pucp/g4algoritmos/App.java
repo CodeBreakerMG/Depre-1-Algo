@@ -1,6 +1,8 @@
 package pe.edu.pucp.g4algoritmos;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -11,13 +13,17 @@ import pe.edu.pucp.g4algoritmos.pso.PSOMain;
 import pe.edu.pucp.g4algoritmos.solucion1.PrimeraSolucion;
 
 import pe.edu.pucp.g4algoritmos.solucion2.SegundaSolucion;
+import pe.edu.pucp.g4algoritmos.utilitarios.RutaCamionComparator;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import pe.edu.pucp.g4algoritmos.model.AuxiliaryFunctions;
 import pe.edu.pucp.g4algoritmos.model.Camion;
 import pe.edu.pucp.g4algoritmos.model.Oficina;
+import pe.edu.pucp.g4algoritmos.model.Ruta;
 import pe.edu.pucp.g4algoritmos.model.TipoCamion;
 /*
 
@@ -108,6 +114,8 @@ public class App {
 			writer.println("");
 
             writer.close();
+		
+			printRutas();  
             System.out.println("Se ejecutó la primera solución con éxito.");
 		   
 	   }
@@ -164,12 +172,40 @@ public class App {
 
             writer.close();
 			*/
+			printRutas();  
             System.out.println("Se ejecutó la segunda solución con éxito.");
 			System.out.println("Tiempo de Ejecución (en segundos): " + runTime);
-		   
+			 
 	   }
+
+
 		catch (Exception e) {
             e.printStackTrace();
         }
+	}
+
+	private static void printRutas(){
+
+		LocalDateTime nowTime =  LocalDateTime.now();
+		String time = AuxiliaryFunctions.toTxtFileName(nowTime);
+		String file_name = "rutas_" + time + ".txt" ;
+		File file_log = new File(file_name);
+		
+		Collections.sort(Mapa.listRutas, new RutaCamionComparator());
+		try{
+			file_log.createNewFile();
+			FileWriter myWriter = new FileWriter(file_log);
+			for (Ruta r : Mapa.listRutas){
+				myWriter.write(r.toEntry());
+				myWriter.write("\n*******************************************\n");
+			}
+			myWriter.close();
+
+		}
+		catch (IOException e) {
+			System.out.println("An error occurred.");
+			e.printStackTrace();
+		}
+
 	}
 }

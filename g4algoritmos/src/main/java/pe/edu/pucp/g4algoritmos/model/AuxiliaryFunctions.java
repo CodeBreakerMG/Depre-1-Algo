@@ -3,6 +3,7 @@ package pe.edu.pucp.g4algoritmos.model;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
@@ -100,6 +101,17 @@ public class AuxiliaryFunctions {
              
         }
         return date;
+    }
+
+  
+    public static String toTxtFileName(LocalDateTime datetime){
+        String year = Integer.toString(datetime.getYear());
+        String month = Integer.toString(datetime.getMonthValue());
+        String day = Integer.toString(datetime.getDayOfYear());
+        String hour = Integer.toString(datetime.getHour());
+        String minute = Integer.toString(datetime.getMinute());
+
+        return year + "_" + month + "_" + day + "_" + hour + "_" + minute;
     }
 
 

@@ -188,4 +188,21 @@ public class Ruta {
         return camion;
     }
 
+    public String toEntry(){
+        String output = "";
+        
+        String oficinas = "";
+
+        for (Oficina o : listaOficinas)
+            oficinas = oficinas + o.getCodigo() + " - "+ o.getProvincia() + "\n";
+
+        output = String.valueOf(id) + "," +
+                 camion.getCodigo() + "," +
+                 //fechaHoraInicio.toString() + "," +
+                 //fechaHoraCompletado.toString() + "," +
+                 String.valueOf(costoTotal) + "," +
+                 String.valueOf(cargaTotal) + "\n\n" +
+                 "Oficinas : \n" + oficinas;
+        return output;
+    }
 }

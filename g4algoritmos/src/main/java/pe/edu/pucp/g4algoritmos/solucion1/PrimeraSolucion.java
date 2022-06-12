@@ -97,9 +97,10 @@ public class PrimeraSolucion{
 
         //areaMaxima = areaPoligono();
         simulatedAnnealing(writer);
-        
+        setRutas();
         return costoTotal;
     }
+
 
     /*1. Determinar lista de oficinas de los pedidos*/ 
     public List<Oficina> contabilizarOficinas(){
@@ -430,7 +431,7 @@ public class PrimeraSolucion{
                 /*FALTA: Elegir el camion para el plan de transporte y asignar pedidos al camion*/
 
                 asignarRutaCamion(listaTramosXOficinaResultado, listaOficinasResultado, listaPedidosPorZona.get(i));
-    /*
+    /*  
                 writer.println("");
                 for(Tramo t: listaTramosResultado){
                     writer.print(t.getCiudadInicio().getProvincia() + " => " + t.getCiudadFin().getProvincia() + " => ");
@@ -589,7 +590,7 @@ public class PrimeraSolucion{
 
     public static List<List<Pedido>> asignarPedidosAOficina(List<List<Pedido>> listaPedidosxZona, List<Oficina> listaOficinas){
 
-        int i;
+
         List<List<Pedido>> listaTemp = new ArrayList<>();
         for(Oficina o : listaOficinas){
             List<Pedido> listPed = new ArrayList<>();
@@ -765,6 +766,32 @@ public class PrimeraSolucion{
        return cadena; 
     }
 
+    private void setRutas() {
+        List<Ruta> rutas = new ArrayList<>();
+        for (Ruta ruta: planesDeTransporte){
+
+
+
+            
+            
+            
+            //ruta.calcularCostoTotal();
+            
+            ruta.setEstado(1); //Planificada
+
+            //ruta.setCoordX(ruta.getOficinaActual(true).getCoordX());
+            //ruta.setCoordY(ruta.getOficinaActual(true).getCoordY());       
+            
+            //ruta.serializarTramos();
+            rutas.add(ruta);
+        }
+        Mapa.listRutas.addAll(rutas);
+        
+
+
+    }
+
+    
 
     
 }
