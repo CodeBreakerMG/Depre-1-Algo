@@ -183,7 +183,7 @@ public class AStarOficina {
     public double getCost(){
 
         /*
-        Funcion que devuelve los tramos a recorrer desde la Ciudad inicio hasta final. 
+        Funcion que devuelve el costo en HORAS del recorrido
         Debe correrse el Astar primer (astar.run())
         */
         
