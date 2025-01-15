@@ -1,5 +1,19 @@
-# Depre-1-Algo
-Proyecto para la empresa OdiparpackSW (DP1). Aquí solo se tendrá desarrollo en JAVA
+National-level Vehicle Routing Logistics Software
+Developed a nationwide vehicle routing logistics application using Simulated Annealing and A* search algorithms. This project was developed as part of the course INF226-2022-1 at the Pontifical Catholic University of Peru.
+
+The purpose of the project is to maximize delivery efficiency and minimize operational costs for a delivery network operating in Peru. The software takes into account critical real-world constraints, such as regular maintenance schedules for vehicles and the potential for road closures or unavailability due to accidents or other unprecedented events. The algorithms dynamically adapt to these constraints, ensuring continuity and reliability in operations.
+
+Key features include:
+
+Constraint-Aware Optimization: The engine accounts for vehicle maintenance schedules and provides rerouting capabilities to handle unexpected road closures or accidents.
+Flexible Input Methods: The project supports two modes for inputting delivery data: reading from a predefined list of delivery destinations or using the intuitive FRONT END component for manual data entry.
+Dynamic Route Planning: Automatically generates efficient routes for each available delivery truck, optimizing for time, fuel consumption, and delivery sequence.
+Advanced Algorithms: Integration of Simulated Annealing for solution optimization and A* search for precise shortest-path calculations.
+Scalable Design: Built to handle logistics operations across the diverse terrain and road infrastructure of Peru.
+Performance Insights: Provides detailed metrics and visualization tools to analyze and improve routing efficiency.
+This project showcases the practical application of AI-driven algorithms in solving complex logistics and supply chain challenges, ensuring resilience and adaptability in a dynamic operational environment.
+
+#################################################################################################################
 
 # Setup del proyecto
 
